@@ -221,6 +221,7 @@ int main()
         printf("An error occured");
         return -1;
     }
+
     int sizeOfArray = 0;
     printf("Enter a size of array: ");
     scanf_s("%d", &sizeOfArray);
@@ -240,12 +241,11 @@ int main()
         printf("An error occured");
         return -1;
     }
-    else
+
+    printf("Sorted array:");
+    for (int i = 0; i < sizeOfArray; ++i)
     {
-        printf("Sorted array:");
-        for (int i = 0; i < sizeOfArray; ++i)
-        {
-            printf(" %d", inputArray[i]);
-        }
+        printf(" %d", inputArray[i]);
     }
+    free(inputArray);
 }
