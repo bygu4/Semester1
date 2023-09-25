@@ -2,21 +2,20 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int* createTestArray(int sizeOfArray)
+int createTestArray(int* array, const int sizeOfArray)
 {
-    int* array = (int*)malloc(sizeOfArray * 4);
     if (array == NULL)
     {
-        return NULL;
+        return 1;
     }
     for (int i = 0; i < sizeOfArray; ++i)
     {
         array[i] = rand() % 1000;
     }
-    return array;
+    return 0;
 }
 
-void printArray(int* array, int sizeOfArray)
+void printArray(const int* array, const int sizeOfArray)
 {
     for (int i = 0; i < sizeOfArray; ++i)
     {
@@ -31,11 +30,11 @@ void swap(int* number1, int* number2)
     *number2 = temp;
 }
 
-int sort(int* array, int sizeOfArray)
+void sort(int* array, const int sizeOfArray)
 {
-    if (sizeOfArray < 1)
+    if (sizeOfArray <= 1)
     {
-        return 0;
+        return;
     }
     int firstElement = array[0];
     int count = 0;
@@ -47,15 +46,10 @@ int sort(int* array, int sizeOfArray)
             ++count;
         }
     }
-    return 1;
 }
 
-bool arraysAreEqual(int* array1, int* array2, int sizeOfArray)
+bool arraysAreEqual(const int* array1, const int* array2, const int sizeOfArray)
 {
-    if (sizeof(array1) != sizeof(array2))
-    {
-        return false;
-    }
     for (int i = 0; i < sizeOfArray; ++i)
     {
         if (array1[i] != array2[i])
@@ -66,14 +60,13 @@ bool arraysAreEqual(int* array1, int* array2, int sizeOfArray)
     return true;
 }
 
-bool arrayIsSorted(int* array, int sizeOfArray, int firstElement)
+bool arrayIsSorted(const int* array, const int sizeOfArray, const int firstElement)
 {
     bool firstElementIsReached = false;
     for (int i = 0; i < sizeOfArray; ++i)
     {
         if (firstElementIsReached && array[i] < firstElement)
         {
-            free(array);
             return false;
         }
         if (array[i] >= firstElement)
@@ -81,7 +74,6 @@ bool arrayIsSorted(int* array, int sizeOfArray, int firstElement)
             firstElementIsReached = true;
         }
     }
-    free(array);
     return true;
 }
 
@@ -109,12 +101,19 @@ bool testThreeIsPassed()
     return arraysAreEqual(array, expectedArray, 10);
 }
 
-bool testFourIsPassed(int sizeOfArray)
+bool testFourIsPassed(const int sizeOfArray)
 {
-    int* array = createTestArray(sizeOfArray);
+    int* array = (int*)calloc(sizeOfArray, sizeof(int));
+    int errorCode = createTestArray(array, sizeOfArray);
+    if (errorCode != 0)
+    {
+        return false;
+    }
     int firstElement = array[0];
     sort(array, sizeOfArray);
-    return arrayIsSorted(array, sizeOfArray, firstElement);
+    bool sorted = arrayIsSorted(array, sizeOfArray, firstElement);
+    free(array);
+    return sorted;
 }
 
 bool allTestsArePassed()
@@ -124,7 +123,7 @@ bool allTestsArePassed()
 
 int main()
 {
-    if (!(allTestsArePassed()))
+    if (!allTestsArePassed())
     {
         printf("An error occured");
         return -1;
@@ -136,7 +135,13 @@ int main()
         scanf_s("%d", &sizeOfArray);
     }
     printf("Creating array...\n");
-    int* testArray = createTestArray(sizeOfArray);
+    int* testArray = (int*)calloc(sizeOfArray, sizeof(int));
+    int errorCode = createTestArray(testArray, sizeOfArray);
+    if (errorCode != 0)
+    {
+        printf("An error occured");
+        return -1;
+    }
     printArray(testArray, sizeOfArray);
 
     printf("\n\nSorting...\n");

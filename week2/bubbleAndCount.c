@@ -4,19 +4,11 @@
 #include <stdbool.h>
 #define AMOUNT_OF_POSSIBLE_NUMBERS 64001
 
-void scanArray(short int* array, int sizeOfArray)
+void scanArray(short int* array, const int sizeOfArray)
 {
     for (int i = 0; i < sizeOfArray; ++i)
     {
         scanf_s("%hd", &array[i]);
-    }
-}
-
-void initializeArray(int* array, int sizeOfArray)
-{
-    for (int i = 0; i < sizeOfArray; ++i)
-    {
-        array[i] = 0;
     }
 }
 
@@ -27,7 +19,7 @@ void swap(short int* number1, short int* number2)
     *number2 = temp;
 }
 
-int bubbleSort(short int* array, int sizeOfArray)
+void bubbleSort(short int* array, const int sizeOfArray)
 {
     for (int i = 0; i < sizeOfArray - 1; ++i)
     {
@@ -39,17 +31,15 @@ int bubbleSort(short int* array, int sizeOfArray)
             }
         }
     }
-    return 1;
 }
 
-int countSort(short int* array, int sizeOfArray)
+int countSort(short int* array, const int sizeOfArray)
 {
-    int* arrayOfPossibleNumbers = (int*)malloc(AMOUNT_OF_POSSIBLE_NUMBERS * 4);
+    int* arrayOfPossibleNumbers = (int*)calloc(AMOUNT_OF_POSSIBLE_NUMBERS, sizeof(int));
     if (arrayOfPossibleNumbers == NULL)
     {
-        return -1;
+        return 1;
     }
-    initializeArray(arrayOfPossibleNumbers, AMOUNT_OF_POSSIBLE_NUMBERS);
     for (int i = 0; i < sizeOfArray; ++i)
     {
         short int numberFromOriginalArray = array[i];
@@ -69,29 +59,24 @@ int countSort(short int* array, int sizeOfArray)
         ++numberForSortedArray;
     }
     free(arrayOfPossibleNumbers);
-    return 1;
+    return 0;
 }
 
-short int* createTestArray(int sizeOfArray)
+int createTestArray(short int* array, const int sizeOfArray)
 {
-    short int* array = (short int*)malloc(sizeOfArray * 2);
     if (array == NULL)
     {
-        return NULL;
+        return 1;
     }
     for (int i = 0; i < sizeOfArray; ++i)
     {
         array[i] = rand() % AMOUNT_OF_POSSIBLE_NUMBERS - 32000;
     }
-    return array;
+    return 0;
 }
 
-bool arraysAreEqual(short int* array1, short int* array2, int sizeOfArray)
+bool arraysAreEqual(const short int* array1, const short int* array2, const int sizeOfArray)
 {
-    if (sizeof(array1) != sizeof(array2))
-    {
-        return false;
-    }
     for (int i = 0; i < sizeOfArray; ++i)
     {
         if (array1[i] != array2[i])
@@ -102,17 +87,15 @@ bool arraysAreEqual(short int* array1, short int* array2, int sizeOfArray)
     return true;
 }
 
-bool arrayIsSorted(short int* array, int sizeOfArray)
+bool arrayIsSorted(const short int* array, const int sizeOfArray)
 {
     for (int i = 1; i < sizeOfArray; ++i)
     {
         if (array[i - 1] > array[i])
         {
-            free(array);
             return false;
         }
     }
-    free(array);
     return true;
 }
 
@@ -148,18 +131,32 @@ bool fourthTestIsPassed()
     return arraysAreEqual(array, expectedArray, 0);
 }
 
-bool fifthTestIsPassed(int sizeOfArray)
+bool fifthTestIsPassed(const int sizeOfArray)
 {
-    short int* array = createTestArray(sizeOfArray);
+    short int* array = (short int*)calloc(sizeOfArray, sizeof(short int));
+    int errorCode = createTestArray(array, sizeOfArray);
+    if (errorCode != 0)
+    {
+        return false;
+    }
     bubbleSort(array, sizeOfArray);
-    return arrayIsSorted(array, sizeOfArray);
+    bool sorted = arrayIsSorted(array, sizeOfArray);
+    free(array);
+    return sorted;
 }
 
-bool sixthTestIsPassed(int sizeOfArray)
+bool sixthTestIsPassed(const int sizeOfArray)
 {
-    short int* array = createTestArray(sizeOfArray);
-    countSort(array, sizeOfArray);
-    return arrayIsSorted(array, sizeOfArray);
+    short int* array = (short int*)calloc(sizeOfArray, sizeof(short int));
+    int errorCode = createTestArray(array, sizeOfArray);
+    if (errorCode != 0)
+    {
+        return false;
+    }
+    errorCode = countSort(array, sizeOfArray);
+    bool sorted = arrayIsSorted(array, sizeOfArray);
+    free(array);
+    return sorted && errorCode == 0;
 }
 
 bool allTestsArePassed()
@@ -170,7 +167,7 @@ bool allTestsArePassed()
 
 int main()
 {
-    if (!(allTestsArePassed()))
+    if (!allTestsArePassed())
     {
         printf("An error occured");
         return -1;
@@ -178,7 +175,12 @@ int main()
     int sizeOfArray = 0;
     printf("Enter a size of array: ");
     scanf_s("%d", &sizeOfArray);
-    short int* inputArray = (short int*)malloc(sizeOfArray * 2);
+    short int* inputArray = (short int*)calloc(sizeOfArray, sizeof(short int));
+    if (inputArray == NULL)
+    {
+        printf("An error occured");
+        return -1;
+    }
     printf("Enter an array of numbers (-32000 <= n <= 32000): ");
     scanArray(inputArray, sizeOfArray);
 
@@ -193,17 +195,34 @@ int main()
     free(inputArray);
 
     printf("\n\nTesting runtime...\n");
-    short int* testArray = createTestArray(100000);
+    short int* testArray1 = (short int*)calloc(100000, sizeof(short int));
+    int errorCode = createTestArray(testArray1, 100000);
+    if (errorCode != 0)
+    {
+        printf("An error occured");
+        return -1;
+    }
     double startTime = (double)clock() / CLOCKS_PER_SEC;
-    bubbleSort(testArray, 100000);
+    bubbleSort(testArray1, 100000);
     double endTime = (double)clock() / CLOCKS_PER_SEC;
     printf("Bubble sort was completed in %g seconds\n", endTime - startTime);
-    free(testArray);
+    free(testArray1);
 
-    testArray = createTestArray(100000);
+    short int* testArray2 = (short int*)calloc(100000, sizeof(short int));
+    errorCode = createTestArray(testArray2, 100000);
+    if (errorCode != 0)
+    {
+        printf("An error occured");
+        return -1;
+    }
     startTime = (double)clock() / CLOCKS_PER_SEC;
-    countSort(testArray, 100000);
+    errorCode = countSort(testArray2, 100000);
     endTime = (double)clock() / CLOCKS_PER_SEC;
+    if (errorCode != 0)
+    {
+        printf("An error occured");
+        return -1;
+    }
     printf("Count sort was completed in %g seconds", endTime - startTime);
-    free(testArray);
+    free(testArray2);
 }
