@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdbool.h>
 
-void scanArray(int* array, int sizeOfArray)
+void scanArray(int* array, const int sizeOfArray)
 {
 	for (int i = 0; i < sizeOfArray; ++i)
 	{
@@ -18,7 +18,7 @@ void swap(int* number1, int* number2)
 	*number2 = temp;
 }
 
-int partition(int* array, int start, int end, bool* isSorted)
+int partition(int* array, const int start, const int end, bool* isSorted)
 {
 	int pointer = start + 1;
 	while (array[pointer - 1] == array[pointer] && pointer + 1 < end)
@@ -48,7 +48,7 @@ int partition(int* array, int start, int end, bool* isSorted)
 	return pointer;
 }
 
-int quicksort(int* array, int start, int end)
+int quicksort(int* array, const int start, const int end)
 {
 	int sizeOfArray = end - start;
 	if (sizeOfArray <= 1)
@@ -71,7 +71,7 @@ int quicksort(int* array, int start, int end)
 	return errorCode1 + errorCode2;
 }
 
-int findMostCommonElement(int* array, int sizeOfArray)
+int findMostCommonElement(const int* array, const int sizeOfArray)
 {
 	int mostCommonElement = NULL;
 	int maxNumberOfEntries = 0;
@@ -94,7 +94,7 @@ int findMostCommonElement(int* array, int sizeOfArray)
 	return mostCommonElement;
 }
 
-int createTestArray(int* array, int sizeOfArray)
+int createTestArray(int* array, const int sizeOfArray)
 {
 	if (array == NULL)
 	{
@@ -107,7 +107,7 @@ int createTestArray(int* array, int sizeOfArray)
 	return 0;
 }
 
-bool arraysAreEqual(int* array1, int* array2, int sizeOfArray)
+bool arraysAreEqual(const int* array1, const int* array2, const int sizeOfArray)
 {
 	for (int i = 0; i < sizeOfArray; ++i)
 	{
@@ -119,7 +119,7 @@ bool arraysAreEqual(int* array1, int* array2, int sizeOfArray)
 	return true;
 }
 
-bool arrayIsSorted(int* array, int sizeOfArray)
+bool arrayIsSorted(const int* array, const int sizeOfArray)
 {
 	for (int i = 1; i < sizeOfArray; ++i)
 	{
@@ -183,7 +183,7 @@ bool testSevenIsPassed()
 	return errorCode == 0 && arraysAreEqual(array, expectedArray, 10);
 }
 
-bool testEigthIsPassed()
+bool testEightIsPassed()
 {
 	int array[5] = { 8, 8, 8, 8, 8 };
 	int expectedArray[5] = { 8, 8, 8, 8, 8 };
@@ -199,7 +199,7 @@ bool testNineIsPassed()
 	return errorCode == 0 && arraysAreEqual(array, expectedArray, 0);
 }
 
-bool testTenIsPassed(int sizeOfArray)
+bool testTenIsPassed(const int sizeOfArray)
 {
 	int* array = (int*)calloc(sizeOfArray, sizeof(int));
 	int errorCode = createTestArray(array, sizeOfArray);
@@ -244,7 +244,7 @@ bool testFourteenIsPassed()
 bool allTestsArePassed()
 {
 	return testOneIsPassed() && testTwoIsPassed() && testThreeIsPassed() && testFourIsPassed()
-		&& testFiveIsPassed() && testSixIsPassed() && testSevenIsPassed() && testEigthIsPassed()
+		&& testFiveIsPassed() && testSixIsPassed() && testSevenIsPassed() && testEightIsPassed()
 		&& testNineIsPassed() && testTenIsPassed(10000) && testElevenIsPassed()
 		&& testTwelveIsPassed() && testThirteenIsPassed() && testFourteenIsPassed();
 }
