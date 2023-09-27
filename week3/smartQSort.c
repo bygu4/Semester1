@@ -31,7 +31,7 @@ void insertionSort(int* array, const int start, const int end)
     }
 }
 
-int partition(int* array, const int start, const int end)
+int partition(int* array, const int start, const int end, bool* isSorted)
 {
     int pointer = start + 1;
     while (array[pointer - 1] == array[pointer] && pointer < end - 1)
@@ -40,6 +40,7 @@ int partition(int* array, const int start, const int end)
     }
     if (array[pointer - 1] > array[pointer])
     {
+        *isSorted = false;
         --pointer;
     }
     int pivot = array[pointer];
@@ -49,7 +50,12 @@ int partition(int* array, const int start, const int end)
         if (array[i] < pivot)
         {
             swap(&array[i], &array[pointer]);
+            *isSorted = false;
             ++pointer;
+        }
+        if (isSorted && array[i - 1] > array[i])
+        {
+            *isSorted = false;
         }
     }
     return pointer;
@@ -64,10 +70,15 @@ int quicksort(int* array, const int start, const int end)
         return 0;
     }
 
-    int pointer = partition(array, start, end);
+    bool isSorted = true;
+    int pointer = partition(array, start, end, &isSorted);
     if (pointer >= end)
     {
         return 1;
+    }
+    if (isSorted)
+    {
+        return 0;
     }
     int errorCode1 = quicksort(array, start, pointer);
     int errorCode2 = quicksort(array, pointer, end);
@@ -157,16 +168,18 @@ bool testSevenIsPassed()
 {
     int array[10] = { 5, 6, 1, 2, 3, 4, 7, 8, 9, 10 };
     int expectedArray[10] = { 5, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
-    int pointer = partition(array, 0, 10);
-    return pointer == 5 && arraysAreEqual(array, expectedArray, 10);
+    bool isSorted = true;
+    int pointer = partition(array, 0, 10, &isSorted);
+    return !isSorted && pointer == 5 && arraysAreEqual(array, expectedArray, 10);
 }
 
 bool testEightIsPassed()
 {
     int array[5] = { 1, 1, 1, 1, 1 };
     int expectedArray[5] = { 1, 1, 1, 1, 1 };
-    int pointer = partition(array, 0, 5);
-    return pointer == 4 && arraysAreEqual(array, expectedArray, 5);
+    bool isSorted = true;
+    int pointer = partition(array, 0, 5, &isSorted);
+    return isSorted && pointer == 4 && arraysAreEqual(array, expectedArray, 5);
 }
 
 bool testNineIsPassed()
@@ -234,7 +247,7 @@ int main()
     printf("Enter an array: ");
     scanArray(inputArray, sizeOfArray);
 
-    printf("\n\nSorting...\n");
+    printf("\nSorting...\n\n");
     int errorCode = quicksort(inputArray, 0, sizeOfArray);
     if (errorCode != 0)
     {
