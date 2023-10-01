@@ -94,17 +94,18 @@ int findMostCommonElement(const int* array, const int sizeOfArray)
     return mostCommonElement;
 }
 
-int createTestArray(int* array, const int sizeOfArray)
+int* createTestArray(const int sizeOfArray)
 {
+    int* array = (int*)calloc(sizeOfArray, sizeof(int));
     if (array == NULL)
     {
-        return 1;
+        return NULL;
     }
     for (int i = 0; i < sizeOfArray; ++i)
     {
         array[i] = rand() % 20000 - 10000;
     }
-    return 0;
+    return array;
 }
 
 bool arraysAreEqual(const int* array1, const int* array2, const int sizeOfArray)
@@ -131,122 +132,87 @@ bool arrayIsSorted(const int* array, const int sizeOfArray)
     return true;
 }
 
-bool testOneIsPassed()
+bool allTestsForPartitionArePassed()
 {
-    int array1[6] = { 1, 2, 3, 4, 5, 6 };
-    int array2[6] = { 1, 2, 3, 4, 5, 5 };
-    return !arraysAreEqual(array1, array2, 6);
-}
-
-bool testTwoIsPassed()
-{
-    int array1[6] = { 10, 9, 8, 7, 6, 5 };
-    int array2[6] = { 10, 9, 8, 7, 6, 5 };
-    return arraysAreEqual(array1, array2, 6);
-}
-
-bool testThreeIsPassed()
-{
-    int array[6] = { 1, 1, 1, 1, 1, 1 };
-    return arrayIsSorted(array, 6);
-}
-
-bool testFourIsPassed()
-{
-    int array[9] = { 1, 2, 3, 1, 2, 3, 1, 2, 3 };
-    return !arrayIsSorted(array, 9);
-}
-
-bool testFiveIsPassed()
-{
-    int array[10] = { 5, 6, 1, 2, 3, 4, 5, 6, 7, 8 };
-    int expectedArray[10] = { 5, 1, 2, 3, 4, 5, 6, 6, 7, 8 };
+    int array1[10] = { 5, 6, 1, 2, 3, 4, 7, 8, 9, 10 };
+    int expectedArray1[10] = { 5, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
     bool isSorted = true;
-    int pointer = partition(array, 0, 10, &isSorted);
-    return pointer == 6 && !isSorted && arraysAreEqual(array, expectedArray, 10);
+    int pointer = partition(array1, 0, 10, &isSorted);
+    bool testOneIsPassed = pointer == 5 && !isSorted && arraysAreEqual(array1, expectedArray1, 10);
+
+    int array2[5] = { 1, 1, 1, 1, 1 };
+    int expectedArray2[5] = { 1, 1, 1, 1, 1 };
+    isSorted = true;
+    pointer = partition(array2, 0, 5, &isSorted);
+    bool testTwoIsPassed = pointer == 4 && isSorted && arraysAreEqual(array2, expectedArray2, 5);
+
+    int array3[5] = { 15, 0, 0, 0, 0 };
+    int expectedArray3[5] = { 0, 0, 0, 0, 15 };
+    isSorted = true;
+    pointer = partition(array3, 0, 5, &isSorted);
+    bool testThreeIsPassed = pointer == 4 && !isSorted && arraysAreEqual(array3, expectedArray3, 5);
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed;
 }
 
-bool testSixIsPassed()
+bool testForQuicksort(int* array, const int* expectedArray, const int sizeOfArray)
 {
-    int array[5] = { 1, 1, 1, 1, 1 };
-    int expectedArray[5] = { 1, 1, 1, 1, 1 };
-    bool isSorted = true;
-    int pointer = partition(array, 0, 5, &isSorted);
-    return pointer == 4 && isSorted && arraysAreEqual(array, expectedArray, 5);
+    int errorCode = quicksort(array, 0, sizeOfArray);
+    return errorCode == 0 && arraysAreEqual(array, expectedArray, sizeOfArray);
 }
 
-bool testSevenIsPassed()
+bool allTestsForQuicksortArePassed()
 {
-    int array[10] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-    int expectedArray[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    int errorCode = quicksort(array, 0, 10);
-    return errorCode == 0 && arraysAreEqual(array, expectedArray, 10);
-}
+    int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
+    int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
+    bool testOneIsPassed = testForQuicksort(array1, expectedArray1, 20);
 
-bool testEightIsPassed()
-{
-    int array[5] = { 8, 8, 8, 8, 8 };
-    int expectedArray[5] = { 8, 8, 8, 8, 8 };
-    int errorCode = quicksort(array, 0, 5);
-    return errorCode == 0 && arraysAreEqual(array, expectedArray, 5);
-}
+    int array2[] = { 0 };
+    int expectedArray2[] = { 0 };
+    bool testTwoIsPassed = testForQuicksort(array2, expectedArray2, 0);
 
-bool testNineIsPassed()
-{
-    int array[] = { NULL };
-    int expectedArray[] = { NULL };
-    int errorCode = quicksort(array, 0, 0);
-    return errorCode == 0 && arraysAreEqual(array, expectedArray, 0);
-}
+    int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    bool testThreeIsPassed = testForQuicksort(array3, expectedArray3, 10);
 
-bool testTenIsPassed(const int sizeOfArray)
-{
-    int* array = (int*)calloc(sizeOfArray, sizeof(int));
-    int errorCode = createTestArray(array, sizeOfArray);
-    if (errorCode != 0)
+    int sizeOfTestArray = 10000;
+    int* testArray = createTestArray(sizeOfTestArray);
+    if (testArray == NULL)
     {
         return false;
     }
-    errorCode = quicksort(array, 0, sizeOfArray);
-    bool sorted = arrayIsSorted(array, sizeOfArray);
-    free(array);
-    return errorCode == 0 && sorted;
+    int errorCode = quicksort(testArray, 0, sizeOfTestArray);
+    bool testFourIsPassed = errorCode == 0 && arrayIsSorted(testArray, sizeOfTestArray);
+    free(testArray);
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed && testFourIsPassed;
 }
 
-bool testElevenIsPassed()
+bool allTestsForMostCommonElementArePassed()
 {
-    int array[5] = { 2, 2, 2, 2, 2 };
-    int mostCommonElement = findMostCommonElement(array, 5);
-    return mostCommonElement == 2;
-}
+    int array1[5] = { 2, 2, 2, 2, 2 };
+    int mostCommonElement = findMostCommonElement(array1, 5);
+    bool testOneIsPassed = mostCommonElement == 2;
 
-bool testTwelveIsPassed()
-{
-    int array[6] = { 1, 2, 3, 4, 5, 6 };
-    int mostCommonElement = findMostCommonElement(array, 6);
-    return mostCommonElement == 1;
-}
+    int array2[6] = { 1, 2, 3, 4, 5, 6 };
+    mostCommonElement = findMostCommonElement(array2, 6);
+    bool testTwoIsPassed = mostCommonElement == 1;
 
-bool testThirteenIsPassed()
-{
-    int array[] = { NULL };
-    int mostCommonElement = findMostCommonElement(array, 0);
-    return mostCommonElement == NULL;
-}
+    int array3[] = { NULL };
+    mostCommonElement = findMostCommonElement(array3, 0);
+    bool testThreeIsPassed = mostCommonElement == NULL;
 
-bool testFourteenIsPassed()
-{
-    int array[7] = { 1, 1, 1, -1, -1, -1, -1 };
-    int mostCommonElement = findMostCommonElement(array, 7);
-    return mostCommonElement == -1;
+    int array4[7] = { -1, -1, -1, 3, 3, 3, 3 };
+    mostCommonElement = findMostCommonElement(array4, 7);
+    bool testFourIsPassed = mostCommonElement == 3;
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed && testFourIsPassed;
 }
 
 bool allTestsArePassed()
 {
-    return testOneIsPassed() && testTwoIsPassed() && testThreeIsPassed() && testFourIsPassed()
-        && testFiveIsPassed() && testSixIsPassed() && testSevenIsPassed() && testEightIsPassed()
-        && testNineIsPassed() && testTenIsPassed(10000) && testElevenIsPassed()
-        && testTwelveIsPassed() && testThirteenIsPassed() && testFourteenIsPassed();
+    return allTestsForPartitionArePassed() && allTestsForQuicksortArePassed()
+        && allTestsForMostCommonElementArePassed();
 }
 
 int main()
