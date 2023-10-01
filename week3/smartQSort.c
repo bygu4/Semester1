@@ -3,6 +3,8 @@
 #include <math.h>
 #include <stdbool.h>
 
+#define AMOUNT_OF_POSSIBLE_NUMBERS 4294967296
+
 void scanArray(int* array, const int sizeOfArray)
 {
     for (int i = 0; i < sizeOfArray; ++i)
@@ -109,122 +111,113 @@ bool arrayIsSorted(const int* array, const int sizeOfArray)
     return true;
 }
 
-int createTestArray(int* array, const int sizeOfArray)
+int* createTestArray(const int sizeOfArray)
 {
+    int* array = (int*)calloc(sizeOfArray, sizeof(int));
     if (array == NULL)
     {
-        return 1;
+        return NULL;
     }
     for (int i = 0; i < sizeOfArray; ++i)
     {
-        array[i] = rand() % 2000 - 1000;
+        array[i] = rand() % AMOUNT_OF_POSSIBLE_NUMBERS - AMOUNT_OF_POSSIBLE_NUMBERS / 2;
     }
-    return 0;
+    return array;
 }
 
-bool testOneIsPassed()
+bool testForInsertionSort(int* array, const int* expectedArray, const int sizeOfArray)
 {
-    int array1[4] = { 1, 2, 3, 4 };
-    int array2[4] = { 1, 2, 3, 5 };
-    return !arraysAreEqual(array1, array2, 4);
+    insertionSort(array, 0, sizeOfArray);
+    return arraysAreEqual(array, expectedArray, sizeOfArray);
 }
 
-bool testTwoIsPassed()
+bool allTestsForInsertionSortArePassed()
 {
-    int array1[6] = { 5, 6, 7, 8, 9, 10 };
-    int array2[6] = { 5, 6, 7, 8 ,9, 10 };
-    return arraysAreEqual(array1, array2, 6);
-}
+    int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
+    int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
+    bool testOneIsPassed = testForInsertionSort(array1, expectedArray1, 20);
 
-bool testThreeIsPassed()
-{
-    int array[6] = { 1, 1, 1, 2, 3, 4 };
-    return arrayIsSorted(array, 6);
-}
+    int array2[] = { 0 };
+    int expectedArray2[] = { 0 };
+    bool testTwoIsPassed = testForInsertionSort(array2, expectedArray2, 0);
 
-bool testFourIsPassed()
-{
-    int array[6] = { 1, 3, 2, 2, 3, 4 };
-    return !arrayIsSorted(array, 6);
-}
+    int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    bool testThreeIsPassed = testForInsertionSort(array3, expectedArray3, 10);
 
-bool testFiveIsPassed()
-{
-    int array[10] = { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-    int expectedArray[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-    insertionSort(array, 0, 10);
-    return arraysAreEqual(array, expectedArray, 10);
-}
-
-bool testSixIsPassed()
-{
-    int array[] = { NULL };
-    int expectedArray[] = { NULL };
-    insertionSort(array, 0, 0);
-    return arraysAreEqual(array, expectedArray, 0);
-}
-
-bool testSevenIsPassed()
-{
-    int array[10] = { 5, 6, 1, 2, 3, 4, 7, 8, 9, 10 };
-    int expectedArray[10] = { 5, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
-    bool isSorted = true;
-    int pointer = partition(array, 0, 10, &isSorted);
-    return !isSorted && pointer == 5 && arraysAreEqual(array, expectedArray, 10);
-}
-
-bool testEightIsPassed()
-{
-    int array[5] = { 1, 1, 1, 1, 1 };
-    int expectedArray[5] = { 1, 1, 1, 1, 1 };
-    bool isSorted = true;
-    int pointer = partition(array, 0, 5, &isSorted);
-    return isSorted && pointer == 4 && arraysAreEqual(array, expectedArray, 5);
-}
-
-bool testNineIsPassed()
-{
-    int array[12] = { 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 };
-    int expectedArray[12] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
-    int errorCode = quicksort(array, 0, 12);
-    return errorCode == 0 && arraysAreEqual(array, expectedArray, 12);
-}
-
-bool testTenIsPassed()
-{
-    int array[12] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-    int expectedArray[12] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-    int errorCode = quicksort(array, 0, 12);
-    return errorCode == 0 && arraysAreEqual(array, expectedArray, 12);
-}
-
-bool testElevenIsPassed()
-{
-    int array[] = { NULL };
-    int expectedArray[] = { NULL };
-    int errorCode = quicksort(array, 0, 0);
-    return errorCode == 0 && arraysAreEqual(array, expectedArray, 0);
-}
-
-bool testTwelveIsPassed(const int sizeOfArray)
-{
-    int* array = (int*)calloc(sizeOfArray, sizeof(int));
-    int errorCode = createTestArray(array, sizeOfArray);
-    if (errorCode != 0)
+    int sizeOfTestArray = 1000;
+    int* testArray = createTestArray(sizeOfTestArray);
+    if (testArray == NULL)
     {
         return false;
     }
-    errorCode = quicksort(array, 0, sizeOfArray);
-    bool sorted = arrayIsSorted(array, sizeOfArray);
-    free(array);
-    return errorCode == 0 && sorted;
+    insertionSort(testArray, 0, sizeOfTestArray);
+    bool testFourIsPassed = arrayIsSorted(testArray, sizeOfTestArray);
+    free(testArray);
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed && testFourIsPassed;
+}
+
+bool allTestsForPartitionArePassed()
+{
+    int array1[10] = { 5, 6, 1, 2, 3, 4, 7, 8, 9, 10 };
+    int expectedArray1[10] = { 5, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
+    bool isSorted = true;
+    int pointer = partition(array1, 0, 10, &isSorted);
+    bool testOneIsPassed = pointer == 5 && !isSorted && arraysAreEqual(array1, expectedArray1, 10);
+
+    int array2[5] = { 1, 1, 1, 1, 1 };
+    int expectedArray2[5] = { 1, 1, 1, 1, 1 };
+    isSorted = true;
+    pointer = partition(array2, 0, 5, &isSorted);
+    bool testTwoIsPassed = pointer == 4 && isSorted && arraysAreEqual(array2, expectedArray2, 5);
+
+    int array3[5] = { 15, 0, 0, 0, 0 };
+    int expectedArray3[5] = { 0, 0, 0, 0, 15 };
+    isSorted = true;
+    pointer = partition(array3, 0, 5, &isSorted);
+    bool testThreeIsPassed = pointer == 4 && !isSorted && arraysAreEqual(array3, expectedArray3, 5);
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed;
+}
+
+bool testForQuicksort(int* array, const int* expectedArray, const int sizeOfArray)
+{
+    int errorCode = quicksort(array, 0, sizeOfArray);
+    return errorCode == 0 && arraysAreEqual(array, expectedArray, sizeOfArray);
+}
+
+bool allTestsForQuickSortArePassed()
+{
+    int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
+    int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
+    bool testOneIsPassed = testForQuicksort(array1, expectedArray1, 20);
+
+    int array2[] = { 0 };
+    int expectedArray2[] = { 0 };
+    bool testTwoIsPassed = testForQuicksort(array2, expectedArray2, 0);
+
+    int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    bool testThreeIsPassed = testForQuicksort(array3, expectedArray3, 10);
+
+    int sizeOfTestArray = 10000;
+    int* testArray = createTestArray(sizeOfTestArray);
+    if (testArray == NULL)
+    {
+        return false;
+    }
+    int errorCode = quicksort(testArray, 0, sizeOfTestArray);
+    bool testFourIsPassed = errorCode == 0 && arrayIsSorted(testArray, sizeOfTestArray);
+    free(testArray);
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed && testFourIsPassed;
 }
 
 bool allTestsArePassed()
 {
-    return testOneIsPassed() && testTwoIsPassed() && testThreeIsPassed() && testFourIsPassed()
-        && testFiveIsPassed() && testSixIsPassed() && testSevenIsPassed() && testEightIsPassed()
-        && testNineIsPassed() && testTenIsPassed() && testElevenIsPassed() && testTwelveIsPassed(10000);
+    return allTestsForInsertionSortArePassed() && allTestsForPartitionArePassed()
+        && allTestsForQuickSortArePassed();
 }
 
 int main()
