@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <stdbool.h>
+
 #define SIZE_OF_BINARY_REPRESENTATION sizeof(int) * 8
 
 void printArray(const char* array, const int sizeOfArray)
@@ -35,6 +36,8 @@ char* binaryAddition(const char* binaryRepresentation1, const char* binaryRepres
     char* transferBit = (char*)calloc(size + 1, sizeof(char));
     if (sum == NULL || transferBit == NULL)
     {
+        free(sum);
+        free(transferBit);
         return NULL;
     }
 
@@ -168,6 +171,7 @@ bool testForBinaryToDecimal(const int number, const int expectedDecimal)
         return false;
     }
     int decimal = binaryToDecimal(representation);
+    free(representation);
     return decimal == expectedDecimal;
 }
 
