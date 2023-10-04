@@ -77,7 +77,7 @@ bool testThreeIsPassed()
 
 bool allTestsArePassed()
 {
-    return testOneIsPassed() && testTwoIsPassed && testThreeIsPassed();
+    return testOneIsPassed() && testTwoIsPassed() && testThreeIsPassed();
 }
 
 int main()
