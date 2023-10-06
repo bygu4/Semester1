@@ -175,6 +175,21 @@ void findNameByNumber(const Phonebook* phonebook)
     printf("Number not found\n");
 }
 
+bool testOneIsPassed()
+{
+
+}
+
+bool testTwoIsPassed()
+{
+
+}
+
+bool allTestsArePassed()
+{
+    return testOneIsPassed() && testTwoIsPassed();
+}
+
 int saveNotesToFile(const Phonebook* phonebook, const char* nameOfFile)
 {
     FILE* outputFile = NULL;
@@ -197,6 +212,7 @@ int saveNotesToFile(const Phonebook* phonebook, const char* nameOfFile)
 
 int main()
 {
+    if
     Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };
     int errorCode = readNotesFromFile(&phonebook, NAME_OF_FILE);
     if (errorCode != 0)
