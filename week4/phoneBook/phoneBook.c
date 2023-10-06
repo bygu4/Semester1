@@ -175,21 +175,6 @@ void findNameByNumber(const Phonebook* phonebook)
     printf("Number not found\n");
 }
 
-bool testOneIsPassed()
-{
-
-}
-
-bool testTwoIsPassed()
-{
-
-}
-
-bool allTestsArePassed()
-{
-    return testOneIsPassed() && testTwoIsPassed();
-}
-
 int saveNotesToFile(const Phonebook* phonebook, const char* nameOfFile)
 {
     FILE* outputFile = NULL;
@@ -208,6 +193,19 @@ int saveNotesToFile(const Phonebook* phonebook, const char* nameOfFile)
     printf("Notes saved\n");
     fclose(outputFile);
     return 0;
+}
+
+void freePhonebook(Phonebook* phonebook)
+{
+    Note* notes = phonebook->notes;
+    int numberOfNotes = phonebook->numberOfNotes;
+    for (int i = 0; i < numberOfNotes; ++i)
+    {
+        Note note = notes[i];
+        free(note.name);
+        free(note.number);
+    }
+    free(notes);
 }
 
 int main()
@@ -251,9 +249,9 @@ int main()
         }
         if (errorCode != 0)
         {
-            free(phonebook.notes);
+            freePhonebook(&phonebook);
             return -1;
         }
     }
-    free(phonebook.notes);
+    freePhonebook(&phonebook);
 }
