@@ -208,9 +208,41 @@ void freePhonebook(Phonebook* phonebook)
     free(notes);
 }
 
+bool testForReadIsPassed()
+{
+    Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };
+    int errorCode = readNotesFromFile(&phonebook, TEST_FILE_1);
+    if (errorCode != 0)
+    {
+        return false;
+    }
+    Note note1 = phonebook.notes[0];
+    bool testOneIsPassed = stringsAreEqual(note1.name, "sasha")
+        && stringsAreEqual(note1.number, "+1234567890");
+
+    Note note2 = phonebook.notes[1];
+    bool testTwoIsPassed = stringsAreEqual(note2.name, "masha")
+        && stringsAreEqual(note2.number, "89000000000");
+
+    Note note3 = phonebook.notes[2];
+    bool testThreeIsPassed = stringsAreEqual(note3.name, "pasha")
+        && stringsAreEqual(note3.number, "8(999)1112233");
+
+    return testOneIsPassed && testTwoIsPassed && testThreeIsPassed && testFourIsPassed;
+}
+
+bool allTestsArePassed()
+{
+    return testForReadPassed() && testForAddIsPassed();
+}
+
 int main()
 {
-    if
+    if (!allTestsArePassed())
+    {
+        printf("An error occured");
+        return -1;
+    }
     Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };
     int errorCode = readNotesFromFile(&phonebook, NAME_OF_FILE);
     if (errorCode != 0)
@@ -250,6 +282,7 @@ int main()
         if (errorCode != 0)
         {
             freePhonebook(&phonebook);
+            printf("An error occured");
             return -1;
         }
     }
