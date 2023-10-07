@@ -48,9 +48,9 @@ int addNoteSupport(Phonebook* phonebook, const char* name, const char* number)
         free(note.number);
         return 1;
     }
-    int errorCode = strcpy_s(note.name, sizeOfName, name);
-    errorCode += strcpy_s(note.number, sizeOfNumber, number);
-    if (errorCode != 0)
+    int errorCode1 = strcpy_s(note.name, sizeOfName, name);
+    int errorCode2 = strcpy_s(note.number, sizeOfNumber, number);
+    if (errorCode1 != 0 || errorCode2 != 0)
     {
         free(note.name);
         free(note.number);
