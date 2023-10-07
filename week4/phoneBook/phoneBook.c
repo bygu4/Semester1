@@ -38,17 +38,18 @@ void freePhonebook(Phonebook* phonebook)
 int addNoteSupport(Phonebook* phonebook, const char* name, const char* number)
 {
     Note note = { "", "" };
-    int size = sizeof(char) * SIZE_OF_BUFFER;
-    note.name = malloc(size);
-    note.number = malloc(size);
+    size_t sizeOfName = strlen(name) + 1;
+    size_t sizeOfNumber = strlen(number) + 1;
+    note.name = calloc(sizeOfName, sizeof(char));
+    note.number = calloc(sizeOfNumber, sizeof(char));
     if (note.name == NULL || note.number == NULL)
     {
         free(note.name);
         free(note.number);
         return 1;
     }
-    int errorCode = strcpy_s(note.name, size, name);
-    errorCode += strcpy_s(note.number, size, number);
+    int errorCode = strcpy_s(note.name, sizeOfName, name);
+    errorCode += strcpy_s(note.number, sizeOfNumber, number);
     if (errorCode != 0)
     {
         free(note.name);
