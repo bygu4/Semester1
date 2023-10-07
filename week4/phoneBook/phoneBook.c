@@ -18,6 +18,20 @@ typedef struct {
     int numberOfNotes;
 } Phonebook;
 
+void freePhonebook(Phonebook* phonebook)
+{
+    Note* notes = phonebook->notes;
+    int* numberOfNotes = &phonebook->numberOfNotes;
+    for (int i = 0; i < *numberOfNotes; ++i)
+    {
+        Note note = notes[i];
+        free(note.name);
+        free(note.number);
+    }
+    free(notes);
+    *numberOfNotes = 0;
+}
+
 int addNoteSupport(Phonebook* phonebook, const char* name, const char* number)
 {
     Note note = { "", "" };
@@ -60,6 +74,7 @@ int readNotesFromFile(Phonebook* phonebook, const char* nameOfFile)
     }
     if (errorCode != 0)
     {
+        free(phonebook->notes);
         return 1;
     }
     int* numberOfNotes = &phonebook->numberOfNotes;
@@ -80,6 +95,7 @@ int readNotesFromFile(Phonebook* phonebook, const char* nameOfFile)
         if (errorCode != 0)
         {
             fclose(inputFile);
+            freePhonebook(phonebook);
             return 1;
         }
     }
@@ -231,20 +247,6 @@ int saveNotesToFile(const Phonebook* phonebook, const char* nameOfFile)
     return 0;
 }
 
-void freePhonebook(Phonebook* phonebook)
-{
-    Note* notes = phonebook->notes;
-    int* numberOfNotes = &phonebook->numberOfNotes;
-    for (int i = 0; i < *numberOfNotes; ++i)
-    {
-        Note note = notes[i];
-        free(note.name);
-        free(note.number);
-    }
-    free(notes);
-    *numberOfNotes = 0;
-}
-
 char* stringMul(const char* string, const int multiplier)
 {
     size_t lengthOfOriginalString = strlen(string);
@@ -290,6 +292,7 @@ bool testForAddIsPassed()
     {
         free(name3);
         free(number3);
+        freePhonebook(&phonebook);
         return false;
     }
     int errorCode3 = addNoteSupport(&phonebook, name3, number3);
