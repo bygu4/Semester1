@@ -3,6 +3,9 @@
 #include <string.h>
 #include <stdbool.h>
 
+
+#define SIZE_OF_BUFFER 64
+#define MAX_NOTES 100
 #define NAME_OF_FILE "phoneBook.txt"
 #define TEST_FILE_1 "test1.txt"
 #define TEST_FILE_2 "test2.txt"
@@ -35,7 +38,7 @@ void freePhonebook(Phonebook* phonebook)
 int addNoteSupport(Phonebook* phonebook, const char* name, const char* number)
 {
     Note note = { "", "" };
-    int size = sizeof(char) * 64;
+    int size = sizeof(char) * SIZE_OF_BUFFER;
     note.name = malloc(size);
     note.number = malloc(size);
     if (note.name == NULL || note.number == NULL)
@@ -61,7 +64,7 @@ int addNoteSupport(Phonebook* phonebook, const char* name, const char* number)
 
 int readNotesFromFile(Phonebook* phonebook, const char* nameOfFile)
 {
-    phonebook->notes = malloc(sizeof(Note) * 100);
+    phonebook->notes = malloc(sizeof(Note) * MAX_NOTES);
     if (phonebook->notes == NULL)
     {
         return 1;
@@ -78,17 +81,17 @@ int readNotesFromFile(Phonebook* phonebook, const char* nameOfFile)
         return 1;
     }
     int* numberOfNotes = &phonebook->numberOfNotes;
-    while (!feof(inputFile) && *numberOfNotes < 100)
+    while (!feof(inputFile) && *numberOfNotes < MAX_NOTES)
     {
-        char name[64] = { '\0' };
-        fscanf_s(inputFile, "%[^ ]", name, 63);
+        char name[SIZE_OF_BUFFER] = { '\0' };
+        fscanf_s(inputFile, "%[^ ]", name, SIZE_OF_BUFFER - 1);
         if (strlen(name) == 0)
         {
             break;
         }
         fseek(inputFile, 1, SEEK_CUR);
-        char number[64] = { '\0' };
-        fscanf_s(inputFile, "%[^\n]", number, 63);
+        char number[SIZE_OF_BUFFER] = { '\0' };
+        fscanf_s(inputFile, "%[^\n]", number, SIZE_OF_BUFFER - 1);
         fseek(inputFile, 2, SEEK_CUR);
 
         errorCode = addNoteSupport(phonebook, name, number);
@@ -106,17 +109,17 @@ int readNotesFromFile(Phonebook* phonebook, const char* nameOfFile)
 int addNote(Phonebook* phonebook)
 {
     int* numberOfNotes = &phonebook->numberOfNotes;
-    if (*numberOfNotes >= 100)
+    if (*numberOfNotes >= MAX_NOTES)
     {
         printf("Cannot add any more notes\n");
         return 0;
     }
-    char name[64] = { '\0' };
+    char name[SIZE_OF_BUFFER] = { '\0' };
     printf("Enter name: ");
-    scanf_s("%s", name, 63);
-    char number[64] = { '\0' };
+    scanf_s("%s", name, SIZE_OF_BUFFER - 1);
+    char number[SIZE_OF_BUFFER] = { '\0' };
     printf("Enter number: ");
-    scanf_s("%s", number, 63);
+    scanf_s("%s", number, SIZE_OF_BUFFER - 1);
 
     int errorCode = addNoteSupport(phonebook, name, number);
     if (errorCode != 0)
@@ -176,9 +179,9 @@ char* findNumberByNameSupport(const Phonebook* phonebook, const char* nameToFind
 
 void findNumberByName(const Phonebook* phonebook)
 {
-    char nameToFind[64] = { '\0' };
+    char nameToFind[SIZE_OF_BUFFER] = { '\0' };
     printf("Enter a name: ");
-    scanf_s("%s", nameToFind, 63);
+    scanf_s("%s", nameToFind, SIZE_OF_BUFFER - 1);
     char* foundNumber = findNumberByNameSupport(phonebook, nameToFind);
     if (foundNumber == NULL)
     {
@@ -205,9 +208,9 @@ char* findNameByNumberSupport(const Phonebook* phonebook, const char* numberToFi
 
 void findNameByNumber(const Phonebook* phonebook)
 {
-    char numberToFind[64] = { '\0' };
+    char numberToFind[SIZE_OF_BUFFER] = { '\0' };
     printf("Enter a number: ");
-    scanf_s("%s", numberToFind, 63);
+    scanf_s("%s", numberToFind, SIZE_OF_BUFFER - 1);
     char* foundName = findNameByNumberSupport(phonebook, numberToFind);
     if (foundName == NULL)
     {
