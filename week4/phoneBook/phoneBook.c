@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 #define SIZE_OF_BUFFER 64
 #define MAX_NOTES 100
 #define NAME_OF_FILE "phoneBook.txt"
