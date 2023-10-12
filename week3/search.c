@@ -16,7 +16,7 @@ int* generateArray(const size_t sizeOfArray)
         return NULL;
     }
     srand(time(NULL));
-    for (int i = 0; i < sizeOfArray; ++i)
+    for (size_t i = 0; i < sizeOfArray; ++i)
     {
         array[i] = rand() % RAND_RANGE - RAND_RANGE / 2;
     }
@@ -25,7 +25,7 @@ int* generateArray(const size_t sizeOfArray)
 
 void printArray(const int* const array, const size_t sizeOfArray)
 {
-    for (int i = 0; i < sizeOfArray; ++i)
+    for (size_t i = 0; i < sizeOfArray; ++i)
     {
         printf("%d ", array[i]);
     }
@@ -38,9 +38,9 @@ void swap(int* const number1, int* const number2)
     *number2 = temp;
 }
 
-int partition(int* const array, const int start, const int end, bool* const isSorted)
+size_t partition(int* const array, const size_t start, const size_t end, bool* const isSorted)
 {
-    int pointer = start + 1;
+    size_t pointer = start + 1;
     while (array[pointer - 1] == array[pointer] && pointer + 1 < end)
     {
         ++pointer;
@@ -52,7 +52,7 @@ int partition(int* const array, const int start, const int end, bool* const isSo
     }
     int pivot = array[pointer];
 
-    for (int i = pointer; i < end; ++i)
+    for (size_t i = pointer; i < end; ++i)
     {
         if (array[i] < pivot)
         {
@@ -68,7 +68,7 @@ int partition(int* const array, const int start, const int end, bool* const isSo
     return pointer;
 }
 
-void quicksort(int* const array, const int start, const int end)
+void quicksort(int* const array, const size_t start, const size_t end)
 {
     const size_t sizeOfArray = end - start;
     if (sizeOfArray <= 1)
@@ -77,7 +77,7 @@ void quicksort(int* const array, const int start, const int end)
     }
 
     bool isSorted = true;
-    int pointer = partition(array, start, end, &isSorted);
+    size_t pointer = partition(array, start, end, &isSorted);
 
     if (isSorted)
     {
@@ -89,11 +89,11 @@ void quicksort(int* const array, const int start, const int end)
 
 bool search(const int* const array, const size_t sizeOfArray, const int numberToFind)
 {
-    int leftBorder = 0;
-    int rightBorder = sizeOfArray;
+    size_t leftBorder = 0;
+    size_t rightBorder = sizeOfArray;
     while (rightBorder > leftBorder)
     {
-        int medianIndex = (leftBorder + rightBorder) / 2;
+        size_t medianIndex = (leftBorder + rightBorder) / 2;
         int medianNumber = array[medianIndex];
         if (medianNumber == numberToFind)
         {
@@ -113,7 +113,7 @@ bool search(const int* const array, const size_t sizeOfArray, const int numberTo
 
 bool arraysAreEqual(const int* const array1, const int* const array2, const size_t sizeOfArray)
 {
-    for (int i = 0; i < sizeOfArray; ++i)
+    for (size_t i = 0; i < sizeOfArray; ++i)
     {
         if (array1[i] != array2[i])
         {
@@ -125,7 +125,7 @@ bool arraysAreEqual(const int* const array1, const int* const array2, const size
 
 bool arrayIsSorted(const int* const array, const size_t sizeOfArray)
 {
-    for (int i = 1; i < sizeOfArray; ++i)
+    for (size_t i = 1; i < sizeOfArray; ++i)
     {
         if (array[i - 1] > array[i])
         {
@@ -254,13 +254,13 @@ char* testForSearch()
 
 bool stringsAreEqual(const char* const string1, const char* const string2)
 {
-    size_t size1 = strlen(string1);
-    size_t size2 = strlen(string2);
+    const size_t size1 = strlen(string1);
+    const size_t size2 = strlen(string2);
     if (size1 != size2)
     {
         return false;
     }
-    for (int i = 0; i < size1; ++i)
+    for (size_t i = 0; i < size1; ++i)
     {
         if (string1[i] != string2[i])
         {
@@ -272,19 +272,19 @@ bool stringsAreEqual(const char* const string1, const char* const string2)
 
 char* stringSum(const char* const string1, const char* const string2)
 {
-    size_t size1 = strlen(string1);
-    size_t size2 = strlen(string2);
+    const size_t size1 = strlen(string1);
+    const size_t size2 = strlen(string2);
     char* newString = (char*)calloc(size1 + size2 + 1, sizeof(char));
     if (newString == NULL)
     {
         return newString;
     }
-    for (int i = 0; i < size1; ++i)
+    for (size_t i = 0; i < size1; ++i)
     {
         newString[i] = string1[i];
     }
 
-    for (int i = 0; i < size2; ++i)
+    for (size_t i = 0; i < size2; ++i)
     {
         newString[size1 + i] = string2[i];
     }
