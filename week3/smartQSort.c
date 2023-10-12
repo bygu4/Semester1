@@ -240,7 +240,7 @@ char* testForQuicksort()
         return "Test three have failed";
     }
 
-    int sizeOfTestArray = 10000;
+    const size_t sizeOfTestArray = 10000;
     int* testArray = createTestArray(sizeOfTestArray);
     if (testArray == NULL)
     {
