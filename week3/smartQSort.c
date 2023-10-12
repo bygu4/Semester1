@@ -4,9 +4,9 @@
 #include <time.h>
 #include <string.h>
 
+#define AMOUNT_OF_POSSIBLE_NUMBERS 4294967296
 #define TEST_FAILED -1
-#define BAD_ALLOCATION 1
-#define RAND_RANGE 20000
+#define BAD_ALLOCATION 1;
 
 void scanArray(int* const array, const size_t sizeOfArray)
 {
@@ -23,10 +23,23 @@ void swap(int* const number1, int* const number2)
     *number2 = temp;
 }
 
+void insertionSort(int* const array, const int start, const int end)
+{
+    for (int i = start + 1; i < end; ++i)
+    {
+        int j = i;
+        while (array[j - 1] > array[j] && j > start)
+        {
+            swap(&array[j - 1], &array[j]);
+            --j;
+        }
+    }
+}
+
 int partition(int* const array, const int start, const int end, bool* const isSorted)
 {
     int pointer = start + 1;
-    while (array[pointer - 1] == array[pointer] && pointer + 1 < end)
+    while (array[pointer - 1] == array[pointer] && pointer < end - 1)
     {
         ++pointer;
     }
@@ -55,59 +68,21 @@ int partition(int* const array, const int start, const int end, bool* const isSo
 
 void quicksort(int* const array, const int start, const int end)
 {
-    const size_t sizeOfArray = end - start;
-    if (sizeOfArray <= 1)
+    size_t sizeOfArray = end - start;
+    if (sizeOfArray < 10)
     {
+        insertionSort(array, start, end);
         return;
     }
 
     bool isSorted = true;
     int pointer = partition(array, start, end, &isSorted);
-
     if (isSorted)
     {
         return;
     }
     quicksort(array, start, pointer);
     quicksort(array, pointer, end);
-}
-
-int findMostCommonElement(const int* const array, const size_t sizeOfArray)
-{
-    int mostCommonElement = NULL;
-    int maxNumberOfEntries = 0;
-    int previousElement = NULL;
-    int count = 0;
-    for (int i = 0; i < sizeOfArray; ++i)
-    {
-        ++count;
-        if (array[i] != previousElement)
-        {
-            previousElement = array[i];
-            count = 1;
-        }
-        if (count > maxNumberOfEntries)
-        {
-            maxNumberOfEntries = count;
-            mostCommonElement = array[i];
-        }
-    }
-    return mostCommonElement;
-}
-
-int* createTestArray(const size_t sizeOfArray)
-{
-    int* array = (int*)calloc(sizeOfArray, sizeof(int));
-    if (array == NULL)
-    {
-        return NULL;
-    }
-    srand(time(NULL));
-    for (int i = 0; i < sizeOfArray; ++i)
-    {
-        array[i] = rand() % RAND_RANGE - RAND_RANGE / 2;
-    }
-    return array;
 }
 
 bool arraysAreEqual(const int* const array1, const int* const array2, const size_t sizeOfArray)
@@ -132,6 +107,70 @@ bool arrayIsSorted(const int* const array, const size_t sizeOfArray)
         }
     }
     return true;
+}
+
+int* createTestArray(const size_t sizeOfArray)
+{
+    int* array = (int*)calloc(sizeOfArray, sizeof(int));
+    if (array == NULL)
+    {
+        return NULL;
+    }
+    srand(time(NULL));
+    for (int i = 0; i < sizeOfArray; ++i)
+    {
+        array[i] = rand() % AMOUNT_OF_POSSIBLE_NUMBERS - AMOUNT_OF_POSSIBLE_NUMBERS / 2;
+    }
+    return array;
+}
+
+bool testForInsertionSortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
+{
+    insertionSort(array, 0, sizeOfArray);
+    return arraysAreEqual(array, expectedArray, sizeOfArray);
+}
+
+char* testForInsertionSort()
+{
+    int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
+    int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
+    bool testOneIsPassed = testForInsertionSortSupport(array1, expectedArray1, 20);
+    if (!testOneIsPassed)
+    {
+        return "Test one has failed";
+    }
+
+    int array2[] = { 0 };
+    int expectedArray2[] = { 0 };
+    bool testTwoIsPassed = testForInsertionSortSupport(array2, expectedArray2, 0);
+    if (!testTwoIsPassed)
+    {
+        return "Test two has failed";
+    }
+
+    int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
+    bool testThreeIsPassed = testForInsertionSortSupport(array3, expectedArray3, 10);
+    if (!testThreeIsPassed)
+    {
+        return "Test three has failed";
+    }
+
+    const size_t sizeOfTestArray = 1000;
+    int* testArray = createTestArray(sizeOfTestArray);
+    if (testArray == NULL)
+    {
+        return "Bad allocation";
+    }
+    insertionSort(testArray, 0, sizeOfTestArray);
+    bool testFourIsPassed = arrayIsSorted(testArray, sizeOfTestArray);
+    free(testArray);
+    if (!testFourIsPassed)
+    {
+        return "Test four has failed";
+    }
+
+    return "All tests are passed";
 }
 
 char* testForPartition()
@@ -218,43 +257,6 @@ char* testForQuicksort()
     return "All tests are passed";
 }
 
-char* testForFindMostCommonElement()
-{
-    int array1[5] = { 2, 2, 2, 2, 2 };
-    int mostCommonElement = findMostCommonElement(array1, 5);
-    bool testOneIsPassed = mostCommonElement == 2;
-    if (!testOneIsPassed)
-    {
-        return "Test one has failed";
-    }
-
-    int array2[6] = { 1, 2, 3, 4, 5, 6 };
-    mostCommonElement = findMostCommonElement(array2, 6);
-    bool testTwoIsPassed = mostCommonElement == 1;
-    if (!testTwoIsPassed)
-    {
-        return "Test two has failed";
-    }
-
-    int array3[] = { NULL };
-    mostCommonElement = findMostCommonElement(array3, 0);
-    bool testThreeIsPassed = mostCommonElement == NULL;
-    if (!testThreeIsPassed)
-    {
-        return "Test three has failed";
-    }
-
-    int array4[7] = { -1, -1, -1, 3, 3, 3, 3 };
-    mostCommonElement = findMostCommonElement(array4, 7);
-    bool testFourIsPassed = mostCommonElement == 3;
-    if (!testFourIsPassed)
-    {
-        return "Test four has failed";
-    }
-
-    return "All tests are passed";
-}
-
 bool stringsAreEqual(const char* const string1, const char* const string2)
 {
     size_t size1 = strlen(string1);
@@ -296,24 +298,24 @@ char* stringSum(const char* const string1, const char* const string2)
 
 char* test()
 {
-    char* test1 = testForPartition();
+    char* test1 = testForInsertionSort();
     if (!stringsAreEqual(test1, "All tests are passed"))
     {
-        char* output = stringSum(test1, " in testForPartition");
+        char* output = stringSum(test1, " in testForInsertionSort");
         return output;
     }
 
-    char* test2 = testForQuicksort();
+    char* test2 = testForPartition();
     if (!stringsAreEqual(test2, "All tests are passed"))
     {
-        char* output = stringSum(test2, " in testForQuicksort");
+        char* output = stringSum(test2, " in testForPartition");
         return output;
     }
 
-    char* test3 = testForFindMostCommonElement();
+    char* test3 = testForQuicksort();
     if (!stringsAreEqual(test3, "All tests are passed"))
     {
-        char* output = stringSum(test3, " in testForFindMostCommonElement");
+        char* output = stringSum(test3, " in testForQuicksort");
         return output;
     }
 
@@ -342,9 +344,13 @@ int main()
     printf("Enter an array: ");
     scanArray(inputArray, sizeOfArray);
 
+    printf("\nSorting...\n\n");
     quicksort(inputArray, 0, sizeOfArray);
 
-    int mostCommonElement = findMostCommonElement(inputArray, sizeOfArray);
-    printf("\nThe most common element in array: %d", mostCommonElement);
+    printf("Sorted array:");
+    for (int i = 0; i < sizeOfArray; ++i)
+    {
+        printf(" %d", inputArray[i]);
+    }
     free(inputArray);
 }
