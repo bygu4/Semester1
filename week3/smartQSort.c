@@ -156,7 +156,7 @@ char* testForInsertionSort()
         return "Test three has failed";
     }
 
-    int sizeOfTestArray = 1000;
+    const size_t sizeOfTestArray = 1000;
     int* testArray = createTestArray(sizeOfTestArray);
     if (testArray == NULL)
     {
