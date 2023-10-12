@@ -1,24 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-float power(int number, int power)
+float power(const int number, const int power)
 {
     float poweredNumber = 1;
-    for (int i = 0; i < abs(power); ++i)
+    float multiplier = number;
+    if (power < 0)
     {
-        if (power > 0)
-        {
-            poweredNumber *= number;
-        }
-        else
-        {
-            poweredNumber /= number;
-        }
+        multiplier = 1 / (float)number;
+    }
+
+    int absOfPower = abs(power);
+    for (int i = 0; i < absOfPower; ++i)
+    {
+        poweredNumber *= multiplier;
     }
     return poweredNumber;
 }
 
-float quickPower(int number, int power)
+float quickPower(const int number, const int power)
 {
     if (power == 0)
     {
@@ -32,11 +32,13 @@ float quickPower(int number, int power)
     {
         return 1 / (float)number;
     }
+
+    float numberToHalfThePower = quickPower(number, power / 2);
     if (power % 2 == 0)
     {
-        return quickPower(number, power / 2) * quickPower(number, power / 2);
+        return numberToHalfThePower * numberToHalfThePower;
     }
-    return quickPower(number, power / 2) * quickPower(number, power - power / 2);
+    return numberToHalfThePower * numberToHalfThePower * quickPower(number, power / abs(power));
 }
 
 int main()

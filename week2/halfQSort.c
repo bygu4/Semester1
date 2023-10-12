@@ -2,17 +2,18 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-int createTestArray(int* array, const int sizeOfArray)
+int* createTestArray(const int sizeOfArray)
 {
+    int* array = (int*)calloc(sizeOfArray, sizeof(int));
     if (array == NULL)
     {
-        return 1;
+        return NULL;
     }
     for (int i = 0; i < sizeOfArray; ++i)
     {
         array[i] = rand() % 1000;
     }
-    return 0;
+    return array;
 }
 
 void printArray(const int* array, const int sizeOfArray)
@@ -103,9 +104,8 @@ bool testThreeIsPassed()
 
 bool testFourIsPassed(const int sizeOfArray)
 {
-    int* array = (int*)calloc(sizeOfArray, sizeof(int));
-    int errorCode = createTestArray(array, sizeOfArray);
-    if (errorCode != 0)
+    int* array = createTestArray(sizeOfArray);
+    if (array == NULL)
     {
         return false;
     }
@@ -135,9 +135,8 @@ int main()
         scanf_s("%d", &sizeOfArray);
     }
     printf("Creating array...\n");
-    int* testArray = (int*)calloc(sizeOfArray, sizeof(int));
-    int errorCode = createTestArray(testArray, sizeOfArray);
-    if (errorCode != 0)
+    int* testArray = createTestArray(sizeOfArray);
+    if (testArray == NULL)
     {
         printf("An error occured");
         return -1;
