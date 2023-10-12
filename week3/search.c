@@ -144,7 +144,7 @@ char* testForPartition()
     bool testOneIsPassed = pointer == 5 && !isSorted && arraysAreEqual(array1, expectedArray1, 10);
     if (!testOneIsPassed)
     {
-        return "Test one have failed";
+        return "Test one has failed";
     }
 
     int array2[5] = { 1, 1, 1, 1, 1 };
@@ -154,7 +154,7 @@ char* testForPartition()
     bool testTwoIsPassed = pointer == 4 && isSorted && arraysAreEqual(array2, expectedArray2, 5);
     if (!testTwoIsPassed)
     {
-        return "Test two have failed";
+        return "Test two has failed";
     }
 
     int array3[5] = { 15, 0, 0, 0, 0 };
@@ -164,7 +164,7 @@ char* testForPartition()
     bool testThreeIsPassed = pointer == 4 && !isSorted && arraysAreEqual(array3, expectedArray3, 5);
     if (!testThreeIsPassed)
     {
-        return "Test three have failed";
+        return "Test three has failed";
     }
 
     return "All tests are passed";
@@ -183,7 +183,7 @@ char* testForQuicksort()
     bool testOneIsPassed = testForQuicksortSupport(array1, expectedArray1, 20);
     if (!testOneIsPassed)
     {
-        return "Test one have failed";
+        return "Test one has failed";
     }
 
     int array2[] = { 0 };
@@ -191,7 +191,7 @@ char* testForQuicksort()
     bool testTwoIsPassed = testForQuicksortSupport(array2, expectedArray2, 0);
     if (!testTwoIsPassed)
     {
-        return "Test two have failed";
+        return "Test two has failed";
     }
 
     int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
@@ -199,7 +199,7 @@ char* testForQuicksort()
     bool testThreeIsPassed = testForQuicksortSupport(array3, expectedArray3, 10);
     if (!testThreeIsPassed)
     {
-        return "Test three have failed";
+        return "Test three has failed";
     }
 
     const size_t sizeOfTestArray = 10000;
@@ -213,7 +213,7 @@ char* testForQuicksort()
     free(testArray);
     if (!testFourIsPassed)
     {
-        return "Test four have failed";
+        return "Test four has failed";
     }
 
     return "All tests are passed";
@@ -225,28 +225,28 @@ char* testForSearch()
     bool testOneIsPassed = search(array1, 7, 1);
     if (!testOneIsPassed)
     {
-        return "Test one have failed";
+        return "Test one has failed";
     }
 
     int array2[5] = { 9, 9, 9, 9, 9 };
     bool testTwoIsPassed = !search(array2, 5, 10);
     if (!testTwoIsPassed)
     {
-        return "Test two have failed";
+        return "Test two has failed";
     }
 
     int array3[8] = { 1, 1, 2, 2, 3, 3, 4, 4 };
     bool testThreeIsPassed = search(array3, 8, 1);
     if (!testThreeIsPassed)
     {
-        return "Test three have failed";
+        return "Test three has failed";
     }
 
     int array4[] = { 0 };
     bool testFourIsPassed = !search(array4, 0, 42);
     if (!testFourIsPassed)
     {
-        return "Test four have failed";
+        return "Test four has failed";
     }
 
     return "All tests are passed";
