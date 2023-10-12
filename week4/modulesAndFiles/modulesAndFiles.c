@@ -6,12 +6,22 @@
 #include <string.h>
 
 #define NAME_OF_FILE "modulesAndFiles.txt"
-#define TEST_FILE "test.txt"
+#define TEST_FILE_1 "test1.txt"
+#define TEST_FILE_2 "test2.txt"
+#define TEST_FILE_3 "test3.txt"
 #define TEST_FAILED -1
 #define READ_ERROR 1
 #define RAND_RANGE 20000
 
-int* readFile(const char* const nameOfFile, const size_t sizeOfArray)
+void printArray(const int* const array, const size_t sizeOfArray)
+{
+    for (size_t i = 0; i < sizeOfArray; ++i)
+    {
+        printf("%d ", array[i]);
+    }
+}
+
+int* readArrayFromFile(const char* const nameOfFile, int* const sizeOfArray)
 {
     FILE* inputFile = NULL;
     int errorCode = fopen_s(&inputFile, nameOfFile, "r");
@@ -19,12 +29,16 @@ int* readFile(const char* const nameOfFile, const size_t sizeOfArray)
     {
         return NULL;
     }
-    int* array = (int*)calloc(sizeOfArray, sizeof(int));
+    if (!feof(inputFile))
+    {
+        fscanf_s(inputFile, "%d", sizeOfArray);
+    }
+    int* array = (int*)calloc(*sizeOfArray, sizeof(int));
     if (array == NULL)
     {
         return NULL;
     }
-    for (size_t i = 0; i < sizeOfArray && !feof(inputFile); ++i)
+    for (size_t i = 0; i < *sizeOfArray && !feof(inputFile); ++i)
     {
         fscanf_s(inputFile, "%d", &array[i]);
     }
@@ -95,17 +109,43 @@ bool arrayIsSorted(const int* const array, const size_t sizeOfArray)
     return true;
 }
 
-bool testForReadFileIsPassed()
+bool testForReadArrayFromFileSupport(const char* const testFile, const int* const expectedArray, const int expectedSize)
 {
-    int* array = readFile(TEST_FILE, 15);
-    if (array == NULL)
+    int sizeOfArray = 0;
+    int* array = readArrayFromFile(testFile, &sizeOfArray);
+    if (array == NULL || sizeOfArray != expectedSize)
     {
         return false;
     }
-    int expectedArray[15] = { 999, 0, -100, 4, 0, 2, 42, 999, 0, 4, 4, 4, -999, 100, 0 };
-    bool equal = arraysAreEqual(array, expectedArray, 15);
+    bool equal = arraysAreEqual(array, expectedArray, sizeOfArray);
     free(array);
     return equal;
+}
+
+char* testForReadArrayFromFile()
+{
+    int expectedArray1[15] = { 999, 0, -100, 4, 0, 2, 42, 999, 0, 4, 4, 4, -999, 100, 0 };
+    bool testOneIsPassed = testForReadArrayFromFileSupport(TEST_FILE_1, expectedArray1, 15);
+    if (!testOneIsPassed)
+    {
+        return "Test one has failed";
+    }
+
+    int expectedArray2[6] = { 0, 0, 0, 0, 0, 0 };
+    bool testTwoIsPassed = testForReadArrayFromFileSupport(TEST_FILE_2, expectedArray2, 6);
+    if (!testTwoIsPassed)
+    {
+        return "Test two has failed";
+    }
+
+    int expectedArray3[4] = { 1, 2, 3, 4 };
+    bool testThreeIsPassed = testForReadArrayFromFileSupport(TEST_FILE_3, expectedArray3, 4);
+    if (!testThreeIsPassed)
+    {
+        return "Test three has failed";
+    }
+
+    return "All tests are passed";
 }
 
 bool testForQuicksortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
@@ -233,39 +273,26 @@ char* stringSum(const char* const string1, const char* const string2)
     return newString;
 }
 
-char* allocateString(const char* const string)
-{
-    const size_t lengthOfString = strlen(string);
-    char* allocatedString = (char*)calloc(lengthOfString + 1, sizeof(char));
-    if (allocatedString == NULL)
-    {
-        return NULL;
-    }
-    for (size_t i = 0; i < lengthOfString; ++i)
-    {
-        allocatedString[i] = string[i];
-    }
-    return allocatedString;
-}
-
 char* test()
 {
-    if (!testForReadFileIsPassed())
-    {
-        return allocateString("Test for readFile has failed");
-    }
-
-    char* test1 = testForQuicksort();
+    char* test1 = testForReadArrayFromFile();
     if (!stringsAreEqual(test1, "All tests are passed"))
     {
-        char* output = stringSum(test1, " in testForQuicksort");
+        char* output = stringSum(test1, " in testForReadArrayFromFile");
         return output;
     }
 
-    char* test2 = testForFindMostCommonElement();
+    char* test2 = testForQuicksort();
     if (!stringsAreEqual(test2, "All tests are passed"))
     {
-        char* output = stringSum(test2, " in testForFindMostCommonElement");
+        char* output = stringSum(test2, " in testForQuicksort");
+        return output;
+    }
+
+    char* test3 = testForFindMostCommonElement();
+    if (!stringsAreEqual(test3, "All tests are passed"))
+    {
+        char* output = stringSum(test3, " in testForFindMostCommonElement");
         return output;
     }
 
@@ -283,17 +310,15 @@ int main()
     }
 
     int sizeOfArray = 0;
-    printf("Enter a size of array: ");
-    scanf_s("%d", &sizeOfArray);
-
-    int* inputArray = readFile(NAME_OF_FILE, sizeOfArray);
+    int* inputArray = readArrayFromFile(NAME_OF_FILE, &sizeOfArray);
     if (inputArray == NULL)
     {
         printf("An error occured");
         return READ_ERROR;
     }
-    quicksort(inputArray, 0, sizeOfArray);
+    printArray(inputArray, sizeOfArray);
 
+    quicksort(inputArray, 0, sizeOfArray);
     int mostCommonElement = findMostCommonElement(inputArray, sizeOfArray);
     printf("\nThe most common element in array: %d", mostCommonElement);
     free(inputArray);
