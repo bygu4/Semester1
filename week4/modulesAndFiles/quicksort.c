@@ -1,16 +1,17 @@
 #include "quicksort.h"
+#include <stdlib.h>
 #include <stdbool.h>
 
-void swap(int* number1, int* number2)
+void swap(int* const number1, int* const number2)
 {
     int temp = *number1;
     *number1 = *number2;
     *number2 = temp;
 }
 
-int partition(int* array, const int start, const int end, bool* isSorted)
+size_t partition(int* const array, const size_t start, const size_t end, bool* const isSorted)
 {
-    int pointer = start + 1;
+    size_t pointer = start + 1;
     while (array[pointer - 1] == array[pointer] && pointer + 1 < end)
     {
         ++pointer;
@@ -20,9 +21,9 @@ int partition(int* array, const int start, const int end, bool* isSorted)
         *isSorted = false;
         --pointer;
     }
-
     int pivot = array[pointer];
-    for (int i = pointer; i < end; ++i)
+
+    for (size_t i = pointer; i < end; ++i)
     {
         if (array[i] < pivot)
         {
@@ -38,25 +39,21 @@ int partition(int* array, const int start, const int end, bool* isSorted)
     return pointer;
 }
 
-int quicksort(int* array, const int start, const int end)
+void quicksort(int* const array, const size_t start, const size_t end)
 {
-    int sizeOfArray = end - start;
+    const size_t sizeOfArray = end - start;
     if (sizeOfArray <= 1)
     {
-        return 0;
+        return;
     }
 
     bool isSorted = true;
-    int pointer = partition(array, start, end, &isSorted);
-    if (pointer >= end)
-    {
-        return 1;
-    }
+    size_t pointer = partition(array, start, end, &isSorted);
+
     if (isSorted)
     {
-        return 0;
+        return;
     }
-    int errorCode1 = quicksort(array, start, pointer);
-    int errorCode2 = quicksort(array, pointer, end);
-    return errorCode1 + errorCode2;
+    quicksort(array, start, pointer);
+    quicksort(array, pointer, end);
 }

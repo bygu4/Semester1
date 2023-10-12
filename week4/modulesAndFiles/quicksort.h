@@ -2,4 +2,4 @@
 
 // быстра€ сортировка, реализованна€ рекурсивно. принимает массив и границы сортировки:
 // нижн€€ граница включительно, верхн€€ не включительно
-int quicksort(int* array, const int start, const int end);
+void quicksort(int* const array, const size_t start, const size_t end);
