@@ -8,7 +8,7 @@
 #define TEST_FAILED -1
 #define BAD_ALLOCATION 1;
 
-void scanArray(int* array, const size_t sizeOfArray)
+void scanArray(int* const array, const size_t sizeOfArray)
 {
     for (int i = 0; i < sizeOfArray; ++i)
     {
@@ -16,14 +16,14 @@ void scanArray(int* array, const size_t sizeOfArray)
     }
 }
 
-void swap(int* number1, int* number2)
+void swap(int* const number1, int* const number2)
 {
     int temp = *number1;
     *number1 = *number2;
     *number2 = temp;
 }
 
-void insertionSort(int* array, const int start, const int end)
+void insertionSort(int* const array, const int start, const int end)
 {
     for (int i = start + 1; i < end; ++i)
     {
@@ -36,7 +36,7 @@ void insertionSort(int* array, const int start, const int end)
     }
 }
 
-int partition(int* array, const int start, const int end, bool* isSorted)
+int partition(int* const array, const int start, const int end, bool* const isSorted)
 {
     int pointer = start + 1;
     while (array[pointer - 1] == array[pointer] && pointer < end - 1)
@@ -66,7 +66,7 @@ int partition(int* array, const int start, const int end, bool* isSorted)
     return pointer;
 }
 
-void quicksort(int* array, const int start, const int end)
+void quicksort(int* const array, const int start, const int end)
 {
     size_t sizeOfArray = end - start;
     if (sizeOfArray < 10)
@@ -85,7 +85,7 @@ void quicksort(int* array, const int start, const int end)
     quicksort(array, pointer, end);
 }
 
-bool arraysAreEqual(const int* array1, const int* array2, const size_t sizeOfArray)
+bool arraysAreEqual(const int* const array1, const int* const array2, const size_t sizeOfArray)
 {
     for (int i = 0; i < sizeOfArray; ++i)
     {
@@ -97,7 +97,7 @@ bool arraysAreEqual(const int* array1, const int* array2, const size_t sizeOfArr
     return true;
 }
 
-bool arrayIsSorted(const int* array, const size_t sizeOfArray)
+bool arrayIsSorted(const int* const array, const size_t sizeOfArray)
 {
     for (int i = 1; i < sizeOfArray; ++i)
     {
@@ -124,7 +124,7 @@ int* createTestArray(const size_t sizeOfArray)
     return array;
 }
 
-bool testForInsertionSortSupport(int* array, const int* expectedArray, const size_t sizeOfArray)
+bool testForInsertionSortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
 {
     insertionSort(array, 0, sizeOfArray);
     return arraysAreEqual(array, expectedArray, sizeOfArray);
@@ -208,7 +208,7 @@ char* testForPartition()
     return "All tests are passed";
 }
 
-bool testForQuicksortSupport(int* array, const int* expectedArray, const size_t sizeOfArray)
+bool testForQuicksortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
 {
     quicksort(array, 0, sizeOfArray);
     return arraysAreEqual(array, expectedArray, sizeOfArray);
@@ -257,7 +257,7 @@ char* testForQuicksort()
     return "All tests are passed";
 }
 
-bool stringsAreEqual(const char* string1, const char* string2)
+bool stringsAreEqual(const char* const string1, const char* const string2)
 {
     size_t size1 = strlen(string1);
     size_t size2 = strlen(string2);
@@ -275,7 +275,7 @@ bool stringsAreEqual(const char* string1, const char* string2)
     return true;
 }
 
-char* stringSum(const char* string1, const char* string2)
+char* stringSum(const char* const string1, const char* const string2)
 {
     size_t size1 = strlen(string1);
     size_t size2 = strlen(string2);
