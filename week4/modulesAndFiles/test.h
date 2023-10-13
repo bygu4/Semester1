@@ -1,4 +1,5 @@
 #pragma once
+#pragma execution_character_set("utf-8")
 #include <stdbool.h>
 
 // тест для чтения из файла, для сортировки и бинарного поиска
