@@ -124,211 +124,188 @@ int* createTestArray(const size_t sizeOfArray)
     return array;
 }
 
-bool testForInsertionSortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
+bool testForInsertionSort(int* const array, const int* const expectedArray, const size_t sizeOfArray)
 {
     insertionSort(array, 0, sizeOfArray);
     return arraysAreEqual(array, expectedArray, sizeOfArray);
 }
 
-char* testForInsertionSort()
+bool testsForInsertionSortArePassed(int* const errorCode)
 {
     int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
     int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
-    bool testOneIsPassed = testForInsertionSortSupport(array1, expectedArray1, 20);
+    bool testOneIsPassed = testForInsertionSort(array1, expectedArray1, 20);
     if (!testOneIsPassed)
     {
-        return "Test one has failed";
+        *errorCode = 1;
+        return false;
     }
 
     int array2[] = { 0 };
     int expectedArray2[] = { 0 };
-    bool testTwoIsPassed = testForInsertionSortSupport(array2, expectedArray2, 0);
+    bool testTwoIsPassed = testForInsertionSort(array2, expectedArray2, 0);
     if (!testTwoIsPassed)
     {
-        return "Test two has failed";
+        *errorCode = 2;
+        return false;
     }
 
     int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
     int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
-    bool testThreeIsPassed = testForInsertionSortSupport(array3, expectedArray3, 10);
+    bool testThreeIsPassed = testForInsertionSort(array3, expectedArray3, 10);
     if (!testThreeIsPassed)
     {
-        return "Test three has failed";
+        *errorCode = 3;
+        return false;
     }
 
     const size_t sizeOfTestArray = 1000;
     int* testArray = createTestArray(sizeOfTestArray);
     if (testArray == NULL)
     {
-        return "Bad allocation";
+        *errorCode = 4;
+        return false;
     }
     insertionSort(testArray, 0, sizeOfTestArray);
     bool testFourIsPassed = arrayIsSorted(testArray, sizeOfTestArray);
     free(testArray);
     if (!testFourIsPassed)
     {
-        return "Test four has failed";
+        *errorCode = 4;
+        return false;
     }
 
-    return "All tests are passed";
+    return true;
 }
 
-char* testForPartition()
+bool testForPartition(int* const array, const int* const expectedArray,
+    const size_t expectedPointer, const size_t sizeOfArray)
+{
+    bool isSorted = arrayIsSorted(array, sizeOfArray);
+    bool isSortedResponse = true;
+    size_t pointer = partition(array, 0, sizeOfArray, &isSortedResponse);
+    return pointer == expectedPointer && isSorted == isSortedResponse &&
+        arraysAreEqual(array, expectedArray, sizeOfArray);
+}
+
+bool testsForPartitionArePassed(int* const errorCode)
 {
     int array1[10] = { 5, 6, 1, 2, 3, 4, 7, 8, 9, 10 };
     int expectedArray1[10] = { 5, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
-    bool isSorted = true;
-    int pointer = partition(array1, 0, 10, &isSorted);
-    bool testOneIsPassed = pointer == 5 && !isSorted && arraysAreEqual(array1, expectedArray1, 10);
+    bool testOneIsPassed = testForPartition(array1, expectedArray1, 5, 10);
     if (!testOneIsPassed)
     {
-        return "Test one has failed";
+        *errorCode = 1;
+        return false;
     }
 
     int array2[5] = { 1, 1, 1, 1, 1 };
     int expectedArray2[5] = { 1, 1, 1, 1, 1 };
-    isSorted = true;
-    pointer = partition(array2, 0, 5, &isSorted);
-    bool testTwoIsPassed = pointer == 4 && isSorted && arraysAreEqual(array2, expectedArray2, 5);
+    bool testTwoIsPassed = testForPartition(array2, expectedArray2, 4, 5);
     if (!testTwoIsPassed)
     {
-        return "Test two has failed";
+        *errorCode = 2;
+        return false;
     }
 
     int array3[5] = { 15, 0, 0, 0, 0 };
     int expectedArray3[5] = { 0, 0, 0, 0, 15 };
-    isSorted = true;
-    pointer = partition(array3, 0, 5, &isSorted);
-    bool testThreeIsPassed = pointer == 4 && !isSorted && arraysAreEqual(array3, expectedArray3, 5);
+    bool testThreeIsPassed = testForPartition(array3, expectedArray3, 4, 5);
     if (!testThreeIsPassed)
     {
-        return "Test three has failed";
+        *errorCode = 3;
+        return false;
     }
 
-    return "All tests are passed";
+    return true;
 }
 
-bool testForQuicksortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
+bool testForQuicksort(int* const array, const int* const expectedArray, const size_t sizeOfArray)
 {
     quicksort(array, 0, sizeOfArray);
     return arraysAreEqual(array, expectedArray, sizeOfArray);
 }
 
-char* testForQuicksort()
+bool testsForQuicksortArePassed(int* const errorCode)
 {
     int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
     int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
-    bool testOneIsPassed = testForQuicksortSupport(array1, expectedArray1, 20);
+    bool testOneIsPassed = testForQuicksort(array1, expectedArray1, 20);
     if (!testOneIsPassed)
     {
-        return "Test one has failed";
+        *errorCode = 1;
+        return false;
     }
 
     int array2[] = { 0 };
     int expectedArray2[] = { 0 };
-    bool testTwoIsPassed = testForQuicksortSupport(array2, expectedArray2, 0);
+    bool testTwoIsPassed = testForQuicksort(array2, expectedArray2, 0);
     if (!testTwoIsPassed)
     {
-        return "Test two has failed";
+        *errorCode = 2;
+        return false;
     }
 
     int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
     int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
-    bool testThreeIsPassed = testForQuicksortSupport(array3, expectedArray3, 10);
+    bool testThreeIsPassed = testForQuicksort(array3, expectedArray3, 10);
     if (!testThreeIsPassed)
     {
-        return "Test three has failed";
+        *errorCode = 3;
+        return false;
     }
 
     const size_t sizeOfTestArray = 10000;
     int* testArray = createTestArray(sizeOfTestArray);
     if (testArray == NULL)
     {
-        return "Bad allocation";
+        *errorCode = 4;
+        return false;
     }
     quicksort(testArray, 0, sizeOfTestArray);
     bool testFourIsPassed = arrayIsSorted(testArray, sizeOfTestArray);
     free(testArray);
     if (!testFourIsPassed)
     {
-        return "Test four has failed";
-    }
-
-    return "All tests are passed";
-}
-
-bool stringsAreEqual(const char* const string1, const char* const string2)
-{
-    const size_t size1 = strlen(string1);
-    const size_t size2 = strlen(string2);
-    if (size1 != size2)
-    {
+        *errorCode = 4;
         return false;
     }
-    for (size_t i = 0; i < size1; ++i)
-    {
-        if (string1[i] != string2[i])
-        {
-            return false;
-        }
-    }
+
     return true;
 }
 
-char* stringSum(const char* const string1, const char* const string2)
+bool test(void)
 {
-    const size_t size1 = strlen(string1);
-    const size_t size2 = strlen(string2);
-    char* newString = (char*)calloc(size1 + size2 + 1, sizeof(char));
-    if (newString == NULL)
+    int errorCode = 0;
+    bool testOneIsPassed = testsForInsertionSortArePassed(&errorCode);
+    if (!testOneIsPassed)
     {
-        return newString;
-    }
-    for (size_t i = 0; i < size1; ++i)
-    {
-        newString[i] = string1[i];
+        printf("Test %d has failed in test for insertionSort", errorCode);
+        return false;
     }
 
-    for (size_t i = 0; i < size2; ++i)
+    bool testTwoIsPassed = testsForPartitionArePassed(&errorCode);
+    if (!testTwoIsPassed)
     {
-        newString[size1 + i] = string2[i];
+        printf("Test %d has failed in test for partition", errorCode);
+        return false;
     }
-    return newString;
+
+    bool testThreeIsPassed = testsForQuicksortArePassed(&errorCode);
+    if (!testThreeIsPassed)
+    {
+        printf("Test %d has failed in test for quicksort", errorCode);
+        return false;
+    }
+
+    return true;
 }
 
-char* test()
+int main(void)
 {
-    char* test1 = testForInsertionSort();
-    if (!stringsAreEqual(test1, "All tests are passed"))
+    bool allTestsArePassed = test();
+    if (!allTestsArePassed)
     {
-        char* output = stringSum(test1, " in testForInsertionSort");
-        return output;
-    }
-
-    char* test2 = testForPartition();
-    if (!stringsAreEqual(test2, "All tests are passed"))
-    {
-        char* output = stringSum(test2, " in testForPartition");
-        return output;
-    }
-
-    char* test3 = testForQuicksort();
-    if (!stringsAreEqual(test3, "All tests are passed"))
-    {
-        char* output = stringSum(test3, " in testForQuicksort");
-        return output;
-    }
-
-    return "All tests are passed";
-}
-
-int main()
-{
-    char* testOutput = test();
-    if (!stringsAreEqual(testOutput, "All tests are passed"))
-    {
-        printf("%s", testOutput);
-        free(testOutput);
         return TEST_FAILED;
     }
 
