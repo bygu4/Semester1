@@ -134,199 +134,177 @@ bool arrayIsSorted(const int* const array, const size_t sizeOfArray)
     return true;
 }
 
-char* testForPartition()
+bool testForPartition(int* const array, const int* const expectedArray,
+    const size_t expectedPointer, const size_t sizeOfArray)
+{
+    bool isSorted = arrayIsSorted(array, sizeOfArray);
+    bool isSortedResponse = true;
+    size_t pointer = partition(array, 0, sizeOfArray, &isSortedResponse);
+    return pointer == expectedPointer && isSorted == isSortedResponse &&
+        arraysAreEqual(array, expectedArray, sizeOfArray);
+}
+
+bool testsForPartitionArePassed(int* const errorCode)
 {
     int array1[10] = { 5, 6, 1, 2, 3, 4, 7, 8, 9, 10 };
     int expectedArray1[10] = { 5, 1, 2, 3, 4, 6, 7, 8, 9, 10 };
-    bool isSorted = true;
-    int pointer = partition(array1, 0, 10, &isSorted);
-    bool testOneIsPassed = pointer == 5 && !isSorted && arraysAreEqual(array1, expectedArray1, 10);
+    bool testOneIsPassed = testForPartition(array1, expectedArray1, 5, 10);
     if (!testOneIsPassed)
     {
-        return "Test one has failed";
+        *errorCode = 1;
+        return false;
     }
 
     int array2[5] = { 1, 1, 1, 1, 1 };
     int expectedArray2[5] = { 1, 1, 1, 1, 1 };
-    isSorted = true;
-    pointer = partition(array2, 0, 5, &isSorted);
-    bool testTwoIsPassed = pointer == 4 && isSorted && arraysAreEqual(array2, expectedArray2, 5);
+    bool testTwoIsPassed = testForPartition(array2, expectedArray2, 4, 5);
     if (!testTwoIsPassed)
     {
-        return "Test two has failed";
+        *errorCode = 2;
+        return false;
     }
 
     int array3[5] = { 15, 0, 0, 0, 0 };
     int expectedArray3[5] = { 0, 0, 0, 0, 15 };
-    isSorted = true;
-    pointer = partition(array3, 0, 5, &isSorted);
-    bool testThreeIsPassed = pointer == 4 && !isSorted && arraysAreEqual(array3, expectedArray3, 5);
+    bool testThreeIsPassed = testForPartition(array3, expectedArray3, 4, 5);
     if (!testThreeIsPassed)
     {
-        return "Test three has failed";
+        *errorCode = 3;
+        return false;
     }
 
-    return "All tests are passed";
+    return true;
 }
 
-bool testForQuicksortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
+bool testForQuicksort(int* const array, const int* const expectedArray, const size_t sizeOfArray)
 {
     quicksort(array, 0, sizeOfArray);
     return arraysAreEqual(array, expectedArray, sizeOfArray);
 }
 
-char* testForQuicksort()
+bool testsForQuicksortArePassed(int* const errorCode)
 {
     int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
     int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
-    bool testOneIsPassed = testForQuicksortSupport(array1, expectedArray1, 20);
+    bool testOneIsPassed = testForQuicksort(array1, expectedArray1, 20);
     if (!testOneIsPassed)
     {
-        return "Test one has failed";
+        *errorCode = 1;
+        return false;
     }
 
     int array2[] = { 0 };
     int expectedArray2[] = { 0 };
-    bool testTwoIsPassed = testForQuicksortSupport(array2, expectedArray2, 0);
+    bool testTwoIsPassed = testForQuicksort(array2, expectedArray2, 0);
     if (!testTwoIsPassed)
     {
-        return "Test two has failed";
+        *errorCode = 2;
+        return false;
     }
 
     int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
     int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
-    bool testThreeIsPassed = testForQuicksortSupport(array3, expectedArray3, 10);
+    bool testThreeIsPassed = testForQuicksort(array3, expectedArray3, 10);
     if (!testThreeIsPassed)
     {
-        return "Test three has failed";
+        *errorCode = 3;
+        return false;
     }
 
     const size_t sizeOfTestArray = 10000;
     int* testArray = createTestArray(sizeOfTestArray);
     if (testArray == NULL)
     {
-        return "Bad allocation";
+        *errorCode = 4;
+        return false;
     }
     quicksort(testArray, 0, sizeOfTestArray);
     bool testFourIsPassed = arrayIsSorted(testArray, sizeOfTestArray);
     free(testArray);
     if (!testFourIsPassed)
     {
-        return "Test four has failed";
-    }
-
-    return "All tests are passed";
-}
-
-char* testForFindMostCommonElement()
-{
-    int array1[5] = { 2, 2, 2, 2, 2 };
-    int mostCommonElement = findMostCommonElement(array1, 5);
-    bool testOneIsPassed = mostCommonElement == 2;
-    if (!testOneIsPassed)
-    {
-        return "Test one has failed";
-    }
-
-    int array2[6] = { 1, 2, 3, 4, 5, 6 };
-    mostCommonElement = findMostCommonElement(array2, 6);
-    bool testTwoIsPassed = mostCommonElement == 1;
-    if (!testTwoIsPassed)
-    {
-        return "Test two has failed";
-    }
-
-    int array3[] = { NULL };
-    mostCommonElement = findMostCommonElement(array3, 0);
-    bool testThreeIsPassed = mostCommonElement == NULL;
-    if (!testThreeIsPassed)
-    {
-        return "Test three has failed";
-    }
-
-    int array4[7] = { -1, -1, -1, 3, 3, 3, 3 };
-    mostCommonElement = findMostCommonElement(array4, 7);
-    bool testFourIsPassed = mostCommonElement == 3;
-    if (!testFourIsPassed)
-    {
-        return "Test four has failed";
-    }
-
-    return "All tests are passed";
-}
-
-bool stringsAreEqual(const char* const string1, const char* const string2)
-{
-    const size_t size1 = strlen(string1);
-    const size_t size2 = strlen(string2);
-    if (size1 != size2)
-    {
+        *errorCode = 4;
         return false;
     }
-    for (size_t i = 0; i < size1; ++i)
-    {
-        if (string1[i] != string2[i])
-        {
-            return false;
-        }
-    }
+
     return true;
 }
 
-char* stringSum(const char* const string1, const char* const string2)
+bool testForFindMostCommonElement(const int* const array, const size_t sizeOfArray, const int expectedOutput)
 {
-    const size_t size1 = strlen(string1);
-    const size_t size2 = strlen(string2);
-    char* newString = (char*)calloc(size1 + size2 + 1, sizeof(char));
-    if (newString == NULL)
-    {
-        return newString;
-    }
-    for (size_t i = 0; i < size1; ++i)
-    {
-        newString[i] = string1[i];
-    }
-
-    for (size_t i = 0; i < size2; ++i)
-    {
-        newString[size1 + i] = string2[i];
-    }
-    return newString;
+    int output = findMostCommonElement(array, sizeOfArray);
+    return output == expectedOutput;
 }
 
-char* test()
+bool testsForFindMostCommonElementArePassed(int* const errorCode)
 {
-    char* test1 = testForPartition();
-    if (!stringsAreEqual(test1, "All tests are passed"))
+    int array1[5] = { 2, 2, 2, 2, 2 };
+    bool testOneIsPassed = testForFindMostCommonElement(array1, 5, 2);
+    if (!testOneIsPassed)
     {
-        char* output = stringSum(test1, " in testForPartition");
-        return output;
+        *errorCode = 1;
+        return false;
     }
 
-    char* test2 = testForQuicksort();
-    if (!stringsAreEqual(test2, "All tests are passed"))
+    int array2[6] = { 1, 2, 3, 4, 5, 6 };
+    bool testTwoIsPassed = testForFindMostCommonElement(array2, 6, 1);
+    if (!testTwoIsPassed)
     {
-        char* output = stringSum(test2, " in testForQuicksort");
-        return output;
+        *errorCode = 2;
+        return false;
     }
 
-    char* test3 = testForFindMostCommonElement();
-    if (!stringsAreEqual(test3, "All tests are passed"))
+    int array3[] = { 0 };
+    bool testThreeIsPassed = testForFindMostCommonElement(array3, 0, 0);
+    if (!testThreeIsPassed)
     {
-        char* output = stringSum(test3, " in testForFindMostCommonElement");
-        return output;
+        *errorCode = 3;
+        return false;
     }
 
-    return "All tests are passed";
+    int array4[7] = { -1, -1, -1, 3, 3, 3, 3 };
+    bool testFourIsPassed = testForFindMostCommonElement(array4, 7, 3);
+    if (!testFourIsPassed)
+    {
+        *errorCode = 4;
+        return false;
+    }
+
+    return true;
 }
 
-int main()
+bool test(void)
 {
-    char* testOutput = test();
-    if (!stringsAreEqual(testOutput, "All tests are passed"))
+    int errorCode = 0;
+    bool testOneIsPassed = testsForPartitionArePassed(&errorCode);
+    if (!testOneIsPassed)
     {
-        printf("%s", testOutput);
-        free(testOutput);
+        printf("Test %d has failed in test for partition", errorCode);
+        return false;
+    }
+
+    bool testTwoIsPassed = testsForQuicksortArePassed(&errorCode);
+    if (!testTwoIsPassed)
+    {
+        printf("Test %d has failed in test for quicksort", errorCode);
+        return false;
+    }
+
+    bool testThreeIsPassed = testsForFindMostCommonElementArePassed(&errorCode);
+    if (!testThreeIsPassed)
+    {
+        printf("Test %d has failed in test for findMostCommonElement", errorCode);
+        return false;
+    }
+
+    return true;
+}
+
+int main(void)
+{
+    bool allTestsArePassed = test();
+    if (!allTestsArePassed)
+    {
         return TEST_FAILED;
     }
 
