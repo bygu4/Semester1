@@ -19,14 +19,11 @@ void printArray(const int* const array, const size_t sizeOfArray)
     }
 }
 
-int main()
+int main(void)
 {
-    char* testOutput = NULL;
-    bool allTestsArePassed = test(testOutput);
+    bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
-        printf("%s", testOutput);
-        free(testOutput);
         return TEST_FAILED;
     }
 

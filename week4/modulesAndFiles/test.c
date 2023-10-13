@@ -64,13 +64,13 @@ bool testForReadArrayFromFile(const char* const testFile, const int* const expec
     return equal;
 }
 
-bool testsForReadArrayFromFileArePassed(char* const output)
+bool testsForReadArrayFromFileArePassed(int* const errorCode)
 {
     int expectedArray1[15] = { 999, 0, -100, 4, 0, 2, 42, 999, 0, 4, 4, 4, -999, 100, 0 };
     bool testOneIsPassed = testForReadArrayFromFile(TEST_FILE_1, expectedArray1, 15);
     if (!testOneIsPassed)
     {
-        *output = "Test one has failed";
+        *errorCode = 1;
         return false;
     }
 
@@ -78,7 +78,7 @@ bool testsForReadArrayFromFileArePassed(char* const output)
     bool testTwoIsPassed = testForReadArrayFromFile(TEST_FILE_2, expectedArray2, 6);
     if (!testTwoIsPassed)
     {
-        *output = "Test two has failed";
+        *errorCode = 2;
         return false;
     }
 
@@ -86,45 +86,45 @@ bool testsForReadArrayFromFileArePassed(char* const output)
     bool testThreeIsPassed = testForReadArrayFromFile(TEST_FILE_3, expectedArray3, 4);
     if (!testThreeIsPassed)
     {
-        *output = "Test three has failed";
+        *errorCode = 3;
         return false;
     }
 
     return true;
 }
 
-bool testForQuicksortSupport(int* const array, const int* const expectedArray, const size_t sizeOfArray)
+bool testForQuicksort(int* const array, const int* const expectedArray, const size_t sizeOfArray)
 {
     quicksort(array, 0, sizeOfArray);
     return arraysAreEqual(array, expectedArray, sizeOfArray);
 }
 
-char* testsForQuicksortArePassed(char* const output)
+bool testsForQuicksortArePassed(int* const errorCode)
 {
     int array1[20] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1, -2, -3, -4, -5, -6, -7, -8, -9, -10 };
     int expectedArray1[20] = { -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6 ,7, 8, 9 };
-    bool testOneIsPassed = testForQuicksortSupport(array1, expectedArray1, 20);
+    bool testOneIsPassed = testForQuicksort(array1, expectedArray1, 20);
     if (!testOneIsPassed)
     {
-        *output = "Test one has failed";
+        *errorCode = 1;
         return false;
     }
 
     int array2[] = { 0 };
     int expectedArray2[] = { 0 };
-    bool testTwoIsPassed = testForQuicksortSupport(array2, expectedArray2, 0);
+    bool testTwoIsPassed = testForQuicksort(array2, expectedArray2, 0);
     if (!testTwoIsPassed)
     {
-        *output = "Test two has failed";
+        *errorCode = 2;
         return false;
     }
 
     int array3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
     int expectedArray3[10] = { 2, 2, 2, 2, 2, 4, 4, 4, 4, 4 };
-    bool testThreeIsPassed = testForQuicksortSupport(array3, expectedArray3, 10);
+    bool testThreeIsPassed = testForQuicksort(array3, expectedArray3, 10);
     if (!testThreeIsPassed)
     {
-        *output = "Test three has failed";
+        *errorCode = 3;
         return false;
     }
 
@@ -132,7 +132,7 @@ char* testsForQuicksortArePassed(char* const output)
     int* testArray = createTestArray(sizeOfTestArray);
     if (testArray == NULL)
     {
-        *output = "Bad allocation";
+        *errorCode = 4;
         return false;
     }
     quicksort(testArray, 0, sizeOfTestArray);
@@ -140,7 +140,7 @@ char* testsForQuicksortArePassed(char* const output)
     free(testArray);
     if (!testFourIsPassed)
     {
-        *output = "Test four has failed";
+        *errorCode = 4;
         return false;
     }
 
@@ -153,13 +153,13 @@ bool testForFindMostCommonElement(const int* const array, const size_t sizeOfArr
     return output == expectedOutput;
 }
 
-bool testsForFindMostCommonElementArePassed(char* const output)
+bool testsForFindMostCommonElementArePassed(int* const errorCode)
 {
     int array1[5] = { 2, 2, 2, 2, 2 };
     bool testOneIsPassed = testForFindMostCommonElement(array1, 5, 2);
     if (!testOneIsPassed)
     {
-        *output = "Test one has failed";
+        *errorCode = 1;
         return false;
     }
 
@@ -167,7 +167,7 @@ bool testsForFindMostCommonElementArePassed(char* const output)
     bool testTwoIsPassed = testForFindMostCommonElement(array2, 6, 1);
     if (!testTwoIsPassed)
     {
-        *output = "Test two has failed";
+        *errorCode = 2;
         return false;
     }
 
@@ -175,7 +175,7 @@ bool testsForFindMostCommonElementArePassed(char* const output)
     bool testThreeIsPassed = testForFindMostCommonElement(array3, 0, 0);
     if (!testThreeIsPassed)
     {
-        *output = "Test three has failed";
+        *errorCode = 3;
         return false;
     }
 
@@ -183,57 +183,34 @@ bool testsForFindMostCommonElementArePassed(char* const output)
     bool testFourIsPassed = testForFindMostCommonElement(array4, 7, 3);
     if (!testFourIsPassed)
     {
-        *output = "Test four has failed";
+        *errorCode = 4;
         return false;
     }
 
     return true;
 }
 
-char* stringSum(const char* const string1, const char* const string2)
+bool test(void)
 {
-    const size_t size1 = strlen(string1);
-    const size_t size2 = strlen(string2);
-    char* newString = (char*)calloc(size1 + size2 + 1, sizeof(char));
-    if (newString == NULL)
-    {
-        return NULL;
-    }
-    for (size_t i = 0; i < size1; ++i)
-    {
-        newString[i] = string1[i];
-    }
-
-    for (size_t i = 0; i < size2; ++i)
-    {
-        newString[size1 + i] = string2[i];
-    }
-    return newString;
-}
-
-bool test(char* const output)
-{
-    char* testOutput1 = NULL;
-    bool testOneIsPassed = testsForReadArrayFromFileArePassed(testOutput1);
+    int errorCode = 0;
+    bool testOneIsPassed = testsForReadArrayFromFileArePassed(&errorCode);
     if (!testOneIsPassed)
     {
-        *output = stringSum(testOutput1, " in test for readArrayFromFile");
+        printf("Test %d has failed in test for readArrayFromFile", errorCode);
         return false;
     }
 
-    char* testOutput2 = NULL;
-    bool testTwoIsPassed = testsForQuicksortArePassed(testOutput2);
+    bool testTwoIsPassed = testsForQuicksortArePassed(&errorCode);
     if (!testTwoIsPassed)
     {
-        *output = stringSum(testOutput2, " in test for quicksort");
+        printf("Test %d has failed in test for quicksort", errorCode);
         return false;
     }
 
-    char* testOutput3 = NULL;
-    bool testThreeIsPassed = testsForFindMostCommonElementArePassed(testOutput3);
+    bool testThreeIsPassed = testsForFindMostCommonElementArePassed(&errorCode);
     if (!testThreeIsPassed)
     {
-        *output = stringSum(testOutput3, " in test for findMostCommonElement");
+        printf("Test %d has failed in test for findMostCommonElement", errorCode);
         return false;
     }
 
