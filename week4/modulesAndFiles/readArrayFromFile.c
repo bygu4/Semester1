@@ -1,4 +1,4 @@
-#include "readArrayFromFile.h"
+﻿#include "readArrayFromFile.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>

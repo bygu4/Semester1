@@ -1,4 +1,4 @@
-#include "findMostCommonElement.h"
+﻿#include "findMostCommonElement.h"
 #include <stdlib.h>
 #include <string.h>
 

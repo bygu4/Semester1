@@ -1,5 +1,4 @@
-#pragma once
-#pragma execution_character_set("utf-8")
+п»ї#pragma once
 
-// бинарный поиск, принимает отсортированный массив и его размер
+// Р±РёРЅР°СЂРЅС‹Р№ РїРѕРёСЃРє, РїСЂРёРЅРёРјР°РµС‚ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ Рё РµРіРѕ СЂР°Р·РјРµСЂ
 int findMostCommonElement(const int* const array, const size_t sizeOfArray);
