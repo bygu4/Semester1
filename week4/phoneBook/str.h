@@ -1,8 +1,8 @@
-#pragma once
+п»ї#pragma once
 #include <stdbool.h>
 
-// сравнение строк посимвольно
+// СЃСЂР°РІРЅРµРЅРёРµ СЃС‚СЂРѕРє РїРѕСЃРёРјРІРѕР»СЊРЅРѕ
 bool stringsAreEqual(const char* const string1, const char* const string2);
 
-// умножение строки на число
+// СѓРјРЅРѕР¶РµРЅРёРµ СЃС‚СЂРѕРєРё РЅР° С‡РёСЃР»Рѕ
 char* stringMul(const char* const string, const int multiplier);
