@@ -1,5 +1,6 @@
 ﻿#include "binary.h"
 #include <stdlib.h>
+#include <math.h>
 
 #define SIZE_OF_BINARY_REPRESENTATION sizeof(int) * 8
 
@@ -42,10 +43,6 @@ char* binaryAddition(const char* const binaryRepresentation1, const char* const 
 int binaryToDecimal(const char* const binaryRepresentation)
 {
     int decimal = 0;
-    if (binaryRepresentation[0] == 1)
-    {
-        decimal = pow(-2, SIZE_OF_BINARY_REPRESENTATION - 1);
-    }
     for (size_t i = 0; i < SIZE_OF_BINARY_REPRESENTATION; ++i)
     {
         decimal += binaryRepresentation[i] << (SIZE_OF_BINARY_REPRESENTATION - i - 1);

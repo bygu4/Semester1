@@ -1,5 +1,6 @@
 ﻿#include "test.h"
 #include "binary.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
@@ -7,7 +8,7 @@
 
 #define SIZE_OF_BINARY_REPRESENTATION sizeof(int) * 8
 
-bool arraysAreEqual(const char* const array1, const char* const array2, const size_t sizeOfArray)
+static bool arraysAreEqual(const char* const array1, const char* const array2, const size_t sizeOfArray)
 {
     for (size_t i = 0; i < sizeOfArray; ++i)
     {
@@ -19,7 +20,7 @@ bool arraysAreEqual(const char* const array1, const char* const array2, const si
     return true;
 }
 
-bool testForBinaryRepresentation(const int number, const char* const expectedRepresentation)
+static bool testForBinaryRepresentation(const int number, const char* const expectedRepresentation)
 {
     const size_t size = SIZE_OF_BINARY_REPRESENTATION;
     char* representation = createBinaryRepresentation(number);
@@ -32,7 +33,7 @@ bool testForBinaryRepresentation(const int number, const char* const expectedRep
     return equal;
 }
 
-bool allTestsForBinaryRepresentationArePassed(int* const errorCode)
+static bool allTestsForBinaryRepresentationArePassed(int* const errorCode)
 {
     int number1 = 0;
     char expectedRepresentation1[SIZE_OF_BINARY_REPRESENTATION] = { 0 };
@@ -75,7 +76,7 @@ bool allTestsForBinaryRepresentationArePassed(int* const errorCode)
     return true;
 }
 
-bool testForBinaryAddition(const int number1, const int number2, const char* const expectedSum)
+static bool testForBinaryAddition(const int number1, const int number2, const char* const expectedSum)
 {
     const size_t size = SIZE_OF_BINARY_REPRESENTATION;
     char* representation1 = createBinaryRepresentation(number1);
@@ -98,7 +99,7 @@ bool testForBinaryAddition(const int number1, const int number2, const char* con
     return equal;
 }
 
-bool allTestsForBinaryAdditionArePassed(int* const errorCode)
+static bool allTestsForBinaryAdditionArePassed(int* const errorCode)
 {
     int number1 = -555;
     int number2 = 555;
@@ -146,7 +147,7 @@ bool allTestsForBinaryAdditionArePassed(int* const errorCode)
     return true;
 }
 
-bool testForBinaryToDecimal(const int number)
+static bool testForBinaryToDecimal(const int number)
 {
     char* representation = createBinaryRepresentation(number);
     if (representation == NULL)
@@ -158,7 +159,7 @@ bool testForBinaryToDecimal(const int number)
     return decimal == number;
 }
 
-bool allTestsForBinaryToDecimalArePassed(int* const errorCode)
+static bool allTestsForBinaryToDecimalArePassed(int* const errorCode)
 {
     bool testOneIsPassed = testForBinaryToDecimal(0);
     if (!testOneIsPassed)
@@ -205,21 +206,21 @@ bool test(void)
     bool testOneIsPassed = allTestsForBinaryRepresentationArePassed(&errorCode);
     if (!testOneIsPassed)
     {
-        printf("Test %d has failed in test for binaryRepresentation", errorCode);
+        printf("Test %d has failed in test for binaryRepresentation\n", errorCode);
         return false;
     }
 
     bool testTwoIsPassed = allTestsForBinaryAdditionArePassed(&errorCode);
     if (!testTwoIsPassed)
     {
-        printf("Test %d has failed in test for binaryAddition", errorCode);
+        printf("Test %d has failed in test for binaryAddition\n", errorCode);
         return false;
     }
 
     bool testThreeIsPassed = allTestsForBinaryToDecimalArePassed(&errorCode);
     if (!testThreeIsPassed)
     {
-        printf("Test %d has failed in test for binaryToDecimal", errorCode);
+        printf("Test %d has failed in test for binaryToDecimal\n", errorCode);
         return false;
     }
 
