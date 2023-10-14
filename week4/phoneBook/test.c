@@ -8,7 +8,6 @@
 #define TEST_FILE_1 "test1.txt"
 #define TEST_FILE_2 "test2.txt"
 #define TEST_FILE_3 "test3.txt"
-#define SUCCESS 0
 
 static bool testForAddIsPassed(int* const errorCode)
 {
@@ -68,7 +67,7 @@ static bool testForAddIsPassed(int* const errorCode)
     return true;
 }
 
-bool testForReadAndSaveIsPassed(int* const errorCode)
+static bool testForReadAndSaveIsPassed(int* const errorCode)
 {
     Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };
     int readErrorCode = readNotesFromFile(&phonebook, TEST_FILE_2);
@@ -121,7 +120,7 @@ bool testForReadAndSaveIsPassed(int* const errorCode)
     return true;
 }
 
-bool testForFindIsPassed(int* const errorCode)
+static bool testForFindIsPassed(int* const errorCode)
 {
     Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };
     int readErrorCode = readNotesFromFile(&phonebook, TEST_FILE_3);
@@ -195,21 +194,21 @@ bool test(void)
     bool testOneIsPassed = testForAddIsPassed(&errorCode);
     if (!testOneIsPassed)
     {
-        printf("Test %d has failed in test for add", errorCode);
+        printf("Test %d has failed in test for add\n", errorCode);
         return false;
     }
 
     bool testTwoIsPassed = testForReadAndSaveIsPassed(&errorCode);
     if (!testTwoIsPassed)
     {
-        printf("Test %d has failed in test read and save", errorCode);
+        printf("Test %d has failed in test read and save\n", errorCode);
         return false;
     }
 
     bool testThreeIsPassed = testForFindIsPassed(&errorCode);
     if (!testThreeIsPassed)
     {
-        printf("Test %d has failed in test for find", errorCode);
+        printf("Test %d has failed in test for find\n", errorCode);
         return false;
     }
 }
