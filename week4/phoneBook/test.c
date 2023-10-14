@@ -20,7 +20,7 @@ static bool testForAddIsPassed(int* const errorCode)
         return false;
     }
 
-    int errorCode1 = addNoteSupport(&phonebook, "abababa", "99");
+    int errorCode1 = addNote(&phonebook, "abababa", "99");
     Note note1 = phonebook.notes[0];
     bool testOneIsPassed = errorCode1 == 0 && stringsAreEqual(note1.name, "abababa")
         && stringsAreEqual(note1.number, "99");
@@ -31,7 +31,7 @@ static bool testForAddIsPassed(int* const errorCode)
         return false;
     }
 
-    int errorCode2 = addNoteSupport(&phonebook, "", "");
+    int errorCode2 = addNote(&phonebook, "", "");
     Note note2 = phonebook.notes[1];
     bool testTwoIsPassed = errorCode2 == 0 && stringsAreEqual(note2.name, "")
         && stringsAreEqual(note2.number, "");
@@ -51,7 +51,7 @@ static bool testForAddIsPassed(int* const errorCode)
         *errorCode = -1;
         return false;
     }
-    int errorCode3 = addNoteSupport(&phonebook, name3, number3);
+    int errorCode3 = addNote(&phonebook, name3, number3);
     Note note3 = phonebook.notes[2];
     bool testThreeIsPassed = errorCode3 == 0 && stringsAreEqual(note3.name, name3)
         && stringsAreEqual(note3.number, number3) && phonebook.numberOfNotes == 3;
@@ -108,7 +108,7 @@ static bool testForReadAndSaveIsPassed(int* const errorCode)
         return false;
     }
 
-    int saveErrorCode = saveNotesToFileSupport(&phonebook, TEST_FILE_2);
+    int saveErrorCode = saveNotesToFile(&phonebook, TEST_FILE_2);
     bool testFourIsPassed = saveErrorCode == 0 && phonebook.numberOfNotes == 3;
     freePhonebook(&phonebook);
     if (!testFourIsPassed)
@@ -131,7 +131,7 @@ static bool testForFindIsPassed(int* const errorCode)
         return false;
     }
 
-    char* test1 = findNumberByNameSupport(&phonebook, "sasha");
+    char* test1 = findNumberByName(&phonebook, "sasha");
     bool testOneIsPassed = stringsAreEqual(test1, "89001112233");
     if (!testOneIsPassed)
     {
@@ -140,7 +140,7 @@ static bool testForFindIsPassed(int* const errorCode)
         return false;
     }
 
-    char* test2 = findNameByNumberSupport(&phonebook, "World");
+    char* test2 = findNameByNumber(&phonebook, "World");
     bool testTwoIsPassed = stringsAreEqual(test2, "Hello");
     if (!testTwoIsPassed)
     {
@@ -149,7 +149,7 @@ static bool testForFindIsPassed(int* const errorCode)
         return false;
     }
 
-    char* test3 = findNumberByNameSupport(&phonebook, "17");
+    char* test3 = findNumberByName(&phonebook, "17");
     bool testThreeIsPassed = stringsAreEqual(test3, "03");
     if (!testThreeIsPassed)
     {
@@ -158,7 +158,7 @@ static bool testForFindIsPassed(int* const errorCode)
         return false;
     }
 
-    char* test4 = findNameByNumberSupport(&phonebook, "babab");
+    char* test4 = findNameByNumber(&phonebook, "babab");
     bool testFourIsPassed = stringsAreEqual(test4, "ababa");
     if (!testFourIsPassed)
     {
@@ -167,7 +167,7 @@ static bool testForFindIsPassed(int* const errorCode)
         return false;
     }
 
-    char* test5 = findNumberByNameSupport(&phonebook, "Matmex");
+    char* test5 = findNumberByName(&phonebook, "Matmex");
     bool testFiveIsPassed = test5 == NULL && phonebook.numberOfNotes == 100;
     if (!testFiveIsPassed)
     {
@@ -176,7 +176,7 @@ static bool testForFindIsPassed(int* const errorCode)
         return false;
     }
 
-    char* test6 = findNameByNumberSupport(&phonebook, "123456789");
+    char* test6 = findNameByNumber(&phonebook, "123456789");
     bool testSixIsPassed = test6 == NULL;
     freePhonebook(&phonebook);
     if (!testSixIsPassed)
@@ -211,4 +211,6 @@ bool test(void)
         printf("Test %d has failed in test for find\n", errorCode);
         return false;
     }
+
+    return true;
 }

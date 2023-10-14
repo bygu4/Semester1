@@ -1,8 +1,6 @@
-#include "phonebook.h"
+#include "userInterface.h"
 #include "test.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdbool.h>
 
 #define NAME_OF_FILE "main.txt"
@@ -35,24 +33,24 @@ int main(void)
         case 0:
             break;
         case 1:
-            errorCode = addNote(&phonebook);
+            errorCode = addNoteUI(&phonebook);
             break;
         case 2:
             printAllNotes(&phonebook);
             break;
         case 3:
-            findNumberByName(&phonebook);
+            findNumberByNameUI(&phonebook);
             break;
         case 4:
-            findNameByNumber(&phonebook);
+            findNameByNumberUI(&phonebook);
             break;
         case 5:
-            errorCode = saveNotesToFile(&phonebook, NAME_OF_FILE);
+            errorCode = saveNotesToFileUI(&phonebook, NAME_OF_FILE);
             break;
         default:
             printf("Unknown command\n");
         }
-        if (errorCode != SUCCESS)
+        if (errorCode != SUCCESS && errorCode != FILE_NOT_FOUND)
         {
             freePhonebook(&phonebook);
             printf("An error occured\n");

@@ -23,7 +23,7 @@ void freePhonebook(Phonebook* const phonebook)
     *numberOfNotes = 0;
 }
 
-int addNoteSupport(Phonebook* const phonebook, const char* const name, const char* const number)
+int addNote(Phonebook* const phonebook, const char* const name, const char* const number)
 {
     if (phonebook->numberOfNotes >= MAX_NOTES)
     {
@@ -50,30 +50,6 @@ int addNoteSupport(Phonebook* const phonebook, const char* const name, const cha
     size_t index = *numberOfNotes;
     phonebook->notes[index] = note;
     ++* numberOfNotes;
-    return SUCCESS;
-}
-
-int addNote(Phonebook* const phonebook)
-{
-    size_t* numberOfNotes = &phonebook->numberOfNotes;
-    if (*numberOfNotes >= MAX_NOTES)
-    {
-        printf("Cannot add any more notes\n");
-        return SUCCESS;
-    }
-    char name[SIZE_OF_BUFFER] = { '\0' };
-    printf("Enter name: ");
-    scanf_s("%s", name, SIZE_OF_BUFFER - 1);
-    char number[SIZE_OF_BUFFER] = { '\0' };
-    printf("Enter number: ");
-    scanf_s("%s", number, SIZE_OF_BUFFER - 1);
-
-    int errorCode = addNoteSupport(phonebook, name, number);
-    if (errorCode != SUCCESS)
-    {
-        return errorCode;
-    }
-    printf("Note added\n");
     return SUCCESS;
 }
 
@@ -109,7 +85,7 @@ int readNotesFromFile(Phonebook* const phonebook, const char* const nameOfFile)
         fscanf_s(inputFile, "%[^\n]", number, SIZE_OF_BUFFER - 1);
         fseek(inputFile, 2, SEEK_CUR);
 
-        errorCode = addNoteSupport(phonebook, name, number);
+        errorCode = addNote(phonebook, name, number);
         if (errorCode != SUCCESS)
         {
             fclose(inputFile);
@@ -121,7 +97,7 @@ int readNotesFromFile(Phonebook* const phonebook, const char* const nameOfFile)
     return SUCCESS;
 }
 
-int saveNotesToFileSupport(const Phonebook* const phonebook, const char* const nameOfFile)
+int saveNotesToFile(const Phonebook* const phonebook, const char* const nameOfFile)
 {
     FILE* outputFile = NULL;
     int errorCode = fopen_s(&outputFile, nameOfFile, "w");
@@ -140,32 +116,7 @@ int saveNotesToFileSupport(const Phonebook* const phonebook, const char* const n
     return SUCCESS;
 }
 
-int saveNotesToFile(const Phonebook* const phonebook, const char* const nameOfFile)
-{
-    int errorCode = saveNotesToFileSupport(phonebook, nameOfFile);
-    if (errorCode != 0)
-    {
-        return errorCode;
-    }
-    printf("Notes saved\n");
-    return SUCCESS;
-}
-
-void printAllNotes(const Phonebook* const phonebook)
-{
-    size_t numberOfNotes = phonebook->numberOfNotes;
-    if (numberOfNotes == 0)
-    {
-        printf("No notes yet\n");
-    }
-    for (size_t i = 0; i < numberOfNotes; ++i)
-    {
-        Note note = phonebook->notes[i];
-        printf("%d) %s - %s\n", (int)i + 1, note.name, note.number);
-    }
-}
-
-char* findNumberByNameSupport(const Phonebook* const phonebook, const char* const nameToFind)
+char* findNumberByName(const Phonebook* const phonebook, const char* const nameToFind)
 {
     Note* notes = phonebook->notes;
     size_t numberOfNotes = phonebook->numberOfNotes;
@@ -180,21 +131,7 @@ char* findNumberByNameSupport(const Phonebook* const phonebook, const char* cons
     return NULL;
 }
 
-void findNumberByName(const Phonebook* const phonebook)
-{
-    char nameToFind[SIZE_OF_BUFFER] = { '\0' };
-    printf("Enter a name: ");
-    scanf_s("%s", nameToFind, SIZE_OF_BUFFER - 1);
-    char* foundNumber = findNumberByNameSupport(phonebook, nameToFind);
-    if (foundNumber == NULL)
-    {
-        printf("Name not found\n");
-        return;
-    }
-    printf("%s\n", foundNumber);
-}
-
-char* findNameByNumberSupport(const Phonebook* const phonebook, const char* const numberToFind)
+char* findNameByNumber(const Phonebook* const phonebook, const char* const numberToFind)
 {
     Note* notes = phonebook->notes;
     size_t numberOfNotes = phonebook->numberOfNotes;
@@ -207,18 +144,4 @@ char* findNameByNumberSupport(const Phonebook* const phonebook, const char* cons
         }
     }
     return NULL;
-}
-
-void findNameByNumber(const Phonebook* const phonebook)
-{
-    char numberToFind[SIZE_OF_BUFFER] = { '\0' };
-    printf("Enter a number: ");
-    scanf_s("%s", numberToFind, SIZE_OF_BUFFER - 1);
-    char* foundName = findNameByNumberSupport(phonebook, numberToFind);
-    if (foundName == NULL)
-    {
-        printf("Number not found\n");
-        return;
-    }
-    printf("%s\n", foundName);
 }
