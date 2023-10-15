@@ -93,7 +93,7 @@ static bool testForFgetStringIsPassed(int* const errorCode)
         *errorCode = -1;
         return false;
     }
-
+    
     char* testString1 = fgetString(file, ':', 0);
     bool testOneIsPassed = testString1 == NULL;
     if (!testOneIsPassed)
@@ -159,7 +159,7 @@ static bool testForAddIsPassed(int* const errorCode)
     int errorCode1 = addNote(&phonebook, "abababa", "99");
     Note note1 = phonebook.notes[0];
     bool testOneIsPassed = errorCode1 == SUCCESS &&
-        stringsAreEqual(note1.name, "abababa") && stringsAreEqual(note1.number, "99");
+         stringsAreEqual(note1.name, "abababa") && stringsAreEqual(note1.number, "99");
     if (!testOneIsPassed)
     {
         *errorCode = 1;
@@ -170,7 +170,7 @@ static bool testForAddIsPassed(int* const errorCode)
     int errorCode2 = addNote(&phonebook, "", "");
     Note note2 = phonebook.notes[1];
     bool testTwoIsPassed = errorCode2 == SUCCESS &&
-        stringsAreEqual(note2.name, "") && stringsAreEqual(note2.number, "");
+         stringsAreEqual(note2.name, "") && stringsAreEqual(note2.number, "");
     if (!testTwoIsPassed)
     {
         *errorCode = 2;
