@@ -6,13 +6,7 @@
 
 bool stringsAreEqual(const char* const string1, const char* const string2)
 {
-    size_t lengthOfString1 = strlen(string1);
-    size_t lengthOfString2 = strlen(string2);
-    if (lengthOfString1 != lengthOfString2)
-    {
-        return false;
-    }
-    for (size_t i = 0; i < lengthOfString1; ++i)
+    for (size_t i = 0; string1[i] != '\0' || string2[i] != '\0'; ++i)
     {
         if (string1[i] != string2[i])
         {
@@ -22,10 +16,10 @@ bool stringsAreEqual(const char* const string1, const char* const string2)
     return true;
 }
 
-char* stringMul(const char* const string, const int multiplier)
+char* stringMul(const char* const string, const unsigned int multiplier)
 {
     size_t lengthOfOriginalString = strlen(string);
-    char* newString = (char*)calloc(lengthOfOriginalString * multiplier + 1, sizeof(char));
+    char* newString = (char*)malloc(lengthOfOriginalString * multiplier + 1);
     if (newString == NULL)
     {
         return NULL;
@@ -35,11 +29,9 @@ char* stringMul(const char* const string, const int multiplier)
     {
         newString[i] = string[j];
         ++j;
-        if (j >= lengthOfOriginalString)
-        {
-            j = 0;
-        }
+        j %= lengthOfOriginalString;
     }
+    newString[lengthOfOriginalString * multiplier] = '\0';
     return newString;
 }
 

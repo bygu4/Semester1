@@ -149,7 +149,7 @@ static bool testForFgetStringIsPassed(int* const errorCode)
 static bool testForAddIsPassed(int* const errorCode)
 {
     Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };
-    phonebook.notes = malloc(sizeof(Note) * 10);
+    phonebook.notes = (Note*)malloc(sizeof(Note) * 10);
     if (phonebook.notes == NULL)
     {
         *errorCode = -1;
@@ -416,20 +416,5 @@ static bool testForFilesIsPassed(void)
 
 bool test(void)
 {
-    if (!testForStringsIsPassed())
-    {
-        return false;
-    }
-
-    if (!testForPhonebookIsPassed())
-    {
-        return false;
-    }
-
-    if (!testForFilesIsPassed())
-    {
-        return false;
-    }
-
-    return true;
+    return testForStringsIsPassed() && testForPhonebookIsPassed() && testForFilesIsPassed();
 }

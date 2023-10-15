@@ -22,19 +22,16 @@ int readNotesFromFile(Phonebook* const phonebook, const char* const nameOfFile)
         free(phonebook->notes);
         return errorCode;
     }
-    size_t* numberOfNotes = &phonebook->numberOfNotes;
-    while (!feof(inputFile) && *numberOfNotes < MAX_NOTES)
+    while (!feof(inputFile) && phonebook->numberOfNotes < MAX_NOTES)
     {
         char* name = fgetString(inputFile, ' ', INITIAL_SIZE_OF_BUFFER);
         if (feof(inputFile))
         {
-            if (strlen(name) == 0)
+            if (strlen(name) != 0)
             {
-                free(name);
-                break;
+                errorCode = INCORRECT_FORMAT;
             }
             free(name);
-            errorCode = INCORRECT_FORMAT;
             break;
         }
         char* number = fgetString(inputFile, '\n', INITIAL_SIZE_OF_BUFFER);

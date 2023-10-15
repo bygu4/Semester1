@@ -13,14 +13,13 @@ static void freeNote(Note* const note)
 void freePhonebook(Phonebook* const phonebook)
 {
     Note* notes = phonebook->notes;
-    size_t* numberOfNotes = &phonebook->numberOfNotes;
-    for (size_t i = 0; i < *numberOfNotes; ++i)
+    for (size_t i = 0; i < phonebook->numberOfNotes; ++i)
     {
         Note note = notes[i];
         freeNote(&note);
     }
     free(notes);
-    *numberOfNotes = 0;
+    phonebook->numberOfNotes = 0;
 }
 
 int addNote(Phonebook* const phonebook, const char* const name, const char* const number)
