@@ -46,7 +46,7 @@ static bool testForStringsAreEqualIsPassed(int* const errorCode)
 static bool testForStringMulIsPassed(int* const errorCode)
 {
     char* testString1 = stringMul("qwerty", 2);
-    bool testOneIsPassed = stringsAreEqual(testString1, "qwertyqwerty");
+    bool testOneIsPassed = testString1 != NULL && stringsAreEqual(testString1, "qwertyqwerty");
     free(testString1);
     if (!testOneIsPassed)
     {
@@ -55,7 +55,8 @@ static bool testForStringMulIsPassed(int* const errorCode)
     }
 
     char* testString2 = stringMul("a", 5);
-    bool testTwoIsPassed = stringsAreEqual(testString2, "aaaaa");
+    bool testTwoIsPassed = testString2 != NULL && stringsAreEqual(testString2, "aaaaa");
+    free(testString2);
     if (!testTwoIsPassed)
     {
         *errorCode = 2;
@@ -63,7 +64,8 @@ static bool testForStringMulIsPassed(int* const errorCode)
     }
 
     char* testString3 = stringMul("", 100);
-    bool testThreeIsPassed = stringsAreEqual(testString3, "");
+    bool testThreeIsPassed = testString3 != NULL && stringsAreEqual(testString3, "");
+    free(testString3);
     if (!testThreeIsPassed)
     {
         *errorCode = 3;
@@ -71,7 +73,8 @@ static bool testForStringMulIsPassed(int* const errorCode)
     }
 
     char* testString4 = stringMul("123456", 0);
-    bool testFourIsPassed = stringsAreEqual(testString4, "");
+    bool testFourIsPassed = testString4 != NULL && stringsAreEqual(testString4, "");
+    free(testString4);
     if (!testFourIsPassed)
     {
         *errorCode = 4;
@@ -90,7 +93,7 @@ static bool testForFgetStringIsPassed(int* const errorCode)
         *errorCode = -1;
         return false;
     }
-    
+
     char* testString1 = fgetString(file, ':', 0);
     bool testOneIsPassed = testString1 == NULL;
     if (!testOneIsPassed)
@@ -156,7 +159,7 @@ static bool testForAddIsPassed(int* const errorCode)
     int errorCode1 = addNote(&phonebook, "abababa", "99");
     Note note1 = phonebook.notes[0];
     bool testOneIsPassed = errorCode1 == SUCCESS &&
-         stringsAreEqual(note1.name, "abababa") && stringsAreEqual(note1.number, "99");
+        stringsAreEqual(note1.name, "abababa") && stringsAreEqual(note1.number, "99");
     if (!testOneIsPassed)
     {
         *errorCode = 1;
@@ -167,7 +170,7 @@ static bool testForAddIsPassed(int* const errorCode)
     int errorCode2 = addNote(&phonebook, "", "");
     Note note2 = phonebook.notes[1];
     bool testTwoIsPassed = errorCode2 == SUCCESS &&
-         stringsAreEqual(note2.name, "") && stringsAreEqual(note2.number, "");
+        stringsAreEqual(note2.name, "") && stringsAreEqual(note2.number, "");
     if (!testTwoIsPassed)
     {
         *errorCode = 2;
@@ -392,7 +395,7 @@ static bool testForPhonebookIsPassed(void)
     bool testTwoIsPassed = testForFindIsPassed(&errorCode);
     if (!testTwoIsPassed)
     {
-        printf("Test %d has failed in test for findNote\n", errorCode);
+        printf("Test %d has failed in test for find\n", errorCode);
         return false;
     }
 
