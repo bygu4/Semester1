@@ -1,4 +1,4 @@
-﻿#include "userInterface.h"
+﻿#include "console.h"
 #include "test.h"
 #include <stdio.h>
 #include <stdbool.h>
@@ -18,6 +18,7 @@ int main(void)
     int errorCode = readNotesFromFile(&phonebook, NAME_OF_FILE);
     if (errorCode != SUCCESS && errorCode != FILE_NOT_FOUND)
     {
+        freePhonebook(&phonebook);
         printf("An error occured\n");
         return errorCode;
     }
@@ -28,24 +29,25 @@ int main(void)
     {
         printf("\nEnter a command: ");
         scanf_s("%d", &command);
+        getchar();
         switch (command)
         {
         case 0:
             break;
         case 1:
-            errorCode = addNoteUI(&phonebook);
+            errorCode = addNoteConsole(&phonebook);
             break;
         case 2:
             printAllNotes(&phonebook);
             break;
         case 3:
-            findNumberByNameUI(&phonebook);
+            errorCode = findNumberByNameConsole(&phonebook);
             break;
         case 4:
-            findNameByNumberUI(&phonebook);
+            errorCode = findNameByNumberConsole(&phonebook);
             break;
         case 5:
-            errorCode = saveNotesToFileUI(&phonebook, NAME_OF_FILE);
+            errorCode = saveNotesToFileConsole(&phonebook, NAME_OF_FILE);
             break;
         default:
             printf("Unknown command\n");

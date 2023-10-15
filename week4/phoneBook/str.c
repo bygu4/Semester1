@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 bool stringsAreEqual(const char* const string1, const char* const string2)
 {
@@ -40,4 +41,70 @@ char* stringMul(const char* const string, const int multiplier)
         }
     }
     return newString;
+}
+
+char* getString(const char breakPoint, const size_t initialSizeOfBuffer)
+{
+    if (initialSizeOfBuffer == 0)
+    {
+        return NULL;
+    }
+    size_t sizeOfBuffer = initialSizeOfBuffer;
+    char* string = (char*)malloc(sizeOfBuffer);
+    if (string == NULL)
+    {
+        return NULL;
+    }
+    char character = getchar();
+    size_t i = 0;
+    while (character != breakPoint)
+    {
+        string[i] = character;
+        ++i;
+        if (i * sizeof(char) >= sizeOfBuffer)
+        {
+            sizeOfBuffer *= 2;
+            string = (char*)realloc(string, sizeOfBuffer);
+            if (string == NULL)
+            {
+                return NULL;
+            }
+        }
+        character = getchar();
+    }
+    string[i] = '\0';
+    return string;
+}
+
+char* fgetString(FILE* const file, const char breakPoint, const size_t initialSizeOfBuffer)
+{
+    if (initialSizeOfBuffer == 0)
+    {
+        return NULL;
+    }
+    size_t sizeOfBuffer = initialSizeOfBuffer;
+    char* string = (char*)malloc(sizeOfBuffer);
+    if (string == NULL)
+    {
+        return NULL;
+    }
+    char character = fgetc(file);
+    size_t i = 0;
+    while (character != breakPoint && !feof(file))
+    {
+        string[i] = character;
+        ++i;
+        if (i * sizeof(char) >= sizeOfBuffer)
+        {
+            sizeOfBuffer *= 2;
+            string = (char*)realloc(string, sizeOfBuffer);
+            if (string == NULL)
+            {
+                return NULL;
+            }
+        }
+        character = fgetc(file);
+    }
+    string[i] = '\0';
+    return string;
 }
