@@ -44,75 +44,12 @@ int addNote(Phonebook* const phonebook, const char* const name, const char* cons
     if (errorCode1 != 0 || errorCode2 != 0)
     {
         freeNote(&note);
-        return BAD_ALLOCATION;
+        return COPY_ERROR;
     }
     size_t* numberOfNotes = &phonebook->numberOfNotes;
     size_t index = *numberOfNotes;
     phonebook->notes[index] = note;
     ++* numberOfNotes;
-    return SUCCESS;
-}
-
-int readNotesFromFile(Phonebook* const phonebook, const char* const nameOfFile)
-{
-    phonebook->notes = malloc(sizeof(Note) * MAX_NOTES);
-    if (phonebook->notes == NULL)
-    {
-        return BAD_ALLOCATION;
-    }
-    FILE* inputFile = NULL;
-    int errorCode = fopen_s(&inputFile, nameOfFile, "r");
-    if (errorCode == FILE_NOT_FOUND)
-    {
-        return FILE_NOT_FOUND;
-    }
-    if (errorCode != SUCCESS)
-    {
-        free(phonebook->notes);
-        return errorCode;
-    }
-    size_t* numberOfNotes = &phonebook->numberOfNotes;
-    while (!feof(inputFile) && *numberOfNotes < MAX_NOTES)
-    {
-        char name[SIZE_OF_BUFFER] = { '\0' };
-        fscanf_s(inputFile, "%[^ ]", name, SIZE_OF_BUFFER - 1);
-        if (strlen(name) == 0)
-        {
-            break;
-        }
-        fseek(inputFile, 1, SEEK_CUR);
-        char number[SIZE_OF_BUFFER] = { '\0' };
-        fscanf_s(inputFile, "%[^\n]", number, SIZE_OF_BUFFER - 1);
-        fseek(inputFile, 2, SEEK_CUR);
-
-        errorCode = addNote(phonebook, name, number);
-        if (errorCode != SUCCESS)
-        {
-            fclose(inputFile);
-            freePhonebook(phonebook);
-            return errorCode;
-        }
-    }
-    fclose(inputFile);
-    return SUCCESS;
-}
-
-int saveNotesToFile(const Phonebook* const phonebook, const char* const nameOfFile)
-{
-    FILE* outputFile = NULL;
-    int errorCode = fopen_s(&outputFile, nameOfFile, "w");
-    if (errorCode != SUCCESS)
-    {
-        return errorCode;
-    }
-    Note* notes = phonebook->notes;
-    size_t numberOfNotes = phonebook->numberOfNotes;
-    for (size_t i = 0; i < numberOfNotes; ++i)
-    {
-        Note note = notes[i];
-        fprintf(outputFile, "%s %s\n", note.name, note.number);
-    }
-    fclose(outputFile);
     return SUCCESS;
 }
 
