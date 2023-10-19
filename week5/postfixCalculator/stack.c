@@ -15,7 +15,7 @@ bool push(StackNode** const head, const int value)
     return false;
 }
 
-void pop(StackNode** head)
+void pop(StackNode** const head)
 {
     if (*head == NULL)
     {
@@ -26,7 +26,7 @@ void pop(StackNode** head)
     *head = next;
 }
 
-void freeStack(StackNode** head)
+void freeStack(StackNode** const head)
 {
     while (*head != NULL)
     {

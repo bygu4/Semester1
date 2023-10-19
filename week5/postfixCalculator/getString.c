@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char* getString(char breakPoint)
+char* getString(const char breakPoint)
 {
     size_t sizeOfBuffer = sizeof(char);
     char* string = (char*)malloc(sizeOfBuffer);

@@ -7,7 +7,7 @@
 
 int main(void)
 {
-    bool allTestsArePassed = test();
+    const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
