@@ -24,7 +24,7 @@ int main(void)
     if (errorCode != SUCCESS)
     {
         printf("An error occured\n");
-        return BAD_ALLOCATION;
+        return errorCode;
     }
     printf("Result: %d\n", result);
 }

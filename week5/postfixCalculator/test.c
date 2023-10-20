@@ -1,12 +1,11 @@
 ﻿#include "test.h"
 #include "calculate.h"
-#include <stdbool.h>
 #include <stdio.h>
 
-static bool testForCalculateIsPassed(void)
+bool test(void)
 {
     int errorCode = -1;
-    bool testOneIsPassed = calculate("9 6 - 1 2 +", &errorCode) == 9 && errorCode == SUCCESS;
+    bool testOneIsPassed = calculate("9 6 - 1 2 + *", &errorCode) == 9 && errorCode == SUCCESS;
     if (!testOneIsPassed)
     {
         printf("Test 1 has failed\n");
@@ -20,7 +19,7 @@ static bool testForCalculateIsPassed(void)
         return false;
     }
 
-    bool testThreeIsPassed = calculate("2 2 + 9 3 / 7 2 -", &errorCode) == 60 && errorCode == SUCCESS;
+    bool testThreeIsPassed = calculate("2 2 + 9 3 / 7 2 - * *", &errorCode) == 60 && errorCode == SUCCESS;
     if (!testThreeIsPassed)
     {
         printf("Test 3 has failed\n");
@@ -63,9 +62,4 @@ static bool testForCalculateIsPassed(void)
     }
 
     return true;
-}
-
-bool test(void)
-{
-    return testForCalculateIsPassed();
 }

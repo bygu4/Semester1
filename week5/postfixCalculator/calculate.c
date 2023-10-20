@@ -3,29 +3,39 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-static bool pushResultOfOperation(StackNode** const numbers, const char operator)
+static int pushResultOfOperation(StackNode** const head, const char operator)
 {
-    int argument2 = (*numbers)->value;
-    pop(numbers);
-    int argument1 = (*numbers)->value;
-    pop(numbers);
-    bool errorOccured = false;
+    int argument2 = (*head)->value;
+    pop(head);
+    int argument1 = (*head)->value;
+    pop(head);
+    int result = 0;
     switch (operator)
     {
     case '+':
-        errorOccured = push(numbers, argument1 + argument2);
+        result = argument1 + argument2;
         break;
     case '-':
-        errorOccured = push(numbers, argument1 - argument2);
-        break;
-    case '/':
-        errorOccured = push(numbers, argument1 / argument2);
+        result = argument1 - argument2;
         break;
     case '*':
-        errorOccured = push(numbers, argument1 * argument2);
+        result = argument1 * argument2;
+        break;
+    case '/':
+        if (argument2 == 0)
+        {
+            return DIVISION_BY_ZERO;
+        }
+        result = argument1 / argument2;
         break;
     }
-    return errorOccured;
+    bool errorOccured = false;
+    errorOccured = push(head, result);
+    if (errorOccured)
+    {
+        return BAD_ALLOCATION;
+    }
+    return SUCCESS;
 }
 
 int calculate(const char* const string, int* const errorCode)
@@ -38,34 +48,29 @@ int calculate(const char* const string, int* const errorCode)
         if (isdigit(character))
         {
             errorOccured = push(&numbers, (int)character - 48);
+            if (errorOccured)
+            {
+                *errorCode = BAD_ALLOCATION;
+                return 0;
+            }
         }
-        else if (character == '+' || character == '-' || character == '/')
+        else if (character == '+' || character == '-' || character == '*' || character == '/')
         {
             if (numbers == NULL || numbers->next == NULL)
             {
                 *errorCode = BAD_INPUT;
                 return 0;
             }
-            errorOccured = pushResultOfOperation(&numbers, character);
-        }
-        if (errorOccured)
-        {
-            *errorCode = BAD_ALLOCATION;
-            return 0;
+            *errorCode = pushResultOfOperation(&numbers, character);
+            if (*errorCode != SUCCESS)
+            {
+                return 0;
+            }
         }
     }
     if (numbers == NULL)
     {
         return 0;
-    }
-    while (numbers->next != NULL)
-    {
-        errorOccured = pushResultOfOperation(&numbers, '*');
-        if (errorOccured)
-        {
-            *errorCode = BAD_ALLOCATION;
-            return 0;
-        }
     }
     int result = numbers->value;
     freeStack(&numbers);
