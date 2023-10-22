@@ -17,11 +17,11 @@ String* createString(const char* const data);
 // очистить память, выделенную под строку. Обнуляет указатель
 void freeString(String** const string);
 
-// считать посимвольно строку произвольной длины из консоли
-String* getString(const char breakPoint);
-
 // добавить символ к строке. Возвращает код ошибки
 int addCharToString(String* const string, const char character);
+
+// считать посимвольно строку произвольной длины из консоли
+String* getString(const char breakPoint);
 
 // проверить строки на равенство
 bool stringsAreEqual(const char* const string1, const char* const string2);
