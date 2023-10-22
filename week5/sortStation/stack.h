@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <stdbool.h>
 
-typedef struct StackNode {
+typedef struct {
     char value;
     struct StackNode* next;
 } StackNode;

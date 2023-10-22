@@ -4,112 +4,179 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool testForStringsIsPassed(void)
+static void printFailedTest(const int testNumber, const char* const testName)
+{
+    printf("Test %d has failed in %s\n", testNumber, testName);
+}
+
+static bool testForStringsAreEqual(void)
 {
     bool testOneIsPassed = stringsAreEqual("", "");
     if (!testOneIsPassed)
     {
-        printf("Test 1 has failed in test for strings\n");
+        printFailedTest(1, "testForStringsAreEqual");
         return false;
     }
 
     bool testTwoIsPassed = !stringsAreEqual("abc", "abcd");
     if (!testTwoIsPassed)
     {
-        printf("Test 2 has failed in test for strings\n");
+        printFailedTest(2, "testForStringsAreEqual");
         return false;
     }
 
     bool testThreeIsPassed = !stringsAreEqual("qwerty", "qwerti");
     if (!testThreeIsPassed)
     {
-        printf("Test 3 has failed in test for strings\n");
-        return false;
-    }
-
-    char* string = NULL;
-    int errorCode = addCharToString(&string, 'a', 0);
-    bool testFourIsPassed = errorCode == SUCCESS && stringsAreEqual(string, "a");
-    if (!testFourIsPassed)
-    {
-        free(string);
-        printf("Test 4 has failed in test for strings\n");
-        return false;
-    }
-
-    errorCode = addCharToString(&string, 'b', 1);
-    bool testFiveIsPassed = errorCode == SUCCESS && stringsAreEqual(string, "ab");
-    free(string);
-    if (!testFiveIsPassed)
-    {
-        printf("Test 5 has failed in test for strings\n");
+        printFailedTest(3, "testForStringsAreEqual");
         return false;
     }
 
     return true;
 }
 
-static bool testForConversToPostfixFormIsPassed(void)
+static bool testCaseCreateString(const char* const data, const size_t length)
 {
-    int errorCode = -1;
-    char* output1 = convertToPostfixForm("(1 + 2) * 3", &errorCode);
-    bool testOneIsPassed = errorCode == SUCCESS && stringsAreEqual(output1, "1 2 + 3 *");
-    free(output1);
+    String* string = createString(data);
+    if (string == NULL)
+    {
+        return false;
+    }
+    bool testIsPassed = string->length == length && string->capacity == length + 1 && stringsAreEqual(string->data, data);
+    freeString(&string);
+    return testIsPassed;
+}
+
+static bool testForCreateString(void)
+{
+    bool testOneIsPassed = testCaseCreateString("", 0);
     if (!testOneIsPassed)
     {
-        printf("Test 1 has failed in test for convertToPostfixForm\n");
-        return false;
+        printFailedTest(1, "testForCreateString");
     }
 
-    char* output2 = convertToPostfixForm("", &errorCode);
-    bool testTwoIsPassed = errorCode == SUCCESS && stringsAreEqual(output2, "");
-    free(output2);
+    bool testTwoIsPassed = testCaseCreateString("qwertyuiop", 10);
     if (!testTwoIsPassed)
     {
-        printf("Test 2 has failed in test for convertToPostfixForm\n");
-        return false;
+        printFailedTest(2, "testForCreateString");
     }
 
-    char* output3 = convertToPostfixForm("6 - 9 / 3 + 2", &errorCode);
-    bool testThreeIsPassed = errorCode == SUCCESS && stringsAreEqual(output3, "6 9 3 / 2 + -");
-    free(output3);
+    bool testThreeIsPassed = testCaseCreateString("a b \0 c d", 4);
     if (!testThreeIsPassed)
     {
-        printf("Test 3 has failed in test for convertToPostfixForm\n");
+        printFailedTest(3, "testForCreateString");
+    }
+
+    return true;
+}
+
+static bool testCaseAddCharToString(const char* const input, const char addition, const char* const sum)
+{
+    String* string = createString(input);
+    if (string == NULL)
+    {
+        return false;
+    }
+    int errorCode = addCharToString(string, addition);
+    bool testIsPassed = errorCode == SUCCESS && stringsAreEqual(string->data, sum);
+    freeString(&string);
+    return testIsPassed;
+}
+
+static bool testForAddCharToString(void)
+{
+    bool testOneIsPassed = testCaseAddCharToString("", 'a', "a");
+    if (!testOneIsPassed)
+    {
+        printFailedTest(1, "testForAddCharToString");
         return false;
     }
 
-    char* output4 = convertToPostfixForm("(9 + 4 * 2) / (7 - 1)", &errorCode);
-    bool testFourIsPassed = errorCode == SUCCESS && stringsAreEqual(output4, "9 4 2 * + 7 1 - /");
-    free(output4);
-    if (!testFourIsPassed)
+    bool testTwoIsPassed = testCaseAddCharToString("12345", '6', "123456");
+    if (!testTwoIsPassed)
     {
-        printf("Test 4 has failed in test for convertToPostfixForm\n");
+        printFailedTest(2, "testForAddCharToString");
         return false;
     }
 
-    char* output5 = convertToPostfixForm("7 + )", &errorCode);
-    bool testFiveIsPassed = errorCode == SUCCESS && stringsAreEqual(output5, "7 +");
-    free(output5);
-    if (!testFiveIsPassed)
+    bool testThreeIsPassed = testCaseAddCharToString("abc", '\0', "abc");
+    if (!testThreeIsPassed)
     {
-        printf("Test 5 has failed in test for convertToPostfixForm\n");
-        return false;
-    }
-
-    char* output6 = convertToPostfixForm("(abc)", &errorCode);
-    bool testSixIsPassed = errorCode == SUCCESS && stringsAreEqual(output6, "");
-    free(output6);
-    if (!testSixIsPassed)
-    {
-        printf("Test 6 has failed in test for convertToPostfixForm\n");
+        printFailedTest(3, "testForAddCharToString");
         return false;
     }
 
     return true;
+}
+
+static bool testCaseConvertToPostfixForm(const char* const infixString, const char* const postfixString)
+{
+    String* input = createString(infixString);
+    if (input == NULL)
+    {
+        return false;
+    }
+    int errorCode = -1;
+    String* output = convertToPostfixForm(input, &errorCode);
+    freeString(&input);
+    bool testIsPassed = errorCode == SUCCESS && stringsAreEqual(output->data, postfixString);
+    freeString(&output);
+    return testIsPassed;
+}
+
+static bool testForConvertToPostfixForm(void)
+{
+    bool testOneIsPassed = testCaseConvertToPostfixForm("(1 + 2) * 3", "1 2 + 3 *");
+    if (!testOneIsPassed)
+    {
+        printFailedTest(1, "testForConvertToPostfixForm");
+        return false;
+    }
+
+    bool testTwoIsPassed = testCaseConvertToPostfixForm("", "");
+    if (!testTwoIsPassed)
+    {
+        printFailedTest(2, "testForConvertToPostfixForm");
+        return false;
+    }
+
+    bool testThreeIsPassed = testCaseConvertToPostfixForm("6 - 9 / 3 + 2", "6 9 3 / 2 + -");
+    if (!testThreeIsPassed)
+    {
+        printFailedTest(3, "testForConvertToPostfixForm");
+        return false;
+    }
+
+    bool testFourIsPassed = testCaseConvertToPostfixForm("(9 + 4 * 2) / (7 - 1)", "9 4 2 * + 7 1 - /");
+    if (!testFourIsPassed)
+    {
+        printFailedTest(4, "testForConvertToPostfixForm");
+        return false;
+    }
+
+    bool testFiveIsPassed = testCaseConvertToPostfixForm("7 + )", "7 +");
+    if (!testFiveIsPassed)
+    {
+        printFailedTest(5, "testForConvertToPostfixForm");
+        return false;
+    }
+
+    bool testSixIsPassed = testCaseConvertToPostfixForm("(abc)", "");
+    if (!testSixIsPassed)
+    {
+        printFailedTest(6, "testForConvertToPostfixForm");
+        return false;
+    }
+
+    return true;
+}
+
+static bool testForStrings(void)
+{
+    return testForStringsAreEqual() && testForCreateString() && testForAddCharToString();
 }
 
 bool test(void)
 {
-    return testForStringsIsPassed() && testForConversToPostfixFormIsPassed();
+    return testForStrings() && testForConvertToPostfixForm();
 }

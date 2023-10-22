@@ -2,10 +2,43 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char* getString(const char breakPoint)
+void freeString(String** const string)
 {
-    size_t sizeOfBuffer = sizeof(char);
-    char* string = (char*)malloc(sizeOfBuffer);
+    if (*string != NULL)
+    {
+        free((*string)->data);
+        free(*string);
+        *string = NULL;
+    }
+}
+
+String* createString(const char* const data)
+{
+    String* string = malloc(sizeof(String));
+    if (string == NULL)
+    {
+        return NULL;
+    }
+    string->length = strlen(data);
+    string->capacity = string->length + 1;
+    string->data = (char*)malloc(string->capacity);
+    if (string->data == NULL)
+    {
+        freeString(&string);
+        return NULL;
+    }
+    int errorCode = strcpy_s(string->data, string->capacity, data);
+    if (errorCode != SUCCESS)
+    {
+        freeString(&string);
+        return NULL;
+    }
+    return string;
+}
+
+String* getString(const char breakPoint)
+{
+    String* string = createString("");
     if (string == NULL)
     {
         return NULL;
@@ -14,32 +47,38 @@ char* getString(const char breakPoint)
     size_t i = 0;
     while (character != breakPoint)
     {
-        string[i] = character;
-        ++i;
-        if (i * sizeof(char) >= sizeOfBuffer)
+        string->data[i++] = character;
+        if (i * sizeof(char) >= string->capacity)
         {
-            sizeOfBuffer *= 2;
-            string = (char*)realloc(string, sizeOfBuffer);
-            if (string == NULL)
+            string->capacity *= 2;
+            string->data = (char*)realloc(string->data, string->capacity);
+            if (string->data == NULL)
             {
+                freeString(&string);
                 return NULL;
             }
         }
         character = getchar();
     }
-    string[i] = '\0';
+    string->data[i] = '\0';
+    string->length = i;
     return string;
 }
 
-int addCharToString(char** const string, const char character, const size_t lengthOfString)
+int addCharToString(String* const string, const char character)
 {
-    *string = (char*)realloc(*string, lengthOfString + 2);
-    if (*string == NULL)
+    if (string->length + 1 >= string->capacity)
+    {
+        string->capacity *= 2;
+        string->data = (char*)realloc(string->data, string->capacity);
+    }
+    if (string->data == NULL)
     {
         return BAD_ALLOCATION;
     }
-    (*string)[lengthOfString] = character;
-    (*string)[lengthOfString + 1] = '\0';
+    ++string->length;
+    string->data[string->length - 1] = character;
+    string->data[string->length] = '\0';
     return SUCCESS;
 }
 

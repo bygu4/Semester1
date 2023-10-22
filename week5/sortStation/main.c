@@ -12,7 +12,7 @@ int main(void)
         return TEST_FAILED;
     }
     printf("Enter an ariphmetic expression: ");
-    char* inputString = getString('\n');
+    String* inputString = getString('\n');
     if (inputString == NULL)
     {
         printf("An error occured\n");
@@ -20,14 +20,14 @@ int main(void)
     }
 
     int errorCode = SUCCESS;
-    char* output = convertToPostfixForm(inputString, &errorCode);
-    free(inputString);
+    String* output = convertToPostfixForm(inputString, &errorCode);
+    freeString(&inputString);
     if (errorCode != SUCCESS)
     {
-        free(output);
+        freeString(&output);
         printf("An error occured\n");
         return errorCode;
     }
-    printf("Expression in postfix form: %s\n", output);
-    free(output);
+    printf("Expression in postfix form: %s\n", output->data);
+    freeString(&output);
 }
