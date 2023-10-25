@@ -25,7 +25,7 @@ int main(void)
         switch (command)
         {
         case 0:
-            break;
+            continue;
         case 1:
             errorOccured = pushConsole(list);
             break;

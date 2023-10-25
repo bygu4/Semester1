@@ -15,8 +15,7 @@ struct SortedList {
 
 SortedList* createList(void)
 {
-    SortedList* list = calloc(1, sizeof(SortedList));
-    return list;
+    return (SortedList*)calloc(1, sizeof(SortedList));
 }
 
 bool push(SortedList* const list, const int value)
@@ -51,24 +50,26 @@ bool push(SortedList* const list, const int value)
     return false;
 }
 
-int pop(SortedList* const list, const size_t index)
+int pop(SortedList* const list, const int value)
 {
     if (list->size == 0)
     {
         return LIST_IS_EMPTY;
     }
-    if (list->size < index + 1)
+    if (value < list->head->value || list->back->value < value)
     {
-        return INDEX_OUT_OF_RANGE;
+        return ELEMENT_NOT_IN_LIST;
     }
     ListElement* currentElement = list->head;
     ListElement* previousElement = NULL;
-    size_t currentIndex = 0;
-    while (currentElement != NULL && currentIndex != index)
+    while (currentElement != NULL && currentElement->value != value)
     {
         previousElement = currentElement;
         currentElement = currentElement->next;
-        ++currentIndex;
+    }
+    if (currentElement == NULL)
+    {
+        return ELEMENT_NOT_IN_LIST;
     }
     ListElement* next = currentElement->next;
     free(currentElement);
@@ -100,11 +101,9 @@ size_t size(const SortedList* const list)
 
 void printList(const SortedList* const list)
 {
-    ListElement* currentElement = list->head;
-    while (currentElement != NULL)
+    for (const ListElement* currentElement = list->head; currentElement != NULL; currentElement = currentElement->next)
     {
         printf("%d ", currentElement->value);
-        currentElement = currentElement->next;
     }
 }
 
@@ -115,12 +114,10 @@ int* getList(const SortedList* const list)
     {
         return NULL;
     }
-    ListElement* currentElement = list->head;
     size_t i = 0;
-    while (currentElement != NULL)
+    for (const ListElement* currentElement = list->head; currentElement != NULL; currentElement = currentElement->next)
     {
         array[i] = currentElement->value;
-        currentElement = currentElement->next;
         ++i;
     }
     return array;
@@ -130,7 +127,7 @@ void freeList(SortedList** const list)
 {
     while (!isEmpty(*list))
     {
-        pop(*list, 0);
+        pop(*list, (*list)->head->value);
     }
     free(*list);
     *list = NULL;

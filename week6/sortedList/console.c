@@ -21,13 +21,13 @@ void popConsole(SortedList* const list)
         printf("List is empty\n");
         return;
     }
-    unsigned int inputIndex = 0;
-    printf("Enter an index: ");
-    scanf_s("%d", &inputIndex);
-    int errorCode = pop(list, inputIndex);
-    if (errorCode == INDEX_OUT_OF_RANGE)
+    int inputNumber = 0;
+    printf("Enter a number: ");
+    scanf_s("%d", &inputNumber);
+    int errorCode = pop(list, inputNumber);
+    if (errorCode == ELEMENT_NOT_IN_LIST)
     {
-        printf("Index out of range\n");
+        printf("Element not in list\n");
         return;
     }
     printf("Deleted\n");

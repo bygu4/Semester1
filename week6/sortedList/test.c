@@ -45,8 +45,8 @@ static bool testCaseForPush(const int* const inputArray, const int* const expect
     return testIsPassed;
 }
 
-static bool testCaseForPop(const int* const inputArray, const size_t* const indexesToPop, const int* const expectedArray,
-    const size_t sizeOfInputArray, const size_t sizeOfIndexArray, const int expectedErrorCode)
+static bool testCaseForPop(const int* const inputArray, const int* const valuesToPop, const int* const expectedArray,
+    const size_t sizeOfInputArray, const size_t sizeOfArrayToPop, const int expectedErrorCode)
 {
     SortedList* list = createList();
     if (list == NULL)
@@ -65,9 +65,9 @@ static bool testCaseForPop(const int* const inputArray, const size_t* const inde
         }
     }
     int errorCode = -1;
-    for (size_t i = 0; i < sizeOfIndexArray; ++i)
+    for (size_t i = 0; i < sizeOfArrayToPop; ++i)
     {
-        errorCode = pop(list, indexesToPop[i]);
+        errorCode = pop(list, valuesToPop[i]);
         if (errorCode != SUCCESS)
         {
             freeList(&list);
@@ -75,7 +75,7 @@ static bool testCaseForPop(const int* const inputArray, const size_t* const inde
         }
     }
     int* array = getList(list);
-    size_t expectedSize = sizeOfInputArray - sizeOfIndexArray;
+    size_t expectedSize = sizeOfInputArray - sizeOfArrayToPop;
     bool testIsPassed = size(list) == expectedSize && arraysAreEqual(array, expectedArray, expectedSize);
     free(array);
     freeList(&list);
@@ -117,19 +117,19 @@ static bool testForPush(void)
 static bool testForPop(void)
 {
     int array1[] = { 0 };
-    size_t indexesToPop1[1] = { 1 };
+    int valuesToPop1[1] = { 10 };
     int expectedArray1[] = { 0 };
-    bool testOneIsPassed = testCaseForPop(array1, indexesToPop1, expectedArray1, 0, 0, LIST_IS_EMPTY);
+    bool testOneIsPassed = testCaseForPop(array1, valuesToPop1, expectedArray1, 0, 1, LIST_IS_EMPTY);
     if (!testOneIsPassed)
     {
         printFailedTest(1, "testForPop");
         return false;
     }
 
-    int array2[1] = { 4 };
-    size_t indexesToPop2[1] = { 1 };
-    int expectedArray2[1] = { 4 };
-    bool testTwoIsPassed = testCaseForPop(array2, indexesToPop2, expectedArray2, 1, 1, INDEX_OUT_OF_RANGE);
+    int array2[2] = { 2, 4 };
+    int valuesToPop2[1] = { 3 };
+    int expectedArray2[2] = { 2, 4 };
+    bool testTwoIsPassed = testCaseForPop(array2, valuesToPop2, expectedArray2, 2, 1, ELEMENT_NOT_IN_LIST);
     if (!testTwoIsPassed)
     {
         printFailedTest(2, "testForPop");
@@ -137,9 +137,9 @@ static bool testForPop(void)
     }
 
     int array3[2] = { 5, 6 };
-    size_t indexesToPop3[2] = { 1, 0 };
+    int valuesToPop3[2] = { 6, 5 };
     int expectedArray3[] = { 0 };
-    bool testThreeIsPassed = testCaseForPop(array3, indexesToPop3, expectedArray3, 2, 2, SUCCESS);
+    bool testThreeIsPassed = testCaseForPop(array3, valuesToPop3, expectedArray3, 2, 2, SUCCESS);
     if (!testThreeIsPassed)
     {
         printFailedTest(3, "testForPop");
@@ -147,9 +147,9 @@ static bool testForPop(void)
     }
 
     int array4[10] = { -10, -9, -1, 0, 4, 5, 8, 9, 10, 11 };
-    size_t indexesToPop4[6] = {9, 0, 7, 0, 2, 2};
+    int valuesToPop4[6] = {11, -10, 10, -9, 4, 5};
     int expectedArray4[4] = { -1, 0, 8, 9 };
-    bool testFourIsPassed = testCaseForPop(array4, indexesToPop4, expectedArray4, 10, 6, SUCCESS);
+    bool testFourIsPassed = testCaseForPop(array4, valuesToPop4, expectedArray4, 10, 6, SUCCESS);
     if (!testFourIsPassed)
     {
         printFailedTest(4, "testForPop");

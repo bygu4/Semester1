@@ -4,19 +4,19 @@
 
 #define SUCCESS 0
 #define BAD_ALLOCATION 1
-#define INDEX_OUT_OF_RANGE 2
-#define LIST_IS_EMPTY 3
+#define LIST_IS_EMPTY 2
+#define ELEMENT_NOT_IN_LIST 3
 
 typedef struct SortedList SortedList;
 
 // создание пустого списка
 SortedList* createList(void);
 
-// добавление в список с сохранением порядка. Возвращает код ошибки
+// добавление в список с сохранением порядка. Возвращает наличие ошибки при выделении памяти
 bool push(SortedList* const list, const int value);
 
-// удаление из списка по индексу. Возвращает код ошибки
-int pop(SortedList* const list, const size_t index);
+// удаление элемента из списка. Возвращает код ошибки
+int pop(SortedList* const list, const int value);
 
 // проверка на пустоту списка
 bool isEmpty(const SortedList* const list);
