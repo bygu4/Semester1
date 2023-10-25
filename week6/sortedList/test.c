@@ -89,25 +89,25 @@ static bool testForPush(void)
     bool testOneIsPassed = testCaseForPush(array1, expectedArray1, 0);
     if (!testOneIsPassed)
     {
-        printFailedTest(1, "testForAdd");
+        printFailedTest(1, "testForPush");
         return false;
     }
 
-    int array2[13] = { 99, 7, 5, -100, 4, 2, 5, 2, 1, -1, -2, -1, 0 };
-    int expectedArray2[13] = { -100, -2, -1, -1, 0, 1, 2, 2, 4, 5, 5, 7, 99 };
-    bool testTwoIsPassed = testCaseForPush(array2, expectedArray2, 13);
+    int array2[2] = { 2, -1 };
+    int expectedArray2[2] = { -1, 2 };
+    bool testTwoIsPassed = testCaseForPush(array2, expectedArray2, 2);
     if (!testTwoIsPassed)
     {
-        printFailedTest(2, "testForAdd");
+        printFailedTest(2, "testForPush");
         return false;
     }
 
-    int array3[1] = { 2 };
-    int expectedArray3[1] = { 2 };
-    bool testThreeIsPassed = testCaseForPush(array3, expectedArray3, 1);
+    int array3[13] = { 99, 7, 5, -100, 4, 2, 5, 2, 1, -1, -2, -1, 0 };
+    int expectedArray3[13] = { -100, -2, -1, -1, 0, 1, 2, 2, 4, 5, 5, 7, 99 };
+    bool testThreeIsPassed = testCaseForPush(array3, expectedArray3, 13);
     if (!testThreeIsPassed)
     {
-        printFailedTest(3, "testForAdd");
+        printFailedTest(3, "testForPush");
         return false;
     }
 
@@ -136,13 +136,23 @@ static bool testForPop(void)
         return false;
     }
 
-    int array3[10] = { -10, -9, -1, 0, 4, 5, 8, 9, 10, 11 };
-    size_t indexesToPop3[6] = {9, 0, 7, 0, 2, 2};
-    int expectedArray3[4] = { -1, 0, 8, 9 };
-    bool testThreeIsPassed = testCaseForPop(array3, indexesToPop3, expectedArray3, 10, 6, SUCCESS);
+    int array3[2] = { 5, 6 };
+    size_t indexesToPop3[2] = { 1, 0 };
+    int expectedArray3[] = { 0 };
+    bool testThreeIsPassed = testCaseForPop(array3, indexesToPop3, expectedArray3, 2, 2, SUCCESS);
     if (!testThreeIsPassed)
     {
         printFailedTest(3, "testForPop");
+        return false;
+    }
+
+    int array4[10] = { -10, -9, -1, 0, 4, 5, 8, 9, 10, 11 };
+    size_t indexesToPop4[6] = {9, 0, 7, 0, 2, 2};
+    int expectedArray4[4] = { -1, 0, 8, 9 };
+    bool testFourIsPassed = testCaseForPop(array4, indexesToPop4, expectedArray4, 10, 6, SUCCESS);
+    if (!testFourIsPassed)
+    {
+        printFailedTest(4, "testForPop");
         return false;
     }
 

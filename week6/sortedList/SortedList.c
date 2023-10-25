@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 typedef struct ListElement {
-    size_t index;
     int value;
     struct ListElement* next;
 } ListElement;
@@ -28,12 +27,10 @@ bool push(SortedList* const list, const int value)
         return true;
     }
     element->value = value;
-    element->index = 0;
     ListElement* currentElement = list->head;
     ListElement* previousElement = NULL;
     while (currentElement != NULL && currentElement->value < value)
     {
-        ++element->index;
         previousElement = currentElement;
         currentElement = currentElement->next;
     }
@@ -49,11 +46,6 @@ bool push(SortedList* const list, const int value)
     if (element->next == NULL)
     {
         list->back = element;
-    }
-    while (currentElement != NULL)
-    {
-        ++currentElement->index;
-        currentElement = currentElement->next;
     }
     ++list->size;
     return false;
@@ -71,10 +63,12 @@ int pop(SortedList* const list, const size_t index)
     }
     ListElement* currentElement = list->head;
     ListElement* previousElement = NULL;
-    while (currentElement != NULL && currentElement->index != index)
+    size_t currentIndex = 0;
+    while (currentElement != NULL && currentIndex != index)
     {
         previousElement = currentElement;
         currentElement = currentElement->next;
+        ++currentIndex;
     }
     ListElement* next = currentElement->next;
     free(currentElement);
@@ -89,11 +83,6 @@ int pop(SortedList* const list, const size_t index)
     if (next == NULL)
     {
         list->back = previousElement;
-    }
-    while (next != NULL)
-    {
-        --next->index;
-        next = next->next;
     }
     --list->size;
     return SUCCESS;
