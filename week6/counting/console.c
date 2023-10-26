@@ -4,7 +4,7 @@
 
 static CycledList* getNumberAndCreateList(void)
 {
-    unsigned int numberOfWarriors = 0;
+    int numberOfWarriors = 0;
     printf("Enter a number of warriors: ");
     scanf_s("%d", &numberOfWarriors);
     CycledList* list = createList();
@@ -13,7 +13,7 @@ static CycledList* getNumberAndCreateList(void)
         return NULL;
     }
     bool errorOccured = false;
-    for (unsigned int i = 1; i <= numberOfWarriors; ++i)
+    for (int i = 1; i <= numberOfWarriors; ++i)
     {
         errorOccured = push(list, i);
         if (errorOccured)
@@ -29,7 +29,7 @@ static void getCountAndPop(CycledList* list)
 {
     unsigned int count = 0;
     printf("Enter count: ");
-    scanf_s("%d", &count);
+    scanf_s("%u", &count);
     cyclicPop(list, count);
 }
 
