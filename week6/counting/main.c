@@ -2,10 +2,6 @@
 #include "test.h"
 #include <stdio.h>
 
-#define SUCCESS 0
-#define TEST_FAILED -1
-#define BAD_ALLOCATION 1
-
 int main(void)
 {
     const bool allTestsArePassed = test();

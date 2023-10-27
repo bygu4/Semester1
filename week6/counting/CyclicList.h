@@ -14,7 +14,7 @@ bool isEmpty(const CycledList* const list);
 size_t size(const CycledList* const list);
 
 // добавление элемента в конец списка. Возвращает наличие ошибки при выделении памяти
-bool push(CycledList* const list, const int value);
+bool push(CycledList* const list, const size_t value);
 
 // циклическое удаление каждого n-го элемента пока не останется n - 1 элемент
 void cyclicPop(CycledList* const list, const size_t count);
@@ -26,4 +26,4 @@ void freeList(CycledList** const list);
 void printList(const CycledList* const list);
 
 // получение списка в виде массива
-int* getList(const CycledList* const list);
+size_t* getList(const CycledList* const list);

@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 typedef struct {
-    int value;
+    size_t value;
     struct ListElement* next;
 } ListElement;
 
@@ -28,7 +28,7 @@ size_t size(const CycledList* const list)
     return list->size;
 }
 
-bool push(CycledList* const list, const int value)
+bool push(CycledList* const list, const size_t value)
 {
     ListElement* element = malloc(sizeof(ListElement));
     if (element == NULL)
@@ -82,7 +82,7 @@ void cyclicPop(CycledList* const list, const size_t count)
     ListElement* currentElement = list->head;
     ListElement* previousElement = list->back;
     size_t i = 1;
-    while (size(list) >= count)
+    while (size(list) > 1)
     {
         if (i == count)
         {
@@ -115,15 +115,19 @@ void printList(const CycledList* const list)
     ListElement* currentElement = list->head;
     for (size_t i = 0; i < sizeOfList; ++i)
     {
-        printf("%d ", currentElement->value);
+        printf("%zu ", currentElement->value);
         currentElement = currentElement->next;
     }
 }
 
-int* getList(const CycledList* const list)
+size_t* getList(const CycledList* const list)
 {
     size_t sizeOfList = size(list);
-    int* array = (int*)malloc(sizeOfList * sizeof(int));
+    size_t* array = (size_t*)malloc(sizeOfList * sizeof(size_t));
+    if (array == NULL)
+    {
+        return NULL;
+    }
     ListElement* currentElement = list->head;
     for (size_t i = 0; i < sizeOfList; ++i)
     {
