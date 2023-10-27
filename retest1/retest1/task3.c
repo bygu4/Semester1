@@ -9,7 +9,8 @@
 #define NUMBER_OF_CHARACTERS 256
 
 #define NAME_OF_FILE "task3.txt"
-#define TEST_FILE "test.txt"
+#define TEST_FILE_1 "test1.txt"
+#define TEST_FILE_2 "test2.txt"
 
 void readStringAndCount(FILE* const file, int* const characters)
 {
@@ -88,20 +89,30 @@ bool testCase(const char* const nameOfFile, int* expectedArray)
 
 bool test(void)
 {
-    int* expectedArray = (int*)calloc(NUMBER_OF_CHARACTERS, sizeof(int));
-    expectedArray[(size_t)'8' + NUMBER_OF_CHARACTERS / 2] = 8;
-    expectedArray[(size_t)'7' + NUMBER_OF_CHARACTERS / 2] = 7;
-    expectedArray[(size_t)'a' + NUMBER_OF_CHARACTERS / 2] = 2;
-    expectedArray[(size_t)'b' + NUMBER_OF_CHARACTERS / 2] = 3;
-    expectedArray[(size_t)'c' + NUMBER_OF_CHARACTERS / 2] = 1;
-    expectedArray[(size_t)' ' + NUMBER_OF_CHARACTERS / 2] = 2;
-    expectedArray[(size_t)'#' + NUMBER_OF_CHARACTERS / 2] = 2;
-    bool testOneIsPassed = testCase(TEST_FILE, expectedArray);
+    int* expectedArray1 = (int*)calloc(NUMBER_OF_CHARACTERS, sizeof(int));
+    expectedArray1[(size_t)'8' + NUMBER_OF_CHARACTERS / 2] = 8;
+    expectedArray1[(size_t)'7' + NUMBER_OF_CHARACTERS / 2] = 7;
+    expectedArray1[(size_t)'a' + NUMBER_OF_CHARACTERS / 2] = 2;
+    expectedArray1[(size_t)'b' + NUMBER_OF_CHARACTERS / 2] = 3;
+    expectedArray1[(size_t)'c' + NUMBER_OF_CHARACTERS / 2] = 1;
+    expectedArray1[(size_t)' ' + NUMBER_OF_CHARACTERS / 2] = 2;
+    expectedArray1[(size_t)'#' + NUMBER_OF_CHARACTERS / 2] = 2;
+    bool testOneIsPassed = testCase(TEST_FILE_1, expectedArray1);
     if (!testOneIsPassed)
     {
         printf("Test 1 has failed\n");
         return false;
     }
+
+    int* expectedArray2 = (int*)calloc(NUMBER_OF_CHARACTERS, sizeof(int));
+    bool testTwoIsPassed = testCase(TEST_FILE_2, expectedArray2);
+    if (!testTwoIsPassed)
+    {
+        printf("Test 2 has failed\n");
+        return false;
+    }
+
+    return true;
 }
 
 int main(void)

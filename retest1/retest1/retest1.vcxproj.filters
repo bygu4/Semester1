@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\task3">
+      <UniqueIdentifier>{e336e2ee-ba78-4cd3-ba4b-1843b4caaff3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="task1.c">
@@ -22,15 +25,18 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="task3.c">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\task3</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt">
-      <Filter>Исходные файлы</Filter>
-    </Text>
     <Text Include="task3.txt">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\task3</Filter>
+    </Text>
+    <Text Include="test1.txt">
+      <Filter>Исходные файлы\task3</Filter>
+    </Text>
+    <Text Include="test2.txt">
+      <Filter>Исходные файлы\task3</Filter>
     </Text>
   </ItemGroup>
 </Project>
