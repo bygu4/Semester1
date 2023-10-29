@@ -35,4 +35,7 @@ void freeList(List** const list);
 void printList(const List* const list);
 
 // получение списка в виде массива строк. «аписывает по указателю код ошибки
-char** getList(const List* const list, int* const errorCode);
+char** getListData(const List* const list, int* const errorCode);
+
+// освободить пам€ть, выделенную под полученные из списка данные
+void freeListData(char*** data, const size_t sizeOfData);

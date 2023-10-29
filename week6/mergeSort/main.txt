@@ -1,7 +1,0 @@
-cd - gg
-cc - gg
-ab - cc
-aa - dd
-bb - aa
-ac - dd
-ee - aa

@@ -137,20 +137,25 @@ void printList(const List* const list)
     }
 }
 
-static void freeArray(char** array, const size_t sizeOfArray)
+void freeListData(char*** data, const size_t sizeOfData)
 {
-    for (size_t i = 0; i < sizeOfArray; ++i)
+    if (*data == NULL)
     {
-        free(array[i]);
+        return;
     }
-    free(array);
+    for (size_t i = 0; i < sizeOfData; ++i)
+    {
+        free((*data)[i]);
+    }
+    free(*data);
+    *data = NULL;
 }
 
-char** getList(const List* const list, int* const errorCode)
+char** getListData(const List* const list, int* const errorCode)
 {
     size_t sizeOfList = size(list);
-    char** output = (char**)malloc(sizeOfList * sizeof(char*));
-    if (output == NULL)
+    char** data = (char**)malloc(sizeOfList * sizeof(char*));
+    if (data == NULL)
     {
         *errorCode = BAD_ALLOCATION;
         return NULL;
@@ -159,15 +164,15 @@ char** getList(const List* const list, int* const errorCode)
     for (ListElement* currentElement = list->head;
         currentElement != NULL; currentElement = currentElement->next)
     {
-        char* data = stringSum(errorCode, 3, currentElement->name, " - ", currentElement->number);
+        char* element = stringSum(errorCode, 3, currentElement->name, " - ", currentElement->number);
         if (*errorCode != SUCCESS)
         {
-            freeArray(output, i);
+            freeListData(&data, i);
             return NULL;
         }
-        output[i] = data;
+        data[i] = element;
         ++i;
     }
     *errorCode = SUCCESS;
-    return output;
+    return data;
 }
