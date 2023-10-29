@@ -72,7 +72,7 @@ static void insertElementIntoList(ListElement* const element, List* const list)
 
 int push(List* const list, const char* const name, const char* const number)
 {
-    ListElement* element = malloc(sizeof(ListElement));
+    ListElement* element = (ListElement*)malloc(sizeof(ListElement));
     if (element == NULL)
     {
         return BAD_ALLOCATION;
