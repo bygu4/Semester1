@@ -38,4 +38,4 @@ void printList(const List* const list);
 char** getListData(const List* const list, int* const errorCode);
 
 // освободить память, выделенную под полученные из списка данные
-void freeListData(char*** data, const size_t sizeOfData);
+void freeListData(char*** const data, const size_t sizeOfData);

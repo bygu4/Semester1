@@ -141,7 +141,7 @@ void printList(const List* const list)
     }
 }
 
-void freeListData(char*** data, const size_t sizeOfData)
+void freeListData(char*** const data, const size_t sizeOfData)
 {
     if (*data == NULL)
     {
