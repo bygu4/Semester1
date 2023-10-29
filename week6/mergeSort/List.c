@@ -21,7 +21,7 @@ List* createList(void)
 
 bool isEmpty(const List* const list)
 {
-    return list == NULL || list->head == NULL;
+    return list->head == NULL;
 }
 
 size_t size(const List* const list)
@@ -120,6 +120,10 @@ void pop(List* const list)
 
 void freeList(List** const list)
 {
+    if (*list == NULL)
+    {
+        return;
+    }
     while (!isEmpty(*list))
     {
         pop(*list);
