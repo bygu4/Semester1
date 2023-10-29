@@ -16,6 +16,7 @@ int console(void)
         return errorCode;
     }
     printf("1: Sort list by name\n2: Sort list by number\n\n");
+    bool errorOccured = false;
     int command = 0;
     while (true)
     {
@@ -23,10 +24,10 @@ int console(void)
         switch (command)
         {
         case 1:
-            errorCode = mergeSort(list, compareByName);
+            errorOccured = mergeSort(list, compareByName);
             break;
         case 2:
-            errorCode = mergeSort(list, compareByNumber);
+            errorOccured = mergeSort(list, compareByNumber);
             break;
         default:
             printf("Unknown command\n\n");
@@ -34,10 +35,12 @@ int console(void)
         }
         break;
     }
-    if (errorCode == SUCCESS)
+    if (errorOccured)
     {
-        printList(list);
+        freeList(&list);
+        return BAD_ALLOCATION;
     }
+    printList(list);
     freeList(&list);
-    return errorCode;
+    return SUCCESS;
 }

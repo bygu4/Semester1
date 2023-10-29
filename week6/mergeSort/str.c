@@ -10,7 +10,7 @@ typedef struct {
 
 static String* createString(void)
 {
-    String* string = malloc(sizeof(String));
+    String* string = (String*)malloc(sizeof(String));
     if (string == NULL)
     {
         return NULL;
@@ -51,6 +51,13 @@ static int addCharToString(String* string, const char character)
     return SUCCESS;
 }
 
+static void swap(char** const string1, char** const string2)
+{
+    char* temp = *string1;
+    *string1 = *string2;
+    *string2 = temp;
+}
+
 char* stringSum(int* const errorCode, const size_t numberOfSources, ...)
 {
     String* sum = createString();
@@ -76,19 +83,9 @@ char* stringSum(int* const errorCode, const size_t numberOfSources, ...)
         }
     }
     va_end(sources);
-    char* output = (char*)malloc(sum->length + 1);
-    if (output == NULL)
-    {
-        *errorCode = BAD_ALLOCATION;
-        return NULL;
-    }
-    *errorCode = strcpy_s(output, sum->length + 1, sum->data);
+    char* output = NULL;
+    swap(&output, &sum->data);
     freeString(&sum);
-    if (*errorCode != SUCCESS)
-    {
-        free(output);
-        return NULL;
-    }
     *errorCode = SUCCESS;
     return output;
 }
@@ -111,19 +108,9 @@ char* fgetString(FILE* const inputFile, const char breakPoint, int* const errorC
         }
         character = fgetc(inputFile);
     }
-    char* output = (char*)malloc(string->length + 1);
-    if (output == NULL)
-    {
-        *errorCode = BAD_ALLOCATION;
-        return NULL;
-    }
-    *errorCode = strcpy_s(output, string->length + 1, string->data);
+    char* output = NULL;
+    swap(&output, &string->data);
     freeString(&string);
-    if (*errorCode != SUCCESS)
-    {
-        free(output);
-        return NULL;
-    }
     *errorCode = SUCCESS;
     return output;
 }

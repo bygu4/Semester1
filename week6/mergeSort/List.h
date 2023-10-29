@@ -28,6 +28,9 @@ int push(List* const list, const char* const name, const char* const number);
 // удаление из начала списка
 void pop(List* const list);
 
+// переложить элемент из начала одного списка в конец другого
+void replaceFirstElement(List* const destination, List* const source);
+
 // освобождение памяти, выделенной под список
 void freeList(List** const list);
 

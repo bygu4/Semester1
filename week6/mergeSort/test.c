@@ -4,29 +4,26 @@
 #include "mergeSort.h"
 #include <stdlib.h>
 
-static void printFailedTest(const int numberOfTest, const char* const nameOfTest)
+static void printFailedTest(const size_t numberOfTest, const char* const nameOfTest)
 {
-    printf("Test %d has failed in %s\n", numberOfTest, nameOfTest);
+    printf("Test %zu has failed in %s\n", numberOfTest, nameOfTest);
 }
 
 static bool testForCompareStrings(void)
 {
-    bool testOneIsPassed = compareStrings("aaabbbccc", "aaabbbccc");
-    if (!testOneIsPassed)
+    if (!compareStrings("aaabbbccc", "aaabbbccc"))
     {
         printFailedTest(1, "testForCompareStrings");
         return false;
     }
 
-    bool testTwoIsPassed = compareStrings("12345", "23456");
-    if (!testTwoIsPassed)
+    if (!compareStrings("12345", "23456"))
     {
         printFailedTest(2, "testForCompareStrings");
         return false;
     }
 
-    bool testThreeIsPassed = !compareStrings("zzzzz", "zzzzx");
-    if (!testThreeIsPassed)
+    if (compareStrings("zzzzz", "zzzzx"))
     {
         printFailedTest(3, "testForCompareStrings");
         return false;
@@ -83,6 +80,7 @@ static bool testForFgetString(void)
     int errorCode = fopen_s(&testFile, TEST_FILE_1, "r");
     if (errorCode != SUCCESS)
     {
+        printf("Couldn't open file in testForFgetString\n");
         return false;
     }
     char* testString1 = fgetString(testFile, ':', &errorCode);
@@ -210,8 +208,8 @@ static bool testCaseForMergeSort(const char* const nameOfFile,
         freeList(&list);
         return false;
     }
-    errorCode = mergeSort(list, key);
-    if (errorCode != SUCCESS)
+    bool errorOccured = mergeSort(list, key);
+    if (errorOccured)
     {
         freeList(&list);
         return false;

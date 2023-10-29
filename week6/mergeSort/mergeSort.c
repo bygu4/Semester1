@@ -15,112 +15,83 @@ bool compareByNumber(const List* const list1, const List* const list2)
     return compareStrings(number1, number2);
 }
 
-static int moveFirstElementToList(List* const destination, List* const source)
-{
-    char* name = getName(source);
-    char* number = getNumber(source);
-    int errorCode = push(destination, name, number);
-    pop(source);
-    return errorCode;
-}
-
-static int splitList(List* const list, List** const leftHalf, List** const rightHalf)
+static bool splitList(List* const list, List** const leftHalf, List** const rightHalf)
 {
     *leftHalf = createList();
     *rightHalf = createList();
     if (*leftHalf == NULL || *rightHalf == NULL)
     {
-        return BAD_ALLOCATION;
+        return true;
     }
-    int errorCode = 0;
     size_t sizeOfList = size(list);
     for (size_t i = 0; i < sizeOfList; ++i)
     {
         if (i < sizeOfList / 2)
         {
-            errorCode = moveFirstElementToList(*leftHalf, list);
+            replaceFirstElement(*leftHalf, list);
         }
         else
         {
-            errorCode = moveFirstElementToList(*rightHalf, list);
-        }
-        if (errorCode != SUCCESS)
-        {
-            return errorCode;
+            replaceFirstElement(*rightHalf, list);
         }
     }
-    return SUCCESS;
+    return false;
 }
 
-static int merge(List* const list, List* leftList, List* rightList, 
+static void merge(List* const list, List* leftList, List* rightList, 
     bool (*key)(const List* const, const List* const))
 {
-    int errorCode = 0;
     while (!isEmpty(leftList) && !isEmpty(rightList))
     {
         if (key(leftList, rightList))
         {
-            errorCode = moveFirstElementToList(list, leftList);
+            replaceFirstElement(list, leftList);
         }
         else
         {
-            errorCode = moveFirstElementToList(list, rightList);
-        }
-        if (errorCode != SUCCESS)
-        {
-            return errorCode;
+            replaceFirstElement(list, rightList);
         }
     }
     while (!isEmpty(leftList))
     {
-        errorCode = moveFirstElementToList(list, leftList);
-        if (errorCode != SUCCESS)
-        {
-            return errorCode;
-        }
+        replaceFirstElement(list, leftList);
     }
     while (!isEmpty(rightList))
     {
-        errorCode = moveFirstElementToList(list, rightList);
-        if (errorCode != SUCCESS)
-        {
-            return errorCode;
-        }
+        replaceFirstElement(list, rightList);
     }
-    return SUCCESS;
 }
 
-int mergeSort(List* const list, bool (*key)(const List* const, const List* const))
+static bool freeLists(List* list1, List* list2, bool errorCode)
+{
+    freeList(&list1);
+    freeList(&list2);
+    return errorCode;
+}
+
+bool mergeSort(List* const list, bool (*key)(const List* const, const List* const))
 {
     if (size(list) <= 1)
     {
-        return SUCCESS;
+        return false;
     }
     List* leftList = NULL;
     List* rightList = NULL;
-    int errorCode = splitList(list, &leftList, &rightList);
-    if (errorCode != SUCCESS)
+    bool errorOccured = splitList(list, &leftList, &rightList);
+    if (errorOccured)
     {
-        freeList(&leftList);
-        freeList(&rightList);
-        return errorCode;
+        return freeLists(leftList, rightList, true);
     }
-    errorCode = mergeSort(leftList, key);
-    if (errorCode != SUCCESS)
+    errorOccured = mergeSort(leftList, key);
+    if (errorOccured)
     {
-        freeList(&leftList);
-        freeList(&rightList);
-        return errorCode;
+        return freeLists(leftList, rightList, true);
     }
-    errorCode = mergeSort(rightList, key);
-    if (errorCode != SUCCESS)
+    errorOccured = mergeSort(rightList, key);
+    if (errorOccured)
     {
-        freeList(&leftList);
-        freeList(&rightList);
-        return errorCode;
+        return freeLists(leftList, rightList, true);
     }
-    errorCode = merge(list, leftList, rightList, key);
-    freeList(&leftList);
-    freeList(&rightList);
-    return errorCode;
+    merge(list, leftList, rightList, key);
+    return freeLists(leftList, rightList, false);
 }

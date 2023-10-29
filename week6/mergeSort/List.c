@@ -55,6 +55,21 @@ static void freeElement(ListElement** const element)
     *element = NULL;
 }
 
+static void insertElementIntoList(ListElement* const element, List* const list)
+{
+    element->next = NULL;
+    if (isEmpty(list))
+    {
+        list->head = element;
+    }
+    else
+    {
+        list->back->next = element;
+    }
+    list->back = element;
+    ++list->size;
+}
+
 int push(List* const list, const char* const name, const char* const number)
 {
     ListElement* element = malloc(sizeof(ListElement));
@@ -62,7 +77,7 @@ int push(List* const list, const char* const name, const char* const number)
     {
         return BAD_ALLOCATION;
     }
-    size_t lengthOfName = strlen(name);
+    const size_t lengthOfName = strlen(name);
     element->name = (char*)malloc(lengthOfName + 1);
     if (element->name == NULL)
     {
@@ -75,7 +90,7 @@ int push(List* const list, const char* const name, const char* const number)
         freeElement(&element);
         return errorCode;
     }
-    size_t lengthOfNumber = strlen(number);
+    const size_t lengthOfNumber = strlen(number);
     element->number = (char*)malloc(lengthOfNumber + 1);
     if (element->number == NULL)
     {
@@ -88,18 +103,18 @@ int push(List* const list, const char* const name, const char* const number)
         freeElement(&element);
         return errorCode;
     }
-    element->next = NULL;
-    if (isEmpty(list))
-    {
-        list->head = element;
-    }
-    else
-    {
-        list->back->next = element;
-    }
-    list->back = element;
-    ++list->size;
+    insertElementIntoList(element, list);
     return SUCCESS;
+}
+
+static void removeElementFromList(ListElement* const element, List* const list)
+{
+    list->head = element->next;
+    if (list->back == element)
+    {
+        list->back = element->next;
+    }
+    --list->size;
 }
 
 void pop(List* const list)
@@ -109,13 +124,19 @@ void pop(List* const list)
         return;
     }
     ListElement* element = list->head;
-    list->head = element->next;
-    if (list->back == element)
-    {
-        list->back = element->next;
-    }
+    removeElementFromList(element, list);
     freeElement(&element);
-    --list->size;
+}
+
+void replaceFirstElement(List* const destination, List* const source)
+{
+    if (isEmpty(source))
+    {
+        return;
+    }
+    ListElement* element = source->head;
+    removeElementFromList(element, source);
+    insertElementIntoList(element, destination);
 }
 
 void freeList(List** const list)
