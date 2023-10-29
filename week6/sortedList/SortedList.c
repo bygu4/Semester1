@@ -101,7 +101,8 @@ size_t size(const SortedList* const list)
 
 void printList(const SortedList* const list)
 {
-    for (const ListElement* currentElement = list->head; currentElement != NULL; currentElement = currentElement->next)
+    for (const ListElement* currentElement = list->head; currentElement != NULL; 
+        currentElement = currentElement->next)
     {
         printf("%d ", currentElement->value);
     }
@@ -115,7 +116,8 @@ int* getList(const SortedList* const list)
         return NULL;
     }
     size_t i = 0;
-    for (const ListElement* currentElement = list->head; currentElement != NULL; currentElement = currentElement->next)
+    for (const ListElement* currentElement = list->head; currentElement != NULL; 
+        currentElement = currentElement->next)
     {
         array[i] = currentElement->value;
         ++i;

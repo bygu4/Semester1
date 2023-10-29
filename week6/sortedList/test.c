@@ -84,8 +84,8 @@ static bool testCaseForPop(const int* const inputArray, const int* const valuesT
 
 static bool testForPush(void)
 {
-    int array1[] = { 0 };
-    int expectedArray1[] = { 0 };
+    int* array1 = NULL;
+    int* expectedArray1 = NULL;
     bool testOneIsPassed = testCaseForPush(array1, expectedArray1, 0);
     if (!testOneIsPassed)
     {
@@ -116,9 +116,9 @@ static bool testForPush(void)
 
 static bool testForPop(void)
 {
-    int array1[] = { 0 };
+    int* array1 = NULL;
     int valuesToPop1[1] = { 10 };
-    int expectedArray1[] = { 0 };
+    int* expectedArray1 = NULL;
     bool testOneIsPassed = testCaseForPop(array1, valuesToPop1, expectedArray1, 0, 1, LIST_IS_EMPTY);
     if (!testOneIsPassed)
     {
@@ -138,7 +138,7 @@ static bool testForPop(void)
 
     int array3[2] = { 5, 6 };
     int valuesToPop3[2] = { 6, 5 };
-    int expectedArray3[] = { 0 };
+    int* expectedArray3 = NULL;
     bool testThreeIsPassed = testCaseForPop(array3, valuesToPop3, expectedArray3, 2, 2, SUCCESS);
     if (!testThreeIsPassed)
     {
