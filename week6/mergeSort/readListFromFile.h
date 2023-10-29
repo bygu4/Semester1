@@ -1,8 +1,8 @@
-#pragma once
+п»ї#pragma once
 #include "List.h"
 #include <stdio.h>
 
 #define INCORRECT_FORMAT 3
 
-// считать данные из файла и записать в список. Возвращает код ошибки
+// СЃС‡РёС‚Р°С‚СЊ РґР°РЅРЅС‹Рµ РёР· С„Р°Р№Р»Р° Рё Р·Р°РїРёСЃР°С‚СЊ РІ СЃРїРёСЃРѕРє. Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕРґ РѕС€РёР±РєРё
 int readListFromFile(List* const list, const char* const nameOfFile);

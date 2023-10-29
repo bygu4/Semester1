@@ -1,4 +1,4 @@
-#include "console.h"
+﻿#include "console.h"
 #include "readListFromFile.h"
 #include "mergeSort.h"
 

@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -6,14 +6,14 @@
 #define SUCCESS 0
 #define BAD_ALLOCATION 1
 
-// конкатенация строк. Записывает по указателю код ошибки
+// РєРѕРЅРєР°С‚РµРЅР°С†РёСЏ СЃС‚СЂРѕРє. Р—Р°РїРёСЃС‹РІР°РµС‚ РїРѕ СѓРєР°Р·Р°С‚РµР»СЋ РєРѕРґ РѕС€РёР±РєРё
 char* stringSum(int* const errorCode, const size_t numberOfSources, ...);
 
-// считывание строки из файла. Записывает по указателю код ошибки
+// СЃС‡РёС‚С‹РІР°РЅРёРµ СЃС‚СЂРѕРєРё РёР· С„Р°Р№Р»Р°. Р—Р°РїРёСЃС‹РІР°РµС‚ РїРѕ СѓРєР°Р·Р°С‚РµР»СЋ РєРѕРґ РѕС€РёР±РєРё
 char* fgetString(FILE* const inputFile, const char breakPoint, int* const errorCode);
 
-// проверка строк на равенство
+// РїСЂРѕРІРµСЂРєР° СЃС‚СЂРѕРє РЅР° СЂР°РІРµРЅСЃС‚РІРѕ
 bool stringsAreEqual(const char* const string1, const char* const string2);
 
-// сравнение строк. Возвращает false, если первая строка больше второй, иначе true
+// СЃСЂР°РІРЅРµРЅРёРµ СЃС‚СЂРѕРє. Р’РѕР·РІСЂР°С‰Р°РµС‚ false, РµСЃР»Рё РїРµСЂРІР°СЏ СЃС‚СЂРѕРєР° Р±РѕР»СЊС€Рµ РІС‚РѕСЂРѕР№, РёРЅР°С‡Рµ true
 bool compareStrings(const char* const string1, const char* const string2);

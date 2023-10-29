@@ -1,4 +1,4 @@
-#include "mergeSort.h"
+﻿#include "mergeSort.h"
 #include "str.h"
 
 bool compareByName(const List* const list1, const List* const list2)

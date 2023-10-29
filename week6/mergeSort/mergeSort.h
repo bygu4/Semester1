@@ -1,12 +1,12 @@
-#pragma once
+п»ї#pragma once
 #include "List.h"
 #include <stdbool.h>
 
-// сравнение элементов списка по имени
+// СЃСЂР°РІРЅРµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР° РїРѕ РёРјРµРЅРё
 bool compareByName(const List* const list1, const List* const list2);
 
-// сравнение элементов списка по номеру
+// СЃСЂР°РІРЅРµРЅРёРµ СЌР»РµРјРµРЅС‚РѕРІ СЃРїРёСЃРєР° РїРѕ РЅРѕРјРµСЂСѓ
 bool compareByNumber(const List* const list1, const List* const list2);
 
-// сортировка слиянием по переданному ключу
+// СЃРѕСЂС‚РёСЂРѕРІРєР° СЃР»РёСЏРЅРёРµРј РїРѕ РїРµСЂРµРґР°РЅРЅРѕРјСѓ РєР»СЋС‡Сѓ
 int mergeSort(List* const list, bool (*key)(const List* const, const List* const));
