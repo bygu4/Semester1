@@ -1,4 +1,4 @@
-#include "str.h"
+﻿#include "str.h"
 #include <stdlib.h>
 
 typedef struct {
