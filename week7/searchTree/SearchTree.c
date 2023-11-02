@@ -69,6 +69,10 @@ bool addNode(SearchTree* const tree, const int key, const char* const data)
             }
         }
     }
+    else
+    {
+        free(node->data);
+    }
     node->data = copyString(data);
     if (node->data == NULL)
     {
