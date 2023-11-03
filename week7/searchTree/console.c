@@ -1,7 +1,15 @@
 ﻿#include "console.h"
-#include "SearchTree.h"
+#include "searchTree.h"
 #include "str.h"
 #include <stdlib.h>
+
+enum command {
+    quit = 0,
+    add = 1,
+    get = 2,
+    find = 3,
+    delete = 4
+};
 
 static int getKey(void)
 {
@@ -15,7 +23,7 @@ static bool addNodeConsole(SearchTree* const tree)
 {
     int key = getKey();
     getchar();
-    printf("Enter data: ");
+    printf("\nEnter data: ");
     char* data = getString('\n');
     if (data == NULL)
     {
@@ -87,24 +95,24 @@ int console(void)
 
     bool errorOccured = false;
     int command = -1;
-    while (command != 0)
+    while (command != quit)
     {
         printf("Enter a command: ");
         scanf_s("%d", &command);
         switch (command)
         {
-        case 0:
+        case quit:
             continue;
-        case 1:
+        case add:
             errorOccured = addNodeConsole(tree);
             break;
-        case 2:
+        case get:
             getDataConsole(tree);
             break;
-        case 3:
+        case find:
             findKeyConsole(tree);
             break;
-        case 4:
+        case delete:
             deleteNodeConsole(tree);
             break;
         default:

@@ -22,6 +22,3 @@ bool deleteNode(SearchTree* const tree, int const key);
 
 // освобождение памяти, выделенной под дерево
 void freeTree(SearchTree** const tree);
-
-// проверка корректности построения дерева обходом в ширину
-bool checkTreeByPreorder(const SearchTree* const tree, const int* const keys, const size_t sizeOfArray);

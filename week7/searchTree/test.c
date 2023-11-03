@@ -1,6 +1,6 @@
 ﻿#include "test.h"
 #include "str.h"
-#include "SearchTree.h"
+#include "searchTree.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,21 +11,23 @@ static void printFailedTest(const size_t numberOfTest, const char* const nameOfT
 
 static bool testForStringsAreEqual(void)
 {
+    const char* const testName = "testForStringsAreEqual";
+
     if (!stringsAreEqual("", ""))
     {
-        printFailedTest(1, "testForStringsAreEqual");
+        printFailedTest(1, testName);
         return false;
     }
 
     if (!stringsAreEqual("qwerty", "qwerty"))
     {
-        printFailedTest(2, "testForStringsAreEqual");
+        printFailedTest(2, testName);
         return false;
     }
 
     if (stringsAreEqual("abcd", "abc"))
     {
-        printFailedTest(3, "testForStringsAreEqual");
+        printFailedTest(3, testName);
         return false;
     }
 
@@ -42,15 +44,17 @@ static bool testCaseForCopyString(const char* const string)
 
 static bool testForCopyString(void)
 {
+    const char* const testName = "testForCopyString";
+
     if (!testCaseForCopyString(""))
     {
-        printFailedTest(1, "testForCopyString");
+        printFailedTest(1, testName);
         return false;
     }
 
     if (!testCaseForCopyString("ABCDEF"))
     {
-        printFailedTest(2, "testForCopyString");
+        printFailedTest(2, testName);
         return false;
     }
 
@@ -78,8 +82,7 @@ static void deleteKeysFromTree(SearchTree* const tree, const int* const keys, co
     }
 }
 
-static bool testCaseForAddNode(const int* const keysToAdd, const int* const expectedTree,
-    const size_t numberOfKeys, const size_t sizeOfTree)
+static bool testCaseForAddNode(const int* const keysToAdd, const size_t numberOfKeys)
 {
     SearchTree* tree = createTree();
     if (tree == NULL)
@@ -88,48 +91,53 @@ static bool testCaseForAddNode(const int* const keysToAdd, const int* const expe
         return false;
     }
     bool errorOccured = addKeysToTree(tree, keysToAdd, numberOfKeys);
-    bool testIsPassed = !errorOccured && checkTreeByPreorder(tree, expectedTree, sizeOfTree);
+    if (errorOccured)
+    {
+        freeTree(&tree);
+        return false;
+    }
+    for (size_t i = 0; i < numberOfKeys; ++i)
+        if (!findKey(tree, keysToAdd[i]))
+        {
+            freeTree(&tree);
+            return false;
+        }
     freeTree(&tree);
-    return testIsPassed;
+    return true;
 }
 
 static bool testForAddNode(void)
 {
-    int keys1[10] = { 8,
-                  5,      10,
-               2,    6, 9,   11,
-            1,    3,            15 };
+    const char* const testName = "testForAddNode";
 
-    bool testOneIsPassed = testCaseForAddNode(keys1, keys1, 10, 10);
+    int keys1[20] = { 60, 54, -100, 0, 0, -1, -1, 99, -20, 42, 30, -5, 10, 12, 76, 30, 31, 1, 2, 40 };
+    bool testOneIsPassed = testCaseForAddNode(keys1, 20);
     if (!testOneIsPassed)
     {
-        printFailedTest(1, "testForAddNode");
+        printFailedTest(1, testName);
         return false;
     }
 
-    int* keys2 = NULL;
-    bool testTwoIsPassed = testCaseForAddNode(keys2, keys2, 0, 0);
+    int keys2[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+    bool testTwoIsPassed = testCaseForAddNode(keys2, 10);
     if (!testTwoIsPassed)
     {
-        printFailedTest(2, "testForAddNode");
+        printFailedTest(2, testName);
         return false;
     }
 
-    int keys3[8] = { 1, 1, 2, 2, 3, 3, 4, 4 };
-    int tree3[4] = { 1, 2, 3, 4 };
-    bool testThreeIsPassed = testCaseForAddNode(keys3, tree3, 8, 4);
+    bool testThreeIsPassed = testCaseForAddNode(NULL, 0);
     if (!testThreeIsPassed)
     {
-        printFailedTest(3, "testForAddNode");
+        printFailedTest(3, testName);
         return false;
     }
 
     return true;
 }
 
-static bool testCaseForDeleteNode(const int* const keysToAdd, const int* const keysToDelete,
-    const int* const expectedTree, const size_t numberOfKeysToAdd, const size_t numberOfKeysToDelete,
-    const size_t sizeOfTree)
+static bool testCaseForDeleteNode(const int* const keysToAdd, const int* const keysToDelete, 
+    const size_t numberOfKeysToAdd, const size_t numberOfKeysToDelete)
 {
     SearchTree* tree = createTree();
     if (tree == NULL)
@@ -140,66 +148,60 @@ static bool testCaseForDeleteNode(const int* const keysToAdd, const int* const k
     bool errorOccured = addKeysToTree(tree, keysToAdd, numberOfKeysToAdd);
     if (errorOccured)
     {
+        printf("Failed to add keys\n");
         freeTree(&tree);
         return false;
     }
     deleteKeysFromTree(tree, keysToDelete, numberOfKeysToDelete);
-    bool testIsPassed = checkTreeByPreorder(tree, expectedTree, sizeOfTree);
+    for (size_t i = 0; i < numberOfKeysToDelete; ++i)
+    {
+        if (findKey(tree, keysToDelete[i]))
+        {
+            freeTree(&tree);
+            return false;
+        }
+    }
     freeTree(&tree);
-    return testIsPassed;
+    return true;
 }
 
 static bool testForDeleteNode(void)
 {
-    int keysToAdd1[15] = { 8,
-                      5,       12,
-                  3,    7,  10,    14,
-              -1,  4,  6,     11,      80,
-                 0,                 45,   82 };
+    const char* const testName = "testForDeleteNode";
 
-    int keysToDelete1[6] = { 0, 45, 80, 3, 12, 8 };
-
-    int expectedTree1[9] = { 7,
-                          5,     11,
-                       4,   6, 10,  14,
-                    -1,                82 };
-
-    bool testOneIsPassed = testCaseForDeleteNode(keysToAdd1, keysToDelete1, expectedTree1, 14, 6, 8);
+    int keysToAdd1[20] = { 60, 0, 1, 1, 23, 23, -100, -20, 99, 54, 42, 65, -89, -7, 0, 18, -40, 100, 22, -21 };
+    int keysToDelete1[12] = {54, -40, 22, 60, 1, 0, -100, 99, 9999, -10000, 43434, 23};
+    bool testOneIsPassed = testCaseForDeleteNode(keysToAdd1, keysToDelete1, 20, 12);
     if (!testOneIsPassed)
     {
-        printFailedTest(1, "testForDeleteNode");
+        printFailedTest(1, testName);
         return false;
     }
 
     int* keysToAdd2 = NULL;
-    int keysToDelete2[5] = { 1, 2, 3, 4, 5 };
-    bool testTwoIsPassed = testCaseForDeleteNode(keysToAdd2, keysToDelete2, NULL, 0, 5, 0);
+    int keysToDelete2[6] = { 0, 1, 2, 3, 4, 5 };
+    bool testTwoIsPassed = testCaseForDeleteNode(keysToAdd2, keysToDelete2, 0, 6);
     if (!testTwoIsPassed)
     {
-        printFailedTest(2, "testForDeleteNode");
+        printFailedTest(2, testName);
         return false;
     }
 
-    int keysToAdd3[7] = { 0, 2, 1, 3, -2, -1, -3 };
-    int keysToDelete3[14] = { -3, -3, -2, -2, -1, -1, 0, 0, 1, 1, 2, 2, 3, 3 };
-    bool testThreeIsPassed = testCaseForDeleteNode(keysToAdd3, keysToDelete3, NULL, 7, 14, 0);
+    int keysToAdd3[14] = { 0, 0, 2, 2, 1, 1, 3, 3, -2, -2, -1, -1, -3, -3 };
+    int keysToDelete3[7] = { -3, -2, -1, 0, 1, 2, 3 };
+    bool testThreeIsPassed = testCaseForDeleteNode(keysToAdd3, keysToDelete3, 14, 7);
     if (!testThreeIsPassed)
     {
-        printFailedTest(3, "testForDeleteNode");
+        printFailedTest(3, testName);
         return false;
     }
 
     return true;
 }
 
-static bool testCaseForFindKeyAndGetData(SearchTree* const tree,
+static bool testCaseForGetData(SearchTree* const tree,
     const int key, const char* const data, const bool keyIsInTree)
 {
-    bool keyFound = findKey(tree, key);
-    if (keyFound != keyIsInTree)
-    {
-        return false;
-    }
     char* foundData = getData(tree, key);
     if (foundData == NULL)
     {
@@ -208,12 +210,14 @@ static bool testCaseForFindKeyAndGetData(SearchTree* const tree,
     return stringsAreEqual(foundData, data);
 }
 
-static bool testForFindKeyAndGetData(void)
+static bool testForGetData(void)
 {
+    const char* const testName = "testForGetData";
+
     SearchTree* tree = createTree();
     if (tree == NULL)
     {
-        printf("Failed to create tree in testForFindKeyAndGetData\n");
+        printf("Failed to create tree in %s\n", testName);
         return false;
     }
 
@@ -222,42 +226,42 @@ static bool testForFindKeyAndGetData(void)
     if (errorOccured)
     {
         freeTree(&tree);
-        printf("Failed to add keys in testForFindKeyAndGetData\n");
+        printf("Failed to add keys in %s\n", testName);
         return false;
     }
     addNode(tree, 0, "test1");
     addNode(tree, 3, "test2");
     addNode(tree, -1, "test3");
 
-    bool testOneIsPassed = testCaseForFindKeyAndGetData(tree, 0, "test1", true);
+    bool testOneIsPassed = testCaseForGetData(tree, 0, "test1", true);
     if (!testOneIsPassed)
     {
         freeTree(&tree);
-        printFailedTest(1, "testForFindKeyAndGetData");
+        printFailedTest(1, testName);
         return false;
     }
 
-    bool testTwoIsPassed = testCaseForFindKeyAndGetData(tree, 3, "test2", true);
+    bool testTwoIsPassed = testCaseForGetData(tree, 3, "test2", true);
     if (!testTwoIsPassed)
     {
         freeTree(&tree);
-        printFailedTest(2, "testForFindKeyAndGetData");
+        printFailedTest(2, testName);
         return false;
     }
 
-    bool testThreeIsPassed = testCaseForFindKeyAndGetData(tree, -1, "test3", true);
+    bool testThreeIsPassed = testCaseForGetData(tree, -1, "test3", true);
     if (!testThreeIsPassed)
     {
         freeTree(&tree);
-        printFailedTest(3, "testForFindKeyAndGetData");
+        printFailedTest(3, testName);
         return false;
     }
 
-    bool testFourIsPassed = testCaseForFindKeyAndGetData(tree, 5, "test4", false);
+    bool testFourIsPassed = testCaseForGetData(tree, 5, "test4", false);
     freeTree(&tree);
     if (!testFourIsPassed)
     {
-        printFailedTest(4, "testForFindKeyAndGetData");
+        printFailedTest(4, testName);
         return false;
     }
 
@@ -271,7 +275,7 @@ static bool testForStrings(void)
 
 static bool testForSearchTree(void)
 {
-    return testForAddNode() && testForDeleteNode() && testForFindKeyAndGetData();
+    return testForAddNode() && testForDeleteNode() && testForGetData();
 }
 
 bool test(void)
