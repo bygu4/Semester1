@@ -4,11 +4,11 @@
 #include <stdlib.h>
 
 enum command {
-    quit = 0,
-    add = 1,
-    get = 2,
-    find = 3,
-    delete = 4
+    quitCommand = 0,
+    addCommand = 1,
+    getCommand = 2,
+    findCommand = 3,
+    deleteCommand = 4
 };
 
 static int getKey(void)
@@ -95,24 +95,24 @@ int console(void)
 
     bool errorOccured = false;
     int command = -1;
-    while (command != quit)
+    while (command != quitCommand)
     {
         printf("Enter a command: ");
         scanf_s("%d", &command);
         switch (command)
         {
-        case quit:
+        case quitCommand:
             continue;
-        case add:
+        case addCommand:
             errorOccured = addNodeConsole(tree);
             break;
-        case get:
+        case getCommand:
             getDataConsole(tree);
             break;
-        case find:
+        case findCommand:
             findKeyConsole(tree);
             break;
-        case delete:
+        case deleteCommand:
             deleteNodeConsole(tree);
             break;
         default:

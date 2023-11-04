@@ -147,8 +147,8 @@ static Node* getClosestChild(const Node* const node, Node** const parent)
         *parent = leftParent;
         return closestLeft;
     }
-    unsigned int leftDifference = abs(closestLeft->key - node->key);
-    unsigned int rightDifference = abs(closestRight->key - node->key);
+    const unsigned int leftDifference = abs(closestLeft->key - node->key);
+    const unsigned int rightDifference = abs(closestRight->key - node->key);
     if (leftDifference < rightDifference)
     {
         *parent = leftParent;
