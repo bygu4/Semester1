@@ -396,8 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/week7/searchTree/searchTree.vcxproj.filters
-/huffman/huffman.sln
 *.vcxproj
 *.sln
 *.filters
