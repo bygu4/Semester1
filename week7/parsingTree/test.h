@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <stdbool.h>
 
 #define TEST_FAILED -1
@@ -9,5 +9,5 @@
 #define TEST_FILE_FOR_PARSING_TREE_4 "testForParsingTree4.txt"
 #define TEST_FILE_FOR_PARSING_TREE_5 "testForParsingTree5.txt"
 
-// тесты для getInt и дерева разбора
+// С‚РµСЃС‚С‹ РґР»СЏ getInt Рё РґРµСЂРµРІР° СЂР°Р·Р±РѕСЂР°
 bool test(void);
