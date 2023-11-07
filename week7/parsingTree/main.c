@@ -9,10 +9,5 @@ int main(void)
         return TEST_FAILED;
     }
     const int errorCode = console();
-    if (errorCode != SUCCESS)
-    {
-        printf("An error occured\n");
-        return errorCode;
-    }
-    return SUCCESS;
+    return errorCode;
 }

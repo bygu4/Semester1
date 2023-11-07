@@ -1,18 +1,18 @@
 ﻿#include "parsingTree.h"
-#include "getInt.h"
 #include <stdlib.h>
+#include <ctype.h>
 
 enum operations {
-    addition = '+',
-    substraction = '-',
-    multiplication = '*',
-    division = '/'
+    additionOp = '+',
+    substractionOp = '-',
+    multiplicationOp = '*',
+    divisionOp = '/'
 };
 
 static bool isOperation(const char character)
 {
-    return character == addition || character == substraction ||
-        character == multiplication || character == division;
+    return character == additionOp || character == substractionOp ||
+        character == multiplicationOp || character == divisionOp;
 }
 
 typedef struct {
@@ -25,7 +25,7 @@ struct ParsingTree {
     Node* root;
 };
 
-static void freeTreeRecursion(Node* node)
+static void freeNodeWithDescendants(Node* node)
 {
     if (node == NULL)
     {
@@ -33,18 +33,18 @@ static void freeTreeRecursion(Node* node)
     }
     if (node->leftChild != NULL)
     {
-        freeTreeRecursion(node->leftChild);
+        freeNodeWithDescendants(node->leftChild);
     }
     if (node->rightChild != NULL)
     {
-        freeTreeRecursion(node->rightChild);
+        freeNodeWithDescendants(node->rightChild);
     }
     free(node);
 }
 
 void freeTree(ParsingTree** const tree)
 {
-    freeTreeRecursion((*tree)->root);
+    freeNodeWithDescendants((*tree)->root);
     free(*tree);
     *tree = NULL;
 }
@@ -62,80 +62,62 @@ static Node* makeNode(const int value)
     return node;
 }
 
-static ParsingTree* buildTreeRecursion(FILE* const stream)
+static int getInt(FILE* const stream)
 {
-    ParsingTree* tree = (ParsingTree*)calloc(1, sizeof(ParsingTree));
-    if (tree == NULL)
+    int result = 0;
+    char character = fgetc(stream);
+    while (isdigit(character))
     {
-        return NULL;
+        result = result * 10 + (int)(character - '0');
+        character = fgetc(stream);
     }
+    ungetc(character, stream);
+    return result;
+}
+
+static Node* buildTreeRecursion(FILE* const stream, int* const errorCode)
+{
+    Node* node = NULL;
     char character = fgetc(stream);
     while (character != ')' && !feof(stream))
     {
-        if (character == '(')
+        if (isdigit(character))
         {
-            ParsingTree* childTree = buildTreeRecursion(stream);
-            if (childTree == NULL)
+            ungetc(character, stream);
+            int number = getInt(stream);
+            node = makeNode(number);
+            if (node == NULL)
             {
-                freeTree(&tree);
+                *errorCode = BAD_ALLOCATION;
                 return NULL;
             }
-            Node* childTreeRoot = childTree->root;
-            free(childTree);
-            if (tree->root == NULL)
-            {
-                tree->root = childTreeRoot;
-            }
-            else if (tree->root->leftChild == NULL)
-            {
-                tree->root->leftChild = childTreeRoot;
-            }
-            else
-            {
-                tree->root->rightChild = childTreeRoot;
-            }
+            break;
+        }
+        else if (character == '(')
+        {
+            return buildTreeRecursion(stream, errorCode);
         }
         else if (isOperation(character))
         {
-            tree->root = makeNode((int)character);
-            if (tree->root == NULL)
-            {
-                free(tree);
-                return NULL;
-            }
-        }
-        else if (isdigit(character))
-        {
-            ungetc(character, stream);
-            bool errorOccured = false;
-            const int value = getInt(stream, &errorOccured);
-            if (errorOccured)
-            {
-                freeTree(&tree);
-                return NULL;;
-            }
-            Node* node = makeNode(value);
+            node = makeNode((int)character);
             if (node == NULL)
             {
-                freeTree(&tree);
+                *errorCode = BAD_ALLOCATION;
                 return NULL;
             }
-            if (tree->root == NULL)
+            node->leftChild = buildTreeRecursion(stream, errorCode);
+            node->rightChild = buildTreeRecursion(stream, errorCode);
+            if (node->leftChild == NULL || node->rightChild == NULL)
             {
-                tree->root = node;
-            }
-            else if (tree->root->leftChild == NULL)
-            {
-                tree->root->leftChild = node;
-            }
-            else
-            {
-                tree->root->rightChild = node;
+                freeNodeWithDescendants(node);
+                *errorCode = BAD_ALLOCATION;
+                return NULL;
             }
         }
         character = fgetc(stream);
     }
-    return tree;
+    *errorCode = SUCCESS;
+    return node;
 }
 
 int buildTree(ParsingTree** const tree, const char* const nameOfFile)
@@ -146,13 +128,19 @@ int buildTree(ParsingTree** const tree, const char* const nameOfFile)
     {
         return errorCode;
     }
-    *tree = buildTreeRecursion(inputFile);
-    fclose(inputFile);
+    *tree = (ParsingTree*)malloc(sizeof(ParsingTree));
     if (*tree == NULL)
     {
+        fclose(inputFile);
         return BAD_ALLOCATION;
     }
-    return SUCCESS;
+    (*tree)->root = buildTreeRecursion(inputFile, &errorCode);
+    fclose(inputFile);
+    if (errorCode != SUCCESS)
+    {
+        freeTree(tree);
+    }
+    return errorCode;
 }
 
 static int calculate(const int number1, const int number2, const char operation)
@@ -160,16 +148,16 @@ static int calculate(const int number1, const int number2, const char operation)
     int result = 0;
     switch (operation)
     {
-    case addition:
+    case additionOp:
         result = number1 + number2;
         break;
-    case substraction:
+    case substractionOp:
         result = number1 - number2;
         break;
-    case multiplication:
+    case multiplicationOp:
         result = number1 * number2;
         break;
-    case division:
+    case divisionOp:
         result = number1 / number2;
         break;
     }
@@ -200,7 +188,7 @@ static int calculateTreeRecursion(const Node* const node, const bool printTree, 
         return 0;
     }
     printf(printTree ? ")" : "");
-    if ((char)node->value == division && number2 == 0)
+    if ((char)node->value == divisionOp && number2 == 0)
     {
         *errorCode = DIVISION_BY_ZERO;
         return 0;

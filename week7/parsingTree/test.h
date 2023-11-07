@@ -9,5 +9,5 @@
 #define TEST_FILE_FOR_PARSING_TREE_4 "testForParsingTree4.txt"
 #define TEST_FILE_FOR_PARSING_TREE_5 "testForParsingTree5.txt"
 
-// тесты для getInt и дерева разбора
+// тесты дерева разбора
 bool test(void);

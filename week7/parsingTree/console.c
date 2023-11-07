@@ -7,6 +7,7 @@ int console(void)
     int errorCode = buildTree(&tree, NAME_OF_FILE);
     if (errorCode != SUCCESS)
     {
+        printf("An error occured\n");
         if (errorCode == FILE_NOT_FOUND)
         {
             printf("File not found\n");
