@@ -31,14 +31,8 @@ static void freeNodeWithDescendants(Node* node)
     {
         return;
     }
-    if (node->leftChild != NULL)
-    {
-        freeNodeWithDescendants(node->leftChild);
-    }
-    if (node->rightChild != NULL)
-    {
-        freeNodeWithDescendants(node->rightChild);
-    }
+    freeNodeWithDescendants(node->leftChild);
+    freeNodeWithDescendants(node->rightChild);
     free(node);
 }
 
@@ -92,10 +86,6 @@ static Node* buildTreeRecursion(FILE* const stream, int* const errorCode)
                 return NULL;
             }
             break;
-        }
-        else if (character == '(')
-        {
-            return buildTreeRecursion(stream, errorCode);
         }
         else if (isOperation(character))
         {
