@@ -227,16 +227,14 @@ static bool testForGetData(void)
     }
 
     char* keys[10] = { "0", "-4", "4", "-2", "2", "-6", "6", "-3", "3", "8" };
-    bool errorOccured = addKeysToTree(tree, keys, 10);
+    bool errorOccured = addKeysToTree(tree, keys, 10) || 
+        addNode(tree, "0", "test1") || addNode(tree, "3", "test2") || addNode(tree, "-1", "test3");
     if (errorOccured)
     {
         freeTree(&tree);
         printf("Failed to add keys in %s\n", testName);
         return false;
     }
-    addNode(tree, "0", "test1");
-    addNode(tree, "3", "test2");
-    addNode(tree, "-1", "test3");
 
     bool testOneIsPassed = testCaseForGetData(tree, "0", "test1", true);
     if (!testOneIsPassed)
