@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include <stdbool.h>
 
 #define TEST_FAILED -1
 
-// тест
+// С‚РµСЃС‚
 bool test(void);

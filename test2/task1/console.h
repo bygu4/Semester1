@@ -1,8 +1,8 @@
-#pragma once
+п»ї#pragma once
 #include <stdio.h>
 
 #define SUCCESS 0
 #define BAD_ALLOCATION 1
 
-// осуществляет работу с пользователем
+// РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ СЂР°Р±РѕС‚Сѓ СЃ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 int console(void);
