@@ -32,6 +32,7 @@ int console(void)
     bool errorOccured = scanList(list, sizeOfList);
     if (errorOccured)
     {
+        freeList(&list);
         printf("An error occured\n");
         return BAD_ALLOCATION;
     }
