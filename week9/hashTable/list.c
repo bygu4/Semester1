@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 typedef struct {
-    char* data;
+    char* key;
     unsigned int numberOfEntries;
     struct ListElement* next;
 } ListElement;
@@ -19,6 +19,30 @@ List* createList(void)
     return (List*)calloc(1, sizeof(List));
 }
 
+static void freeElement(ListElement** const element)
+{
+    free((*element)->key);
+    free(*element);
+    *element = NULL;
+}
+
+static ListElement* head(const List* const list)
+{
+    return list != NULL ? list->head : NULL;
+}
+
+void freeList(List** const list)
+{
+    for (ListElement* current = head(*list); current != NULL;)
+    {
+        ListElement* next = current->next;
+        freeElement(&current);
+        current = next;
+    }
+    free(*list);
+    *list = NULL;
+}
+
 size_t size(const List* const list)
 {
     return list != NULL ? list->size : 0;
@@ -29,15 +53,15 @@ static bool isEmpty(const List* const list)
     return list->head == NULL;
 }
 
-static ListElement* createElement(const char* const data)
+static ListElement* createElement(const char* const key)
 {
     ListElement* element = (ListElement*)malloc(sizeof(ListElement));
     if (element == NULL)
     {
         return NULL;
     }
-    element->data = copyString(data);
-    if (element->data == NULL)
+    element->key = copyString(key);
+    if (element->key == NULL)
     {
         free(element);
         return NULL;
@@ -47,11 +71,11 @@ static ListElement* createElement(const char* const data)
     return element;
 }
 
-static ListElement* getElement(const List* const list, const char* const data)
+static ListElement* getElement(const List* const list, const char* const key)
 {
-    for (ListElement* current = list->head; current != NULL; current = current->next)
+    for (ListElement* current = head(list); current != NULL; current = current->next)
     {
-        if (stringsAreEqual(current->data, data))
+        if (stringsAreEqual(current->key, key))
         {
             return current;
         }
@@ -59,15 +83,15 @@ static ListElement* getElement(const List* const list, const char* const data)
     return NULL;
 }
 
-bool push(List* const list, const char* const data)
+bool push(List* const list, const char* const key)
 {
-    ListElement* element = getElement(list, data);
+    ListElement* element = getElement(list, key);
     if (element != NULL)
     {
         ++element->numberOfEntries;
         return false;
     }
-    element = createElement(data);
+    element = createElement(key);
     if (element == NULL)
     {
         return true;
@@ -87,35 +111,20 @@ bool push(List* const list, const char* const data)
 
 void printList(const List* const list)
 {
-    if (list == NULL)
+    for (ListElement* current = head(list); current != NULL; current = current->next)
     {
-        return;
-    }
-    for (ListElement* current = list->head; current != NULL; current = current->next)
-    {
-        printf("%s: %d\n", current->data, current->numberOfEntries);
+        printf("%s: %d\n", current->key, current->numberOfEntries);
     }
 }
 
-static void freeElement(ListElement** const element)
+unsigned int numberOfEntries(const List* const list, const char* const key)
 {
-    free((*element)->data);
-    free(*element);
-    *element = NULL;
-}
-
-void freeList(List** const list)
-{
-    if (*list == NULL)
+    for (ListElement* current = head(list); current != NULL; current = current->next)
     {
-        return;
+        if (stringsAreEqual(current->key, key))
+        {
+            return current->numberOfEntries;
+        }
     }
-    for (ListElement* current = (*list)->head; current != NULL;)
-    {
-        ListElement* next = current->next;
-        freeElement(&current);
-        current = next;
-    }
-    free(*list);
-    *list = NULL;
+    return 0;
 }

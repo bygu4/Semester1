@@ -1,7 +1,6 @@
 #include "hashTable.h"
 #include "list.h"
 #include <stdlib.h>
-#include <math.h>
 
 #define PRIME_BASE 757
 #define PRIME_MOD 1000000001
@@ -26,6 +25,16 @@ HashTable* createHashTable(void)
     return (HashTable*)calloc(1, sizeof(HashTable));
 }
 
+void freeHashTable(HashTable** const table)
+{
+    for (size_t i = 0; i < NUMBER_OF_BUCKETS; ++i)
+    {
+        freeList(&(*table)->buckets[i]);
+    }
+    free(*table);
+    *table = NULL;
+}
+
 bool add(HashTable* const table, const char* const key)
 {
     size_t index = hash(key) % NUMBER_OF_BUCKETS;
@@ -46,16 +55,6 @@ void printTable(const HashTable* const table)
     {
         printList(table->buckets[i]);
     }
-}
-
-void freeHashTable(HashTable** const table)
-{
-    for (size_t i = 0; i < NUMBER_OF_BUCKETS; ++i)
-    {
-        freeList(&(*table)->buckets[i]);
-    }
-    free(*table);
-    *table = NULL;
 }
 
 double getLoadFactor(const HashTable* const table)
@@ -91,4 +90,10 @@ double getAverageLength(const HashTable* const table)
         }
     }
     return (double)sum / numberOfLists;
+}
+
+unsigned int getNumberOfEntries(const HashTable* const table, const char* const key)
+{
+    size_t index = hash(key) % NUMBER_OF_BUCKETS;
+    return numberOfEntries(table->buckets[index], key);
 }
