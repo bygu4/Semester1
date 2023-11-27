@@ -1,4 +1,4 @@
-#include "test.h"
+﻿#include "test.h"
 #include "str.h"
 #include "readFileAndAdd.h"
 #include <stdlib.h>

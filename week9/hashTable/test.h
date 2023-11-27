@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include <stdbool.h>
 
 #define TEST_FAILED -1
 
-// тесты для строк и хеш-таблицы
+// С‚РµСЃС‚С‹ РґР»СЏ СЃС‚СЂРѕРє Рё С…РµС€-С‚Р°Р±Р»РёС†С‹
 bool test(void);

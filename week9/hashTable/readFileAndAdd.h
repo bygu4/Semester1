@@ -1,9 +1,9 @@
-#pragma once
+п»ї#pragma once
 #include "hashTable.h"
 
 #define SUCCESS 0
 #define BAD_ALLOCATION 1
 #define FILE_NOT_FOUND 2
 
-// считать слова из файла и добавить в таблицу. Возвращает код ошибки
+// СЃС‡РёС‚Р°С‚СЊ СЃР»РѕРІР° РёР· С„Р°Р№Р»Р° Рё РґРѕР±Р°РІРёС‚СЊ РІ С‚Р°Р±Р»РёС†Сѓ. Р’РѕР·РІСЂР°С‰Р°РµС‚ РєРѕРґ РѕС€РёР±РєРё
 int readFileAndAdd(HashTable* const table, const char* const nameOfFile);

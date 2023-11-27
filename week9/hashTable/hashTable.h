@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -6,26 +6,26 @@
 
 typedef struct HashTable HashTable;
 
-// создать пустую таблицу
+// СЃРѕР·РґР°С‚СЊ РїСѓСЃС‚СѓСЋ С‚Р°Р±Р»РёС†Сѓ
 HashTable* createHashTable(void);
 
-// освободить память, выделенную под таблицу
+// РѕСЃРІРѕР±РѕРґРёС‚СЊ РїР°РјСЏС‚СЊ, РІС‹РґРµР»РµРЅРЅСѓСЋ РїРѕРґ С‚Р°Р±Р»РёС†Сѓ
 void freeHashTable(HashTable** const table);
 
-// добавить элемент в таблицу, возвращает наличие ошибки при выделении памяти
+// РґРѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ РІ С‚Р°Р±Р»РёС†Сѓ, РІРѕР·РІСЂР°С‰Р°РµС‚ РЅР°Р»РёС‡РёРµ РѕС€РёР±РєРё РїСЂРё РІС‹РґРµР»РµРЅРёРё РїР°РјСЏС‚Рё
 bool add(HashTable* const table, const char* const key);
 
-// вывести данные в консоль
+// РІС‹РІРµСЃС‚Рё РґР°РЅРЅС‹Рµ РІ РєРѕРЅСЃРѕР»СЊ
 void printTable(const HashTable* const table);
 
-// посчитать коэффициент заполненности таблицы
+// РїРѕСЃС‡РёС‚Р°С‚СЊ РєРѕСЌС„С„РёС†РёРµРЅС‚ Р·Р°РїРѕР»РЅРµРЅРЅРѕСЃС‚Рё С‚Р°Р±Р»РёС†С‹
 double getLoadFactor(const HashTable* const table);
 
-// получить максимальную длину списка
+// РїРѕР»СѓС‡РёС‚СЊ РјР°РєСЃРёРјР°Р»СЊРЅСѓСЋ РґР»РёРЅСѓ СЃРїРёСЃРєР°
 size_t getMaxLength(const HashTable* const table);
 
-// посчитать среднюю длину списка
+// РїРѕСЃС‡РёС‚Р°С‚СЊ СЃСЂРµРґРЅСЋСЋ РґР»РёРЅСѓ СЃРїРёСЃРєР°
 double getAverageLength(const HashTable* const table);
 
-// получить число вхождений по ключу
+// РїРѕР»СѓС‡РёС‚СЊ С‡РёСЃР»Рѕ РІС…РѕР¶РґРµРЅРёР№ РїРѕ РєР»СЋС‡Сѓ
 unsigned int getNumberOfEntries(const HashTable* const table, const char* const key);

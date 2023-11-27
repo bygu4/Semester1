@@ -1,13 +1,13 @@
-#pragma once
+п»ї#pragma once
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 
-// получить копию строки
+// РїРѕР»СѓС‡РёС‚СЊ РєРѕРїРёСЋ СЃС‚СЂРѕРєРё
 char* copyString(const char* const source);
 
-// считать слово из файла
+// СЃС‡РёС‚Р°С‚СЊ СЃР»РѕРІРѕ РёР· С„Р°Р№Р»Р°
 char* getWord(FILE* const stream);
 
-// проверка строк на равенство
+// РїСЂРѕРІРµСЂРєР° СЃС‚СЂРѕРє РЅР° СЂР°РІРµРЅСЃС‚РІРѕ
 bool stringsAreEqual(const char* const string1, const char* const string2);
