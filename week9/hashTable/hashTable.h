@@ -2,12 +2,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define NUMBER_OF_BUCKETS 256
-
 typedef struct HashTable HashTable;
 
-// создать пустую таблицу
-HashTable* createHashTable(void);
+// создать пустую таблицу с заданным числом списков
+HashTable* createHashTable(const size_t numberOfBuckets);
 
 // освободить память, выделенную под таблицу
 void freeHashTable(HashTable** const table);

@@ -3,10 +3,10 @@
 #include "readFileAndAdd.h"
 #include <stdlib.h>
 
-#define STR_TEST_1 "strTest1.txt"
-#define STR_TEST_2 "strTest2.txt"
-#define HT_TEST_1 "htTest1.txt"
-#define HT_TEST_2 "htTest2.txt"
+#define STR_TEST_1 "testFiles/strTest1.txt"
+#define STR_TEST_2 "testFiles/strTest2.txt"
+#define HT_TEST_1 "testFiles/htTest1.txt"
+#define HT_TEST_2 "testFiles/htTest2.txt"
 
 static void printFailedTest(const size_t numberOfTest, const char* const nameOfTest)
 {
@@ -115,9 +115,9 @@ static bool testForGetWord(void)
 }
 
 static bool testCaseForHashTable(const char* const nameOfFile, const char** const keys, 
-    const unsigned int* const entries, const size_t numberOfKeys)
+    const unsigned int* const entries, const size_t numberOfKeys, const size_t numberOfBuckets)
 {
-    HashTable* table = createHashTable();
+    HashTable* table = createHashTable(numberOfBuckets);
     if (table == NULL)
     {
         printf("Failed to create table\n");
@@ -153,16 +153,16 @@ static bool testForHashTable(void)
         "Then", "you", "can", "start" };
     unsigned int entries1[23] = { 1, 1, 1, 3, 3, 1, 1, 
         1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
-    bool testOneIsPassed = testCaseForHashTable(HT_TEST_1, keys1, entries1, 23);
+    bool testOneIsPassed = testCaseForHashTable(HT_TEST_1, keys1, entries1, 23, 5);
     if (!testOneIsPassed)
     {
         printFailedTest(1, testName);
         return false;
     }
 
-    char* keys2[3] = { "a", "b", "c" };
-    unsigned int entries2[3] = { 7, 3, 0 };
-    bool testTwoIsPassed = testCaseForHashTable(HT_TEST_2, keys2, entries2, 3);
+    char* keys2[4] = { "a", "b", "c", "e"};
+    unsigned int entries2[4] = { 7, 3, 4, 0 };
+    bool testTwoIsPassed = testCaseForHashTable(HT_TEST_2, keys2, entries2, 4, 2);
     if (!testTwoIsPassed)
     {
         printFailedTest(2, testName);

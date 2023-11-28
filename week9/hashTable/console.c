@@ -1,9 +1,11 @@
 ﻿#include "console.h"
 #include "readFileAndAdd.h"
 
+#define NUMBER_OF_BUCKETS 256
+
 int console(void)
 {
-    HashTable* table = createHashTable();
+    HashTable* table = createHashTable(NUMBER_OF_BUCKETS);
     if (table == NULL)
     {
         printf("An error occured\n");

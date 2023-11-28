@@ -119,12 +119,6 @@ void printList(const List* const list)
 
 unsigned int numberOfEntries(const List* const list, const char* const key)
 {
-    for (ListElement* current = head(list); current != NULL; current = current->next)
-    {
-        if (stringsAreEqual(current->key, key))
-        {
-            return current->numberOfEntries;
-        }
-    }
-    return 0;
+    ListElement* element = getElement(list, key);
+    return element != NULL ? element->numberOfEntries : 0;
 }
