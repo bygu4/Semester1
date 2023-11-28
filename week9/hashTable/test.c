@@ -2,6 +2,7 @@
 #include "str.h"
 #include "readFileAndAdd.h"
 #include <stdlib.h>
+#include <time.h>
 
 #define STR_TEST_1 "testFiles/strTest1.txt"
 #define STR_TEST_2 "testFiles/strTest2.txt"
@@ -143,6 +144,55 @@ static bool testCaseForHashTable(const char* const nameOfFile, const char** cons
     return testIsPassed;
 }
 
+static char* getRandomKey(const size_t randLimit)
+{
+    int number = rand() % randLimit;
+    char key[12] = { '\0' };
+    sprintf_s(key, 12, "%d", number);
+    return key;
+}
+
+static bool loadTest(const size_t numberOfKeys, const size_t numberOfSearches, 
+    const size_t numberOfBuckets, const double timeLimit)
+{
+    HashTable* table = createHashTable(numberOfBuckets);
+    if (table == NULL)
+    {
+        printf("Failed to create table\n");
+        return false;
+    }
+    srand(time(NULL));
+    double start = clock() / CLOCKS_PER_SEC;
+    for (size_t i = 0; i < numberOfKeys; ++i)
+    {
+        char* key = getRandomKey(numberOfKeys);
+        bool errorOccured = add(table, key);
+        double time = clock() / CLOCKS_PER_SEC;
+        if (errorOccured || time - start > timeLimit)
+        {
+            if (errorOccured)
+            {
+                printf("Failed to add keys\n");
+            }
+            freeHashTable(&table);
+            return false;
+        }
+    }
+    for (size_t i = 0; i < numberOfSearches; ++i)
+    {
+        char* key = getRandomKey(numberOfKeys);
+        getNumberOfEntries(table, key);
+        double time = clock() / CLOCKS_PER_SEC;
+        if (time - start > timeLimit)
+        {
+            freeHashTable(&table);
+            return false;
+        }
+    }
+    freeHashTable(&table);
+    return true;
+}
+
 static bool testForHashTable(void)
 {
     const char* const testName = "testForHashTable";
@@ -162,10 +212,17 @@ static bool testForHashTable(void)
 
     char* keys2[4] = { "a", "b", "c", "e"};
     unsigned int entries2[4] = { 7, 3, 4, 0 };
-    bool testTwoIsPassed = testCaseForHashTable(HT_TEST_2, keys2, entries2, 4, 2);
+    bool testTwoIsPassed = testCaseForHashTable(HT_TEST_2, keys2, entries2, 4, 1);
     if (!testTwoIsPassed)
     {
         printFailedTest(2, testName);
+        return false;
+    }
+
+    bool testThreeIsPassed = loadTest(1000000, 1000000, 2048, 5);
+    if (!testThreeIsPassed)
+    {
+        printFailedTest(3, testName);
         return false;
     }
 
