@@ -34,6 +34,7 @@ static void freeTable(List*** const table, const size_t length)
         freeList(&(*table)[i]);
     }
     free(*table);
+    *table = NULL;
 }
 
 void freeGraph(Graph** const graph)
