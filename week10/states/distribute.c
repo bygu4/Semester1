@@ -2,6 +2,10 @@
 
 bool distribute(Graph* const graph)
 {
+    if (numberOfCapitals(graph) == 0)
+    {
+        return false;
+    }
     size_t remaining = numberOfCities(graph) - numberOfCapitals(graph);
     unsigned int state = 1;
     while (remaining > 0)

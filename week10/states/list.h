@@ -26,4 +26,4 @@ size_t size(const List* const list);
 void printList(const List* const list);
 
 // сравнить массив с номерами городов из списка
-bool arrayIsEqual(const List* const list, const unsigned int* array, const size_t length);
+bool arrayIsEqual(const List* const list, const unsigned int array[32], const size_t length);

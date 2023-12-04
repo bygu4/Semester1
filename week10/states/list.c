@@ -123,7 +123,7 @@ void printList(const List* const list)
     }
 }
 
-bool arrayIsEqual(const List* const list, const unsigned int* array, const size_t length)
+bool arrayIsEqual(const List* const list, const unsigned int array[32], const size_t length)
 {
     if (size(list) != length)
     {

@@ -162,12 +162,12 @@ size_t numberOfCapitals(const Graph* const graph)
     return graph->numberOfCapitals;
 }
 
-bool checkStates(const Graph* const graph, const unsigned int** const expectedStates,
-    const size_t* const lengths)
+bool checkStates(const Graph* const graph, const unsigned int states[32][32],
+    const size_t sizeOfState[32])
 {
     for (size_t i = 0; i < graph->numberOfCapitals; ++i)
     {
-        if (!arrayIsEqual(graph->states[i], expectedStates[i], lengths[i]))
+        if (!arrayIsEqual(graph->states[i], states[i], sizeOfState[i]))
         {
             return false;
         }
