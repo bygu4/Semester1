@@ -13,6 +13,7 @@ int console(void)
     bool errorOccured = distribute(graph);
     if (errorOccured)
     {
+        freeGraph(&graph);
         return BAD_ALLOCATION;
     }
     printStates(graph);
