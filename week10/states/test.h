@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include <stdbool.h>
 
 #define TEST_FAILED -1
 
-// тест для распределения городов
+// С‚РµСЃС‚ РґР»СЏ СЂР°СЃРїСЂРµРґРµР»РµРЅРёСЏ РіРѕСЂРѕРґРѕРІ
 bool test(void);

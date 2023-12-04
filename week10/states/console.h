@@ -1,6 +1,6 @@
-#pragma once
+п»ї#pragma once
 
 #define NAME_OF_FILE "main.txt"
 
-// осуществляет работу с пользователем
+// РѕСЃСѓС‰РµСЃС‚РІР»СЏРµС‚ СЂР°Р±РѕС‚Сѓ СЃ РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј
 int console(void);

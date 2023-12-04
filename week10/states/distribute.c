@@ -1,4 +1,4 @@
-#include "distribute.h"
+﻿#include "distribute.h"
 
 bool distribute(Graph* const graph)
 {

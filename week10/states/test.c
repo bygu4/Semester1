@@ -1,4 +1,4 @@
-#include "test.h"
+﻿#include "test.h"
 #include "distribute.h"
 
 #define TEST_FILE_1 "testFiles/test1.txt"
