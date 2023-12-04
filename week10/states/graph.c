@@ -10,12 +10,21 @@ struct Graph {
     unsigned int* occupation;
 };
 
-static void initTable(List*** const table, const size_t length)
+static bool initTable(List*** const table, const size_t length)
 {
+    if (*table == NULL)
+    {
+        return true;
+    }
     for (size_t i = 0; i < length; ++i)
     {
         (*table)[i] = createList();
+        if ((*table)[i] == NULL)
+        {
+            return true;
+        }
     }
+    return false;
 }
 
 static void freeTable(List*** const table, const size_t length)
@@ -44,11 +53,11 @@ static bool createAdjacencyTable(Graph* const graph, FILE* const stream)
     fscanf_s(stream, "%zu", &numberOfRoads);
 
     graph->adjacency = (List**)malloc(graph->numberOfCities * sizeof(List*));
-    if (graph->adjacency == NULL)
+    bool errorOccured = initTable(&graph->adjacency, graph->numberOfCities);
+    if (errorOccured)
     {
         return true;
     }
-    initTable(&graph->adjacency, graph->numberOfCities);
     for (size_t i = 0; i < numberOfRoads; ++i)
     {
         unsigned int city1 = 0, city2 = 0, distance = 0;
@@ -70,11 +79,11 @@ static bool setCapitals(Graph* const graph, FILE* const stream)
 
     graph->states = (List**)malloc(graph->numberOfCapitals * sizeof(List*));
     graph->occupation = (unsigned int*)calloc(graph->numberOfCities, sizeof(unsigned int));
-    if (graph->states == NULL || graph->occupation == NULL)
+    bool errorOccured = initTable(&graph->states, graph->numberOfCapitals) || graph->occupation == NULL;
+    if (errorOccured)
     {
         return true;
     }
-    initTable(&graph->states, graph->numberOfCapitals);
     for (size_t i = 0; i < graph->numberOfCapitals; ++i)
     {
         unsigned int capital = 0;
@@ -118,10 +127,10 @@ bool occupy(Graph* const graph, const unsigned int numberOfState, bool* const oc
     unsigned int minDistance = UINT_MAX;
     unsigned int closestCity = 0;
     List* state = graph->states[numberOfState - 1];
-    for (size_t i = 0; i < size(state); ++i)
+    for (size_t i = 0; i < listSize(state); ++i)
     {
         List* neighbors = graph->adjacency[city(state, i) - 1];
-        for (size_t j = 0; j < size(neighbors); ++j)
+        for (size_t j = 0; j < listSize(neighbors); ++j)
         {
             if (graph->occupation[city(neighbors, j) - 1] == 0)
             {
@@ -162,10 +171,14 @@ size_t numberOfCapitals(const Graph* const graph)
     return graph->numberOfCapitals;
 }
 
-bool checkStates(const Graph* const graph, const unsigned int states[32][32],
-    const size_t sizeOfState[32])
+bool checkStates(const Graph* const graph, const unsigned int* const* const states, 
+    const size_t* const sizeOfState, const size_t numberOfStates)
 {
-    for (size_t i = 0; i < graph->numberOfCapitals; ++i)
+    if (numberOfCapitals(graph) != numberOfStates)
+    {
+        return false;
+    }
+    for (size_t i = 0; i < numberOfStates; ++i)
     {
         if (!arrayIsEqual(graph->states[i], states[i], sizeOfState[i]))
         {

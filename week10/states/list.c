@@ -52,10 +52,6 @@ static ListElement* createElement(const unsigned int city, const unsigned int di
 
 bool push(List* const list, const unsigned int city, const unsigned int distance)
 {
-    if (list == NULL)
-    {
-        return true;
-    }
     ListElement* element = createElement(city, distance);
     if (element == NULL)
     {
@@ -110,9 +106,9 @@ unsigned int distance(List* const list, const size_t index)
     return element != NULL ? element->distance : 0;
 }
 
-size_t size(const List* const list)
+size_t listSize(const List* const list)
 {
-    return list->size;
+    return list != NULL ? list->size : 0;
 }
 
 void printList(const List* const list)
@@ -123,20 +119,18 @@ void printList(const List* const list)
     }
 }
 
-bool arrayIsEqual(const List* const list, const unsigned int array[32], const size_t length)
+bool arrayIsEqual(List* const list, const unsigned int* const array, const size_t length)
 {
-    if (size(list) != length)
+    if (listSize(list) != length)
     {
         return false;
     }
-    size_t i = 0;
-    for (ListElement* current = head(list); current != NULL; current = current->next)
+    for (size_t i = 0; i < length; ++i)
     {
-        if (current->city != array[i])
+        if (getElement(list, i)->city != array[i])
         {
             return false;
         }
-        ++i;
     }
     return true;
 }

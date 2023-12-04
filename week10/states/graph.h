@@ -27,4 +27,5 @@ size_t numberOfCities(const Graph* const graph);
 size_t numberOfCapitals(const Graph* const graph);
 
 // проверить списки городов каждого государства
-bool checkStates(const Graph* const graph, const unsigned int states[32][32], const size_t sizeOfState[32]);
+bool checkStates(const Graph* const graph, const unsigned int* const* const states,
+    const size_t* const sizeOfState, const size_t numberOfStates);

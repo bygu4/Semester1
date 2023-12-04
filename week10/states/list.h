@@ -20,10 +20,10 @@ unsigned int city(List* const list, const size_t index);
 unsigned int distance(List* const list, const size_t index);
 
 // получение размера списка
-size_t size(const List* const list);
+size_t listSize(const List* const list);
 
 // вывести в консоль номера городов
 void printList(const List* const list);
 
 // сравнить массив с номерами городов из списка
-bool arrayIsEqual(const List* const list, const unsigned int array[32], const size_t length);
+bool arrayIsEqual(List* const list, const unsigned int* const array, const size_t length);
