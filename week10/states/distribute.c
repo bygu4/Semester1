@@ -20,11 +20,7 @@ bool distribute(Graph* const graph)
         {
             --remaining;
         }
-        ++state;
-        if (state > numberOfCapitals(graph))
-        {
-            state = 1;
-        }
+        state = state % numberOfCapitals(graph) + 1;
     }
     return false;
 }
