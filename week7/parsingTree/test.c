@@ -1,6 +1,12 @@
 ﻿#include "test.h"
 #include "parsingTree.h"
 
+#define TEST_FILE_FOR_PARSING_TREE_1 "testFiles/testForParsingTree1.txt"
+#define TEST_FILE_FOR_PARSING_TREE_2 "testFiles/testForParsingTree2.txt"
+#define TEST_FILE_FOR_PARSING_TREE_3 "testFiles/testForParsingTree3.txt"
+#define TEST_FILE_FOR_PARSING_TREE_4 "testFiles/testForParsingTree4.txt"
+#define TEST_FILE_FOR_PARSING_TREE_5 "testFiles/testForParsingTree5.txt"
+
 static void printFailedTest(const size_t numberOfTest, const char* const nameOfTest)
 {
     printf("Test %zu has failed in %s\n", numberOfTest, nameOfTest);

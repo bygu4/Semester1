@@ -16,6 +16,10 @@ int main(void)
     {
         return BAD_ALLOCATION;
     }
+
+    printf("Commands:\n0: quit\n1: add an item to list\n");
+    printf("2: delete an item from list\n3: print list\n\n");
+
     bool errorOccured = false;
     int command = -1;
     while (command != 0)
