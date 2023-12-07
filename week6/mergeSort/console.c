@@ -7,11 +7,13 @@ int console(void)
     List* list = createList();
     if (list == NULL)
     {
+        printf("An error occured\n");
         return BAD_ALLOCATION;
     }
     int errorCode = readListFromFile(list, NAME_OF_FILE);
     if (errorCode != SUCCESS)
     {
+        printf("An error occured\n");
         freeList(&list);
         return errorCode;
     }
@@ -37,6 +39,7 @@ int console(void)
     }
     if (errorOccured)
     {
+        printf("An error occured\n");
         freeList(&list);
         return BAD_ALLOCATION;
     }

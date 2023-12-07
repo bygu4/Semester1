@@ -6,6 +6,7 @@
 
 #define AMOUNT_OF_POSSIBLE_NUMBERS 4294967296
 #define TEST_FAILED -1
+#define SUCCESS 0
 #define BAD_ALLOCATION 1;
 
 void scanArray(int* const array, const size_t sizeOfArray)
@@ -301,12 +302,16 @@ bool test(void)
     return true;
 }
 
-int main(void)
+int main(const unsigned int argc, const char argv[])
 {
-    bool allTestsArePassed = test();
+    const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
+    }
+    if (argc == 2 && argv[1] == 't')
+    {
+        return SUCCESS;
     }
 
     int sizeOfArray = 0;
@@ -330,4 +335,5 @@ int main(void)
         printf(" %d", inputArray[i]);
     }
     free(inputArray);
+    return SUCCESS;
 }

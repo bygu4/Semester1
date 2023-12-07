@@ -86,6 +86,7 @@ int console(void)
     SearchTree* tree = createTree();
     if (tree == NULL)
     {
+        printf("An error occured\n");
         return BAD_ALLOCATION;
     }
 
@@ -122,6 +123,7 @@ int console(void)
         printf("\n");
         if (errorOccured)
         {
+            printf("An error occured\n");
             freeTree(&tree);
             return BAD_ALLOCATION;
         }

@@ -7,6 +7,7 @@
 
 #define SIZE_OF_BINARY_REPRESENTATION sizeof(int) * 8
 #define TEST_FAILED -1
+#define SUCCESS 0
 #define BAD_ALLOCATION 1
 
 void printArray(const char* const array, const size_t sizeOfArray)
@@ -17,13 +18,17 @@ void printArray(const char* const array, const size_t sizeOfArray)
     }
 }
 
-int main(void)
+int main(const unsigned int argc, const char argv[])
 {
     setlocale(LC_ALL, "rus");
     const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
+    }
+    if (argc == 2 && argv[1] == 't')
+    {
+        return SUCCESS;
     }
 
     int number1 = 0;
@@ -65,4 +70,5 @@ int main(void)
     int decimalSum = binaryToDecimal(binarySum);
     free(binarySum);
     printf("\nСумма в десятичном виде: %d\n", decimalSum);
+    return SUCCESS;
 }

@@ -4,12 +4,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main(void)
+int main(const unsigned int argc, const char argv[])
 {
     const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
+    }
+    if (argc == 2 && argv[1] == 't')
+    {
+        return SUCCESS;
     }
     printf("Enter an ariphmetic expression: ");
     String* inputString = getString('\n');

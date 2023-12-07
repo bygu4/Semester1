@@ -5,13 +5,18 @@
 
 #define NAME_OF_FILE "main.txt"
 #define TEST_FAILED -1
+#define SUCCESS 0
 
-int main(void)
+int main(const unsigned int argc, const char argv[])
 {
     const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
+    }
+    if (argc == 2 && argv[1] == 't')
+    {
+        return SUCCESS;
     }
 
     Phonebook phonebook = { .notes = NULL, .numberOfNotes = 0 };

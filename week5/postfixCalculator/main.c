@@ -3,14 +3,16 @@
 #include "test.h"
 #include <stdio.h>
 
-#define TEST_FAILED -1
-
-int main(void)
+int main(const unsigned int argc, const char argv[])
 {
     const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
+    }
+    if (argc == 2 && argv[1] == 't')
+    {
+        return SUCCESS;
     }
     printf("Enter an arithmetic expression: ");
     char* inputString = getString('\n');
@@ -18,7 +20,6 @@ int main(void)
     {
         return BAD_ALLOCATION;
     }
-
     int errorCode = SUCCESS;
     int result = calculate(inputString, &errorCode);
     if (errorCode != SUCCESS)

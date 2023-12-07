@@ -38,6 +38,7 @@ bool console(void)
     CycledList* list = getNumberAndCreateList();
     if (list == NULL)
     {
+        printf("An error occured\n");
         return true;
     }
     getCountAndPop(list);

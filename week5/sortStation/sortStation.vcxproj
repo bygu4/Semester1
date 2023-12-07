@@ -119,17 +119,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source/convertToPostfixForm.c" />
-    <ClCompile Include="source/main.c" />
-    <ClCompile Include="source/stack.c" />
-    <ClCompile Include="source/str.c" />
-    <ClCompile Include="source/test.c" />
+    <ClCompile Include="convertToPostfixForm.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="stack.c" />
+    <ClCompile Include="str.c" />
+    <ClCompile Include="test.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source/convertToPostfixForm.h" />
-    <ClInclude Include="source/stack.h" />
-    <ClInclude Include="source/str.h" />
-    <ClInclude Include="source/test.h" />
+    <ClInclude Include="convertToPostfixForm.h" />
+    <ClInclude Include="stack.h" />
+    <ClInclude Include="str.h" />
+    <ClInclude Include="test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

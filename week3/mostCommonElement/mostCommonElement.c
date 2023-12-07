@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define TEST_FAILED -1
+#define SUCCESS 0
 #define BAD_ALLOCATION 1
 #define RAND_RANGE 20000
 
@@ -300,12 +301,16 @@ bool test(void)
     return true;
 }
 
-int main(void)
+int main(const unsigned int argc, const char argv[])
 {
-    bool allTestsArePassed = test();
+    const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
+    }
+    if (argc == 2 && argv[1] == 't')
+    {
+        return SUCCESS;
     }
 
     int sizeOfArray = 0;
@@ -314,7 +319,7 @@ int main(void)
     int* inputArray = (int*)calloc(sizeOfArray, sizeof(int));
     if (inputArray == NULL)
     {
-        printf("An error occured");
+        printf("An error occured\n");
         return BAD_ALLOCATION;
     }
     printf("Enter an array: ");
@@ -323,6 +328,7 @@ int main(void)
     quicksort(inputArray, 0, sizeOfArray);
 
     int mostCommonElement = findMostCommonElement(inputArray, sizeOfArray);
-    printf("\nThe most common element in array: %d", mostCommonElement);
+    printf("\nThe most common element in array: %d\n", mostCommonElement);
     free(inputArray);
+    return SUCCESS;
 }
