@@ -1,5 +1,6 @@
 ﻿#include "console.h"
 #include "test.h"
+#include "str.h"
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -7,14 +8,14 @@
 #define TEST_FAILED -1
 #define SUCCESS 0
 
-int main(const unsigned int argc, const char argv[])
+int main(const unsigned int argc, const char* const argv[])
 {
     const bool allTestsArePassed = test();
     if (!allTestsArePassed)
     {
         return TEST_FAILED;
     }
-    if (argc == 2 && argv[1] == 't')
+    if (argc == 2 && stringsAreEqual(argv[1], "-test"))
     {
         return SUCCESS;
     }

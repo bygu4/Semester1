@@ -10,7 +10,7 @@
 #define SUCCESS 0
 #define BAD_ALLOCATION 1
 
-void printArray(const char* const array, const size_t sizeOfArray)
+static void printArray(const char* const array, const size_t sizeOfArray)
 {
     for (size_t i = 0; i < sizeOfArray; ++i)
     {
@@ -18,7 +18,19 @@ void printArray(const char* const array, const size_t sizeOfArray)
     }
 }
 
-int main(const unsigned int argc, const char argv[])
+static bool stringsAreEqual(const char* const string1, const char* const string2)
+{
+    for (size_t i = 0; string1[i] != '\0' || string2[i] != '\0'; ++i)
+    {
+        if (string1[i] != string2[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main(const unsigned int argc, const char* const argv[])
 {
     setlocale(LC_ALL, "rus");
     const bool allTestsArePassed = test();
@@ -26,7 +38,7 @@ int main(const unsigned int argc, const char argv[])
     {
         return TEST_FAILED;
     }
-    if (argc == 2 && argv[1] == 't')
+    if (argc == 2 && stringsAreEqual(argv[1], "-test"))
     {
         return SUCCESS;
     }
