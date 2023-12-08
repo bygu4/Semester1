@@ -9,8 +9,3 @@ jobs:
       - uses: actions/checkout@v2
       - uses: microsoft/setup-msbuild@v1.3.1
       - run: ./build.bat
-      - if: ${{ %result% EQ 1 }}
-        uses: actions/github-script@v3
-        with:
-          script: |
-            core.setFailed("Build failed")

@@ -1,7 +1,6 @@
 @echo off
 
 set root=%cd%
-set result=0
 
 for /r %%i in (*.vcxproj) do (
     msbuild %%i -nologo -noConsoleLogger
@@ -12,12 +11,11 @@ for /r %%i in (*.vcxproj) do (
             echo - %%~ni: test passed
         ) else (
             echo - %%~ni: test failed
-            set result=1
+            exit /b %errorlevel%
         )
         cd %root%
     ) else (
         echo - %%~ni: build failed
-        set result=1
+        exit /b %errorlevel%
     )
-
 )
