@@ -16,6 +16,6 @@ for /r %%i in (*.vcxproj) do (
         cd %root%
     ) else (
         echo - %%~ni: build failed
-        exit /b %errorlevel%
+        exit /b -1
     )
 )
