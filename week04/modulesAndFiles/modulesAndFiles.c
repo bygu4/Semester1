@@ -2,7 +2,7 @@
 #include "quicksort.h"
 #include "findMostCommonElement.h"
 #include "test.h"
-#include "stdlib.h"
+#include <stdlib.h>
 #include <stdbool.h>
 
 #define NAME_OF_FILE "modulesAndFiles.txt"
