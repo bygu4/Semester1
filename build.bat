@@ -11,11 +11,12 @@ for /r %%i in (*.vcxproj) do (
             echo - %%~ni: test passed
         ) else (
             echo - %%~ni: test failed
-            exit /b %errorlevel%
+            exit /b 1
         )
         cd %root%
     ) else (
         echo - %%~ni: build failed
-        exit /b -1
+        exit /b 1
     )
 )
+exit /b 0

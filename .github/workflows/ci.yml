@@ -5,6 +5,8 @@ on: push
 jobs:
   build:
     runs-on: windows-latest
+    env: 
+      EXPECTED_EXIT_CODE: 0
     steps:
       - uses: actions/checkout@v2
       - uses: microsoft/setup-msbuild@v1.3.1
