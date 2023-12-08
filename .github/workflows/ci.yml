@@ -1,6 +1,6 @@
-name: ci
+name: CI
 
-on: push
+on: [push]
 
 jobs:
   build:
@@ -9,5 +9,9 @@ jobs:
       EXPECTED_EXIT_CODE: 0
     steps:
       - uses: actions/checkout@v2
-      - uses: microsoft/setup-msbuild@v1.3.1
-      - run: ./build.bat
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.x' 
+      - run: dotnet tool install -g dotnet-fsharplint
+      - run: dotnet build 
+      - run: dotnet test
