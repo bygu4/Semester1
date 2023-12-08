@@ -396,6 +396,5 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/huffman
 /test1
 /test2
