@@ -3,7 +3,7 @@
 set root=%cd%
 
 for /r %%i in (*.vcxproj) do (
-    msbuild %%i -nologo -noConsoleLogger
+    msbuild %%i -nologo -clp:ErrorsOnly
     if exist %%~dpi\Debug\%%~ni.exe (
         cd %%~dpi
         %%~dpi\Debug\%%~ni.exe -test
