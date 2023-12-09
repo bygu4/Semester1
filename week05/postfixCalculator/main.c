@@ -1,5 +1,7 @@
-﻿#include "console.h"
+﻿#include "calculate.h"
+#include "getString.h"
 #include "test.h"
+#include <stdio.h>
 
 static bool stringsAreEqual(const char* const string1, const char* const string2)
 {
@@ -24,5 +26,18 @@ int main(const unsigned int argc, const char* const argv[])
     {
         return SUCCESS;
     }
-    return console();
+    printf("Enter an arithmetic expression: ");
+    char* inputString = getString('\n');
+    if (inputString == NULL)
+    {
+        return BAD_ALLOCATION;
+    }
+    int errorCode = SUCCESS;
+    int result = calculate(inputString, &errorCode);
+    if (errorCode != SUCCESS)
+    {
+        printf("An error occured\n");
+        return errorCode;
+    }
+    printf("Result: %d\n", result);
 }

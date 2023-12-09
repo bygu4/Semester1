@@ -1,5 +1,6 @@
 ﻿#include "console.h"
 #include "test.h"
+#include <stdio.h>
 
 static bool stringsAreEqual(const char* const string1, const char* const string2)
 {
@@ -24,5 +25,5 @@ int main(const unsigned int argc, const char* const argv[])
     {
         return SUCCESS;
     }
-    return console();
+    return console() ? BAD_ALLOCATION : SUCCESS;
 }

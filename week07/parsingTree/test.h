@@ -4,5 +4,5 @@
 #define TEST_FAILED -1
 #define SUCCESS 0
 
-// тест для распределения городов
+// тесты дерева разбора
 bool test(void);
