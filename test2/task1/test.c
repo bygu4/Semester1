@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-static bool arraysAreEqual(const int* const array1, const int* const array2, const size_t sizeOFArray)
+static bool arraysAreEqual(const int* const array1, const int* const array2, const size_t sizeOfArray)
 {
-    for (size_t i = 0; i; ++i)
+    for (size_t i = 0; i < sizeOfArray; ++i)
     {
         if (array1[i] != array2[i])
         {

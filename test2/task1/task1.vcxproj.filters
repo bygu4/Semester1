@@ -32,17 +32,17 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="console.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
     <ClInclude Include="list.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="deleteOddElements.h">
-      <Filter>Исходные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="console.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="test.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

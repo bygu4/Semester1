@@ -39,6 +39,7 @@ int console(void)
     printf("Array after deletion: ");
     deleteOddElements(list);
     printList(list);
+    printf("\n");
     freeList(&list);
     return SUCCESS;
 }
