@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 typedef struct {
-    int value;
+    unsigned int value;
     int key;
     struct QueueNode* next;
 } QueueNode;
@@ -23,7 +23,7 @@ static bool isEmpty(const PriorityQueue* const queue)
     return queue->head == NULL;
 }
 
-static QueueNode* createNode(const int value, const int key)
+static QueueNode* createNode(const unsigned int value, const int key)
 {
     QueueNode* node = (QueueNode*)malloc(sizeof(QueueNode));
     if (node == NULL)
@@ -36,7 +36,7 @@ static QueueNode* createNode(const int value, const int key)
     return node;
 }
 
-bool enqueue(PriorityQueue* const queue, const int value, const int key)
+bool enqueue(PriorityQueue* const queue, const unsigned int value, const int key)
 {
     QueueNode* newNode = createNode(value, key);
     if (newNode == NULL)
@@ -70,7 +70,7 @@ bool enqueue(PriorityQueue* const queue, const int value, const int key)
     return false;
 }
 
-int dequeue(PriorityQueue* const queue)
+unsigned int dequeue(PriorityQueue* const queue)
 {
     if (isEmpty(queue))
     {
@@ -78,7 +78,7 @@ int dequeue(PriorityQueue* const queue)
     }
     QueueNode* node = queue->head;
     queue->head = node->next;
-    int value = node->value;
+    unsigned int value = node->value;
     free(node);
     --queue->size;
     return value;

@@ -7,8 +7,8 @@ static printFailedTest(const size_t numeberOfTest)
     printf("Test %zu has failed\n", numeberOfTest);
 }
 
-static bool testCase(const int* const valuesToEnqueue, const int* const keysToEnqueue,
-    const int* dequeueExpectedValues, const size_t numberOfEnqueues, const size_t numberOfDequeues)
+static bool testCase(const unsigned int* const valuesToEnqueue, const int* const keysToEnqueue,
+    const unsigned int* dequeueExpectedValues, const size_t numberOfEnqueues, const size_t numberOfDequeues)
 {
     PriorityQueue* queue = createQueue();
     if (queue == NULL)
@@ -40,7 +40,7 @@ static bool testCase(const int* const valuesToEnqueue, const int* const keysToEn
 
 bool test(void)
 {
-    int values1[6] = { 1, 2, 3, 4, 5, 6 };
+    unsigned int values1[6] = { 1, 2, 3, 4, 5, 6 };
     int keys1[6] = { 2, 4, 6, 1, 3, 5 };
     int expectedOutput1[6] = { 3, 6, 2, 5, 1, 4 };
     if (!testCase(values1, keys1, expectedOutput1, 6, 6))
@@ -49,7 +49,7 @@ bool test(void)
         return false;
     }
 
-    int values2[1] = { 10 };
+    unsigned int values2[1] = { 10 };
     int keys2[1] = { 5 };
     int expectedOutput2[2] = { 10, -1 };
     if (!testCase(values2, keys2, expectedOutput2, 1, 2))
@@ -58,7 +58,7 @@ bool test(void)
         return false;
     }
 
-    int values3[4] = { 9, 8, 7, 6 };
+    unsigned int values3[4] = { 9, 8, 7, 6 };
     int keys3[4] = { 2, 2, 2, 2 };
     int expectedOutput3[4] = { 9, 8, 7, 6 };
     if (!testCase(values3, keys3, expectedOutput3, 4, 4))

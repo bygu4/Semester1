@@ -8,6 +8,6 @@ PriorityQueue* createQueue(void);
 
 void freeQueue(PriorityQueue** const queue);
 
-bool enqueue(PriorityQueue* const queue, const int value, const int key);
+bool enqueue(PriorityQueue* const queue, const unsigned int value, const int key);
 
-int dequeue(PriorityQueue* const queue);
+unsigned int dequeue(PriorityQueue* const queue);
