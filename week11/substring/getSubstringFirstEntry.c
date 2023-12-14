@@ -16,15 +16,6 @@ size_t getSubstringFirstEntry(const char* const substring, const char* const str
             *found = false;
             return 0;
         }
-        if (string[i] == substring[prefixLength])
-        {
-            ++prefixLength;
-        }
-        else
-        {
-            prefixLength = 0;
-        }
+        prefixLength = string[i] == substring[prefixLength] ? prefixLength + 1 : 0;
     }
-    *found = false;
-    return 0;
 }
