@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdio.h>
 #include <stdbool.h>
 
-// получить индекс первого вхождения подстроки. Записывает по указателю наличие подстроки
+// РїРѕР»СѓС‡РёС‚СЊ РёРЅРґРµРєСЃ РїРµСЂРІРѕРіРѕ РІС…РѕР¶РґРµРЅРёСЏ РїРѕРґСЃС‚СЂРѕРєРё. Р—Р°РїРёСЃС‹РІР°РµС‚ РїРѕ СѓРєР°Р·Р°С‚РµР»СЋ РЅР°Р»РёС‡РёРµ РїРѕРґСЃС‚СЂРѕРєРё
 size_t getSubstringFirstEntry(const char* const substring, const char* const string, bool* const found);

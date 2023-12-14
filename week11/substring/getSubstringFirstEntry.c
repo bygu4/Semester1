@@ -1,6 +1,6 @@
-#include "getSubstringFirstEntry.h"
+п»ї#include "getSubstringFirstEntry.h"
 
-// Кнут-Моррис-Пратт
+// РљРЅСѓС‚-РњРѕСЂСЂРёСЃ-РџСЂР°С‚С‚
 size_t getSubstringFirstEntry(const char* const substring, const char* const string, bool* const found)
 {
     size_t prefixLength = 0;

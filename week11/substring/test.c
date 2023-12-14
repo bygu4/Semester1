@@ -1,4 +1,4 @@
-#include "test.h"
+﻿#include "test.h"
 #include "str.h"
 #include "getSubstringFirstEntry.h"
 #include <stdlib.h>
