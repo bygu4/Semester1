@@ -13,18 +13,22 @@ static size_t* makePrefixArray(const char* const substring, const char* const st
     for (size_t i = 1; i < lengthOfString; ++i)
     {
         size_t prefixLength = prefixArray[i - 1];
-        while (string[i] != substring[prefixLength] && prefixLength > 0)
+        while (prefixLength > 0 && substring[prefixLength] != string[i])
         {
             prefixLength = prefixArray[prefixLength - 1];
         }
-        prefixArray[i] = string[i] == substring[prefixLength] ? prefixLength + 1 : 0;
+        if (substring[prefixLength] == string[i])
+        {
+            ++prefixLength;
+        }
+        prefixArray[i] = prefixLength;
     }
     return prefixArray;
 }
 
 // Кнут-Моррис-Пратт
 size_t getSubstringFirstEntry(const char* const substring, const char* const string, 
-    const size_t lengthOfSubstring, const size_t lengthOfString, bool* const found, bool* const errorOccured)
+    const size_t lengthOfString, bool* const found, bool* const errorOccured)
 {
     size_t* prefixArray = makePrefixArray(substring, string, lengthOfString);
     if (prefixArray == NULL)
@@ -33,27 +37,27 @@ size_t getSubstringFirstEntry(const char* const substring, const char* const str
         return 0;
     }
     size_t result = 0;
-    size_t stringIndex = 0;
+    size_t lengthOfPrefix = 0;
     for (size_t i = 0;; ++i)
     {
-        if (i == lengthOfSubstring)
+        if (substring[lengthOfPrefix] == '\0')
         {
             *found = true;
-            result = i - lengthOfString;
+            result = i - lengthOfPrefix;
             break;
         }
-        if (string[stringIndex] == '\0')
+        if (string[i] == '\0')
         {
             *found = false;
             break;
         }
-        while (stringIndex > 0 && string[stringIndex] != substring[i])
+        while (lengthOfPrefix > 0 && substring[lengthOfPrefix] != string[i])
         {
-            stringIndex = prefixArray[stringIndex - 1];
+            lengthOfPrefix = prefixArray[lengthOfPrefix - 1];
         }
-        if (string[stringIndex] == substring[i])
+        if (string[i] == substring[lengthOfPrefix])
         {
-            ++stringIndex;
+            ++lengthOfPrefix;
         }
     }
     free(prefixArray);

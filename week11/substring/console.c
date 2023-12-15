@@ -25,7 +25,7 @@ int console(void)
     bool substringIsFound = false;
     bool errorOccured = false;
     size_t firstEntryIndex = getSubstringFirstEntry(inputString, fileData, 
-        lengthOfString, lengthOfFile, &substringIsFound, &errorOccured);
+        lengthOfFile, &substringIsFound, &errorOccured);
     free(fileData);
     free(inputString);
     if (errorOccured)

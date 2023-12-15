@@ -26,7 +26,7 @@ static bool testCase(const char* const nameOfFile, const char* const stringToFin
     bool stringFound = false;
     bool errorOccured = false;
     size_t firstEntryIndex = getSubstringFirstEntry(stringToFind, fileData, 
-        strlen(stringToFind), lengthOfFile, &stringFound, &errorOccured);
+        lengthOfFile, &stringFound, &errorOccured);
     free(fileData);
     bool testPassed = !errorOccured && (stringFound && stringIsInFile) ? 
         (firstEntryIndex == expectedOutput) : (stringFound == stringIsInFile);
@@ -43,6 +43,6 @@ bool test(void)
         testCase(TEST_FILE_1, "a", false, 0, 2) &&
         testCase(TEST_FILE_2, "hot", true, 18, 3) &&
         testCase(TEST_FILE_2, "tea", false, 0, 4) &&
-        testCase(TEST_FILE_3, "aaaa", true, 10, 5) &&
+        testCase(TEST_FILE_3, "aba", true, 11, 5) &&
         testCase(TEST_FILE_3, "aaaaa", false, 0, 6);
 }
