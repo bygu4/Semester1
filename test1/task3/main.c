@@ -149,7 +149,7 @@ static bool testIsPassed(void)
         testCase(TEST_FILE_3, "abcd abcd", 3);
 }
 
-int main(const size_t argc, const char* const argv)
+int main(const size_t argc, const char* const argv[])
 {
     if (!testIsPassed())
     {
