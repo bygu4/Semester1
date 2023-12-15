@@ -149,11 +149,15 @@ static bool testIsPassed(void)
         testCase(TEST_FILE_3, "abcd abcd", 3);
 }
 
-int main(void)
+int main(const size_t argc, const char* const argv)
 {
     if (!testIsPassed())
     {
         return testFailed;
+    }
+    if (argc == 2 && stringsAreEqual(argv[1], "-test"))
+    {
+        return success;
     }
     char* fileData = NULL;
     int errorCode = readFile(&fileData, NAME_OF_FILE);
