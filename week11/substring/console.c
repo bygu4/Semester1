@@ -6,14 +6,16 @@
 int console(void)
 {
     char* fileData = NULL;
-    int errorCode = readFile(&fileData, NAME_OF_FILE);
+    size_t lengthOfFile = 0;
+    int errorCode = readFile(&fileData, NAME_OF_FILE, &lengthOfFile);
     if (errorCode != SUCCESS)
     {
         printf(errorCode == FILE_NOT_FOUND ? "File not found\n" : "An error occured\n");
         return errorCode;
     }
     printf("Enter a substring to find: ");
-    char* inputString = getString('\n');
+    size_t lengthOfString = 0;
+    char* inputString = getString('\n', &lengthOfString);
     if (inputString == NULL)
     {
         printf("An error occured\n");
@@ -21,9 +23,16 @@ int console(void)
         return BAD_ALLOCATION;
     }
     bool substringIsFound = false;
-    size_t firstEntryIndex = getSubstringFirstEntry(inputString, fileData, &substringIsFound);
+    bool errorOccured = false;
+    size_t firstEntryIndex = getSubstringFirstEntry(inputString, fileData, 
+        lengthOfString, lengthOfFile, &substringIsFound, &errorOccured);
     free(fileData);
     free(inputString);
+    if (errorOccured)
+    {
+        printf("An error occured\n");
+        return BAD_ALLOCATION;
+    }
     if (substringIsFound)
     {
         printf("Index of first entry: %zu\n", firstEntryIndex);

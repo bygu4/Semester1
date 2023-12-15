@@ -13,23 +13,26 @@ void printFailedTest(const size_t numberOfTest)
 }
 
 static bool testCase(const char* const nameOfFile, const char* const stringToFind, 
-    const bool stringIsInFile, const size_t expectedOutput, const size_t numeberOfTest)
+    const bool stringIsInFile, const size_t expectedOutput, const size_t numberOfTest)
 {
     char* fileData = NULL;
-    int errorCode = readFile(&fileData, nameOfFile);
+    size_t lengthOfFile = 0;
+    int errorCode = readFile(&fileData, nameOfFile, &lengthOfFile);
     if (errorCode != SUCCESS)
     {
         printf(errorCode == FILE_NOT_FOUND ? "File not found\n" : "Failed to read file\n");
         return false;
     }
     bool stringFound = false;
-    size_t firstEntryIndex = getSubstringFirstEntry(stringToFind, fileData, &stringFound);
+    bool errorOccured = false;
+    size_t firstEntryIndex = getSubstringFirstEntry(stringToFind, fileData, 
+        strlen(stringToFind), lengthOfFile, &stringFound, &errorOccured);
     free(fileData);
-    bool testPassed = stringFound && stringIsInFile ? 
-        firstEntryIndex == expectedOutput : stringFound == stringIsInFile;
+    bool testPassed = !errorOccured && (stringFound && stringIsInFile) ? 
+        (firstEntryIndex == expectedOutput) : (stringFound == stringIsInFile);
     if (!testPassed)
     {
-        printFailedTest(numeberOfTest);
+        printFailedTest(numberOfTest);
     }
     return testPassed;
 }
