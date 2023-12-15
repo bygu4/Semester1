@@ -7,7 +7,8 @@
 
 enum errorCodes {
     testFailed = -1,
-    success = 0
+    success = 0,
+    badAllocation = 1
 };
 
 static int compare(const bool* const bits1, const bool* const bits2)
@@ -66,7 +67,58 @@ static bool testIsPassed(void)
         testCase(UINT_MAX - 1, UINT_MAX, 1, 4);
 }
 
-int main(void)
+static bool stringsAreEqual(const char* const string1, const char* const string2)
 {
-    return testIsPassed() ? success : testFailed;
+    for (size_t i = 0; string1[i] != '\0' || string2[i] != '\0'; ++i)
+    {
+        if (string1[i] != string2[i])
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int main(const size_t argc, const char* const argv[])
+{
+    if (!testIsPassed)
+    {
+        return testFailed;
+    }
+    if (argc == 2 && stringsAreEqual(argv[1], "-test"))
+    {
+        return success;
+    }
+    unsigned int number1 = 0;
+    unsigned int number2 = 0;
+    printf("Enter number 1: ");
+    scanf_s("%u", &number1);
+    printf("Enter number 2: ");
+    scanf_s("%u", &number2);
+    printf("\n");
+
+    bool* bits1 = convertToBinary(number1);
+    bool* bits2 = convertToBinary(number2);
+    if (bits1 == NULL || bits2 == NULL)
+    {
+        free(bits1);
+        free(bits2);
+        printf("An error occured\n");
+        return badAllocation;
+    }
+    switch (compare(bits1, bits2))
+    {
+    case 0:
+        printf("Numbers are equal\n");
+        break;
+    case -1:
+        printf("Number 1 is greater\n");
+        break;
+    case 1:
+        printf("Number 2 is greater\n");
+        break;
+    }
+    free(bits1);
+    free(bits2);
+    return success;
 }
