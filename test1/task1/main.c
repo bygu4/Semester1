@@ -81,7 +81,7 @@ static bool stringsAreEqual(const char* const string1, const char* const string2
 
 int main(const size_t argc, const char* const argv[])
 {
-    if (!testIsPassed)
+    if (!testIsPassed())
     {
         return testFailed;
     }
