@@ -19,7 +19,7 @@ static bool startMethod(const char current, unsigned int* const state)
         *state = start;
         return true;
     }
-    else if (isdigit(current))
+    if (isdigit(current))
     {
         *state = integer;
         return true;
@@ -34,17 +34,17 @@ static bool integerMethod(const char current, unsigned int* const state)
         *state = integer;
         return true;
     }
-    else if (current == '.')
+    if (current == '.')
     {
         *state = decimalSign;
         return true;
     }
-    else if (current == 'E')
+    if (current == 'E')
     {
         *state = exponent;
         return true;
     }
-    else if (isspace(current))
+    if (isspace(current))
     {
         *state = end;
         return true;
@@ -69,12 +69,12 @@ static bool decimalDigitMethod(const char current, unsigned int* const state)
         *state = decimalDigit;
         return true;
     }
-    else if (current == 'E')
+    if (current == 'E')
     {
         *state = exponent;
         return true;
     }
-    else if (isspace(current))
+    if (isspace(current))
     {
         *state = end;
         return true;
@@ -89,7 +89,7 @@ static bool exponentMethod(const char current, unsigned int* const state)
         *state = exponentialSign;
         return true;
     }
-    else if (isdigit(current))
+    if (isdigit(current))
     {
         *state = exponentialDigit;
         return true;
@@ -114,7 +114,7 @@ static bool exponentialDigitMethod(const char current, unsigned int* const state
         *state = exponentialDigit;
         return true;
     }
-    else if (isspace(current))
+    if (isspace(current))
     {
         *state = end;
         return true;
@@ -145,56 +145,37 @@ bool isRealNumber(const char* const sequence)
     char current = sequence[index];
     while (current != '\0')
     {
+        bool (*method)(const char, unsigned int* const) = startMethod;
         switch (state)
         {
         case start:
-            if (!startMethod(current, &state))
-            {
-                return false;
-            }
+            method = startMethod;
             break;
         case integer:
-            if (!integerMethod(current, &state))
-            {
-                return false;
-            }
+            method = integerMethod;
             break;
         case decimalSign:
-            if (!decimalSignMethod(current, &state))
-            {
-                return false;
-            }
+            method = decimalSignMethod;
             break;
         case decimalDigit:
-            if (!decimalDigitMethod(current, &state))
-            {
-                return false;
-            }
+            method = decimalDigitMethod;
             break;
         case exponent:
-            if (!exponentMethod(current, &state))
-            {
-                return false;
-            }
+            method = exponentMethod;
             break;
         case exponentialSign:
-            if (!exponentialSignMethod(current, &state))
-            {
-                return false;
-            }
+            method = exponentialSignMethod;
             break;
         case exponentialDigit:
-            if (!exponentialDigitMethod(current, &state))
-            {
-                return false;
-            }
+            method = exponentialDigitMethod;
             break;
         case end:
-            if (!endMethod(current, &state))
-            {
-                return false;
-            }
+            method = endMethod;
             break;
+        }
+        if (!method(current, &state))
+        {
+            return false;
         }
         ++index;
         current = sequence[index];
