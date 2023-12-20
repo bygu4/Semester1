@@ -9,7 +9,6 @@ typedef struct {
 
 struct PriorityQueue {
     QueueNode* head;
-    QueueNode* back;
     size_t size;
 };
 
@@ -61,10 +60,6 @@ bool enqueue(PriorityQueue* const queue, const unsigned int value, const int key
     if (current != NULL)
     {
         newNode->next = current;
-    }
-    else
-    {
-        queue->back = newNode;
     }
     ++queue->size;
     return false;

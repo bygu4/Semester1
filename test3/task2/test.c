@@ -2,9 +2,9 @@
 #include "priorityQueue.h"
 #include <stdio.h>
 
-static printFailedTest(const size_t numeberOfTest)
+static void printFailedTest(const size_t numberOfTest)
 {
-    printf("Test %zu has failed\n", numeberOfTest);
+    printf("Test %zu has failed\n", numberOfTest);
 }
 
 static bool testCase(const unsigned int* const valuesToEnqueue, const int* const keysToEnqueue,
