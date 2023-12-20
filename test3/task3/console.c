@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #define SUCCESS 0
-#define BAC_ALLOCATION 1
+#define BAD_ALLOCATION 1
 
 int console(void)
 {
@@ -14,7 +14,7 @@ int console(void)
     if (inputString == NULL)
     {
         printf("An error occured\n");
-        return BAC_ALLOCATION;
+        return BAD_ALLOCATION;
     }
     if (isAccepted(inputString))
     {
