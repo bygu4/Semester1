@@ -42,7 +42,7 @@ bool test(void)
 {
     unsigned int values1[6] = { 1, 2, 3, 4, 5, 6 };
     int keys1[6] = { 2, 4, 6, 1, 3, 5 };
-    int expectedOutput1[6] = { 3, 6, 2, 5, 1, 4 };
+    unsigned int expectedOutput1[6] = { 3, 6, 2, 5, 1, 4 };
     if (!testCase(values1, keys1, expectedOutput1, 6, 6))
     {
         printFailedTest(1);
@@ -51,7 +51,7 @@ bool test(void)
 
     unsigned int values2[1] = { 10 };
     int keys2[1] = { 5 };
-    int expectedOutput2[2] = { 10, -1 };
+    unsigned int expectedOutput2[2] = { 10, -1 };
     if (!testCase(values2, keys2, expectedOutput2, 1, 2))
     {
         printFailedTest(2);
@@ -60,7 +60,7 @@ bool test(void)
 
     unsigned int values3[4] = { 9, 8, 7, 6 };
     int keys3[4] = { 2, 2, 2, 2 };
-    int expectedOutput3[4] = { 9, 8, 7, 6 };
+    unsigned int expectedOutput3[4] = { 9, 8, 7, 6 };
     if (!testCase(values3, keys3, expectedOutput3, 4, 4))
     {
         printFailedTest(3);
