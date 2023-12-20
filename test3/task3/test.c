@@ -11,11 +11,11 @@ static bool testCase(const char* const sequence, const bool expectedOutput,
     const size_t numberOfTest)
 {
     bool testPassed = isAccepted(sequence) == expectedOutput;
-    if (!testIsPassed)
+    if (!testPassed)
     {
         printFailedTest(numberOfTest);
     }
-    return testIsPassed;
+    return testPassed;
 }
 
 bool testIsPassed(void)

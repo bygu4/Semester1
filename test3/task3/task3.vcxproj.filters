@@ -24,12 +24,24 @@
     <ClCompile Include="test.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="str.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="console.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="isAccepted.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="test.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="str.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="console.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

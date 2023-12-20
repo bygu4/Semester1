@@ -62,7 +62,7 @@ bool isAccepted(const char* const sequence)
             statePassed = sequencePassed;
             break;
         }
-        if (!statePassed)
+        if (!statePassed(current, &state))
         {
             return false;
         }

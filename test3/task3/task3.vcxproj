@@ -129,9 +129,13 @@
   <ItemGroup>
     <ClCompile Include="main.c" />
     <ClCompile Include="isAccepted.c" />
+    <ClCompile Include="console.c" />
+    <ClCompile Include="str.c" />
     <ClCompile Include="test.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="console.h" />
+    <ClInclude Include="str.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="isAccepted.h" />
   </ItemGroup>
