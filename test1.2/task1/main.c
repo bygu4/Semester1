@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#define NUMBER_OF_BITS sizeof(unsigned int) * 8
+#define NUMBER_OF_BITS (sizeof(unsigned int) * 8)
 
-enum errorCodes {
+enum ErrorCodes {
     testFailed = -1,
     success = 0,
     badAllocation = 1
@@ -33,7 +33,7 @@ static bool* convertToBinary(const unsigned int number)
     unsigned int bit = 1;
     for (size_t i = 0; i < NUMBER_OF_BITS; ++i)
     {
-        bits[NUMBER_OF_BITS - i - 1] = number & bit ? true : false;
+        bits[NUMBER_OF_BITS - i - 1] = (number & bit) != 0;
         bit = bit << 1;
     }
     return bits;
@@ -79,7 +79,7 @@ static bool stringsAreEqual(const char* const string1, const char* const string2
     return true;
 }
 
-int main(const size_t argc, const char* const argv[])
+int main(const int argc, const char* const argv[])
 {
     if (!testIsPassed())
     {
