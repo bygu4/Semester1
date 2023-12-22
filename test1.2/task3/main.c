@@ -3,11 +3,11 @@
 #include <stdlib.h>
 
 #define NAME_OF_FILE "main.txt"
-#define TEST_FILE_1 "testFiles/testfile1.txt"
-#define TEST_FILE_2 "testFiles/testfile2.txt"
-#define TEST_FILE_3 "testFiles/testfile3.txt"
+#define TEST_FILE_1 "testFiles/testFile1.txt"
+#define TEST_FILE_2 "testFiles/testFile2.txt"
+#define TEST_FILE_3 "testFiles/testFile3.txt"
 
-enum errorCodes {
+enum ErrorCodes {
     testFailed = -1,
     success = 0,
     badAllocation = 1,
@@ -45,7 +45,7 @@ static void freeString(String** const string)
     *string = NULL;
 }
 
-static bool addCharToString(String* string, const char character)
+static bool addCharToString(String* const string, const char character)
 {
     if (string->capacity <= string->length + 1)
     {
@@ -62,13 +62,6 @@ static bool addCharToString(String* string, const char character)
     return false;
 }
 
-static void swap(char** const string1, char** const string2)
-{
-    char* temp = *string1;
-    *string1 = *string2;
-    *string2 = temp;
-}
-
 static char* fgetString(FILE* const stream, const char breakPoint)
 {
     String* string = createString();
@@ -83,14 +76,14 @@ static char* fgetString(FILE* const stream, const char breakPoint)
         bool errorOccured = (current != previous) ? addCharToString(string, current) : false;
         if (errorOccured)
         {
-            free(string);
+            freeString(&string);
             return NULL;
         }
         previous = current;
         current = fgetc(stream);
     }
-    char* output = NULL;
-    swap(&output, &string->data);
+    char* output = string->data;
+    string->data = NULL;
     freeString(&string);
     return output;
 }
@@ -149,7 +142,7 @@ static bool testIsPassed(void)
         testCase(TEST_FILE_3, "abcd abcd", 3);
 }
 
-int main(const size_t argc, const char* const argv[])
+int main(const int argc, const char* const argv[])
 {
     if (!testIsPassed())
     {
