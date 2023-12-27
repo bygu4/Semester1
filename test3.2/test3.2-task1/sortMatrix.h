@@ -1,6 +1,6 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdlib.h>
 
-// отсортировать столбцы двумерного массива по первым элементам
+// РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°С‚СЊ СЃС‚РѕР»Р±С†С‹ РґРІСѓРјРµСЂРЅРѕРіРѕ РјР°СЃСЃРёРІР° РїРѕ РїРµСЂРІС‹Рј СЌР»РµРјРµРЅС‚Р°Рј
 void sortMatrix(int** const matrix, const size_t rows, const size_t columns);

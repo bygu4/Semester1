@@ -1,6 +1,6 @@
-#pragma once
+п»ї#pragma once
 
 #include <stdbool.h>
 
-// тест для сортировки
+// С‚РµСЃС‚ РґР»СЏ СЃРѕСЂС‚РёСЂРѕРІРєРё
 bool test(void);
