@@ -1,7 +1,6 @@
 #include "test.h"
 #include "sortMatrix.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 static void printFailedTest(const size_t numberOfTest)
 {
