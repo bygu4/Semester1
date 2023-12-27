@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 typedef struct SearchTree SearchTree;
 
