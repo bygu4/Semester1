@@ -89,14 +89,8 @@ static void freeTreeRecursion(Node* node)
     {
         return;
     }
-    if (node->leftChild != NULL)
-    {
-        freeTreeRecursion(node->leftChild);
-    }
-    if (node->rightChild != NULL)
-    {
-        freeTreeRecursion(node->rightChild);
-    }
+    freeTreeRecursion(node->leftChild);
+    freeTreeRecursion(node->rightChild);
     free(node);
 }
 

@@ -1,7 +1,6 @@
 #include "test.h"
 #include "sort.h"
 #include <stdio.h>
-#include <stdlib.h>
 
 static void printFailedTest(const size_t numberOfTest)
 {
