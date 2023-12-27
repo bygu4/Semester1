@@ -32,7 +32,7 @@ static bool matricesAreEqual(const int** const matrix1, const int** const matrix
     return true;
 }
 
-static void freeTable(unsigned int*** const table, const size_t rows)
+static void freeTable(int*** const table, const size_t rows)
 {
     for (size_t i = 0; i < rows; ++i)
     {
@@ -66,7 +66,7 @@ static int** createDynamicTable(const int staticTable[], const size_t rows, cons
 }
 
 static bool testCase(const int staticTable[], const int expectedTable[],
-    size_t rows, const size_t columns, const size_t numberOfTest)
+    const size_t rows, const size_t columns, const size_t numberOfTest)
 {
     int** matrix = createDynamicTable(staticTable, rows, columns);
     int** expectedMatrix = createDynamicTable(expectedTable, rows, columns);
