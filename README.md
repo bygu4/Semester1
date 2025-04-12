@@ -30,11 +30,11 @@ data representations and file management, lexical analysis, use of version contr
 │   └── phoneBook : simple command line app for managing phone records
 │
 ├── week05
-│   ├── advancedBracketBalance : paretheses validation algorithm
+│   ├── advancedBracketBalance : parentheses validation algorithm
 │   │
-│   ├── postfixCalculator : evaluation of an expression in postfix notation
+│   ├── postfixCalculator : evaluation of expressions in postfix notation
 │   │
-│   └── sortStation : infix to postfix form transformation of an expression
+│   └── sortStation : infix to postfix form transformation of expressions
 │
 ├── week06
 │   ├── counting : cyclic linked lists
