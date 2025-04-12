@@ -4,7 +4,7 @@
 
 This repository contains tasks for the educational practice in programming.
 
-This semester includes the basics of programming in C language, essential algorithms and data structures,
+First semester includes the basics of programming in C language, essential algorithms and data structures,
 data representations and file management, lexical analysis, use of version control systems and other command line tools.
 
 ### Repository structure
